@@ -1,0 +1,115 @@
+﻿<div class="hero-wrap" id="heroWrap" onmouseenter="pauseSlider()" onmouseleave="resumeSlider()">
+
+    <div id="slides-container"></div>
+
+    <button class="slider-arrow slider-prev" onclick="prevSlide()" aria-label="Previous">&#8592;</button>
+    <button class="slider-arrow slider-next" onclick="nextSlide()" aria-label="Next">&#8594;</button>
+    <div class="slider-dots" id="sliderDots"></div>
+    <div class="slider-counter" id="sliderCounter">1 / 4</div>
+    <div class="slider-progress" id="sliderProgress"></div>
+
+    <div class="search-widget-wrap">
+      <div class="search-widget">
+        <div class="sw-tabs">
+          <button class="sw-tab act" data-tab="flights" onclick="swTab('flights',this)">
+            <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Flights
+          </button>
+          <button class="sw-tab" data-tab="umrah" onclick="swTab('umrah',this)">
+            <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Umrah
+          </button>
+          <button class="sw-tab" data-tab="holiday" onclick="swTab('holiday',this)">
+            <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="3"/></svg>Holidays
+          </button>
+          <button class="sw-tab" data-tab="cruise" onclick="swTab('cruise',this)">
+            <svg viewBox="0 0 24 24" stroke="currentColor"><path d="M3 17l3-8 6 2 6-2 3 8M12 4v6"/></svg>Cruise
+          </button>
+          <button class="sw-tab" data-tab="visa" onclick="swTab('visa',this)">
+            <svg viewBox="0 0 24 24" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h2M13 15h4"/></svg>Visa
+          </button>
+        </div>
+
+        <div class="sw-body act" id="sw-flights">
+          <div class="trip-opts">
+            <label class="tt-opt sel"><input type="radio" name="ftype" value="r" checked> Return</label>
+            <label class="tt-opt"><input type="radio" name="ftype" value="o"> One Way</label>
+            <label class="tt-opt"><input type="radio" name="ftype" value="m"> Multi-City</label>
+          </div>
+          <div class="sw-form">
+            <div class="sw-row">
+              <div class="field"><label>From</label><input type="text" value="Dubai (DXB)"></div>
+              <div class="field"><label>To</label><input type="text" placeholder="Destination"></div>
+              <div class="field"><label>Depart</label><input type="date" value="2026-06-10"></div>
+              <div class="field"><label>Return</label><input type="date" value="2026-06-20"></div>
+            </div>
+            <div class="sw-btn-row">
+              <div style="display:flex;gap:10px;flex:1">
+                <div class="field" style="flex:1"><label>Passengers</label><select><option>1 Adult</option><option>2 Adults</option><option>2 Adults, 1 Child</option></select></div>
+                <div class="field" style="flex:1"><label>Class</label><select><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+              </div>
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-flights')">Search Flights</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sw-body" id="sw-umrah">
+          <div class="sw-form">
+            <div class="sw-row">
+              <div class="field"><label>Departing From</label><input type="text" value="Dubai"></div>
+              <div class="field"><label>Package Type</label><select><option>Economy</option><option>Standard</option><option>Premium</option><option>VIP</option></select></div>
+              <div class="field"><label>Duration</label><select><option>7 Nights</option><option>10 Nights</option><option>14 Nights</option><option>21 Nights</option></select></div>
+              <div class="field"><label>Travel Month</label><input type="month" value="2026-09"></div>
+            </div>
+            <div class="sw-btn-row">
+              <div class="field" style="flex:1"><label>Pilgrims</label><select><option>1 Pilgrim</option><option>2 Pilgrims</option><option>Family (4)</option><option>Group (10+)</option></select></div>
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-umrah')">Find Packages</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sw-body" id="sw-holiday">
+          <div class="sw-form">
+            <div class="sw-row">
+              <div class="field"><label>Destination</label><select><option>Maldives</option><option>Bali</option><option>Turkey</option><option>Switzerland</option><option>Japan</option><option>Greece</option></select></div>
+              <div class="field"><label>Check-in</label><input type="date" value="2026-07-15"></div>
+              <div class="field"><label>Duration</label><select><option>5 Nights</option><option>7 Nights</option><option>10 Nights</option><option>14 Nights</option></select></div>
+              <div class="field"><label>Guests</label><select><option>2 Adults</option><option>2 Adults, 1 Child</option><option>Solo</option></select></div>
+            </div>
+            <div class="sw-btn-row">
+              <div class="field" style="flex:1"><label>Budget (per person)</label><select><option>Any budget</option><option>Under AED 3,000</option><option>AED 3,000–6,000</option><option>Above AED 6,000</option></select></div>
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-holiday')">Search Holidays</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sw-body" id="sw-cruise">
+          <div class="sw-form">
+            <div class="sw-row">
+              <div class="field"><label>Departure Port</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Rome</option><option>Barcelona</option></select></div>
+              <div class="field"><label>Destination</label><select><option>Mediterranean</option><option>Arabian Gulf</option><option>Caribbean</option><option>Norway</option></select></div>
+              <div class="field"><label>Departure</label><input type="date" value="2026-08-01"></div>
+              <div class="field"><label>Duration</label><select><option>3–5 Nights</option><option>6–9 Nights</option><option>10–14 Nights</option><option>15+ Nights</option></select></div>
+            </div>
+            <div class="sw-btn-row">
+              <div class="field" style="flex:1"><label>Guests</label><select><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option></select></div>
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-cruise')">Search Cruises</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sw-body" id="sw-visa">
+          <div class="sw-form">
+            <div class="sw-row">
+              <div class="field"><label>Your Nationality</label><select><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option><option>Pakistan</option><option>UK</option></select></div>
+              <div class="field"><label>Visa Destination</label><select><option>United Kingdom</option><option>Schengen (Europe)</option><option>United States</option><option>Canada</option><option>Australia</option><option>Japan</option></select></div>
+              <div class="field"><label>Visa Type</label><select><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option></select></div>
+              <div class="field"><label>Travel Date</label><input type="date" value="2026-09-01"></div>
+            </div>
+            <div style="text-align:right;margin-top:4px">
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-visa')">Check Requirements</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

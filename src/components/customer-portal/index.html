@@ -1,0 +1,48 @@
+﻿<div class="modal-bg" id="m-customer-portal" onclick="if(event.target===this)closeModal('m-customer-portal')">
+  <div class="modal" style="width:760px">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Customer Account</div>
+        <div class="auth-subtitle">Your profile and recent bookings.</div>
+      </div>
+      <div class="flex aic gap8">
+        <button class="btn-ghost btn-sm" type="button" onclick="logoutSession()">Sign Out</button>
+        <button class="modal-x" onclick="closeModal('m-customer-portal')">×</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="auth-summary-grid">
+        <div class="auth-summary-card">
+          <div class="auth-summary-label">Customer</div>
+          <div class="auth-summary-value" id="portal-customer-name">Signed out</div>
+          <div class="auth-summary-meta" id="portal-customer-email">Please sign in.</div>
+        </div>
+        <div class="auth-summary-card">
+          <div class="auth-summary-label">Booking Summary</div>
+          <div class="auth-summary-value" id="portal-booking-count">0 bookings</div>
+          <div class="auth-summary-meta" id="portal-booking-total">AED 0 total spend</div>
+        </div>
+      </div>
+      <div class="a-card">
+        <div class="a-card-head">
+          <div>
+            <div class="a-card-title">Recent Bookings</div>
+            <div class="a-card-sub">Pulled from the backend account data.</div>
+          </div>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead>
+              <tr><th>Reference</th><th>Service</th><th>Status</th><th>Amount</th><th>Created</th></tr>
+            </thead>
+            <tbody id="portal-bookings-body">
+              <tr><td colspan="5" class="slate2 fs13" style="padding:18px">No bookings available.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

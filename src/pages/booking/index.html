@@ -1,0 +1,88 @@
+﻿<div id="view-booking" class="view">
+  <div class="flow-page">
+    <div class="flow-bar"><div class="flow-bar-inner">
+      <div class="flex aic gap8"><div id="fn1" class="snum done">✓</div><div class="sinfo"><div class="slabel done">Search</div></div></div>
+      <div id="fl1" class="sline done"></div>
+      <div class="flex aic gap8"><div id="fn2" class="snum done">✓</div><div class="sinfo"><div class="slabel done">Select</div></div></div>
+      <div id="fl2" class="sline done"></div>
+      <div class="flex aic gap8"><div id="fn3" class="snum curr">3</div><div class="sinfo"><div id="sl3" class="slabel curr">Your Information</div><div class="slabel" style="font-size:11px;color:var(--slate3)">Personal & passport details</div></div></div>
+      <div id="fl3" class="sline"></div>
+      <div class="flex aic gap8"><div id="fn4" class="snum">4</div><div class="sinfo"><div id="sl4" class="slabel">Payment</div></div></div>
+      <div id="fl4" class="sline"></div>
+      <div class="flex aic gap8"><div id="fn5" class="snum">5</div><div class="sinfo"><div class="slabel">Confirm</div></div></div>
+    </div></div>
+    <div class="flow-content">
+      <div id="bstep-3">
+        <div class="flow-card">
+          <div class="flow-card-title">Personal Information</div>
+          <div class="flow-grid">
+            <div class="field"><label>Title</label><select><option>Mr</option><option>Mrs</option><option>Ms</option><option>Dr</option></select></div>
+            <div class="field"><label>Nationality</label><select><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option></select></div>
+            <div class="field"><label>First Name</label><input type="text" placeholder="As on passport"></div>
+            <div class="field"><label>Last Name</label><input type="text" placeholder="As on passport"></div>
+            <div class="field"><label>Date of Birth</label><input type="date"></div>
+            <div class="field"><label>Phone Number</label><input type="tel" placeholder="+971 50 000 0000"></div>
+            <div class="field flow-full"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
+          </div>
+        </div>
+        <div class="flow-card">
+          <div class="flow-card-title">Passport Details</div>
+          <div class="flow-grid g3">
+            <div class="field"><label>Passport Number</label><input type="text" placeholder="A12345678"></div>
+            <div class="field"><label>Issue Date</label><input type="date"></div>
+            <div class="field"><label>Expiry Date</label><input type="date"></div>
+            <div class="field"><label>Issuing Country</label><select><option>UAE</option><option>Saudi Arabia</option><option>Other</option></select></div>
+            <div class="field"><label>Issuing Authority</label><input type="text" placeholder="ICA / MOFA"></div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:12px;padding-top:4px">
+          <button class="btn-ghost" onclick="history.back()">Back</button>
+          <button class="btn-navy" onclick="goStep(4)">Continue to Payment →</button>
+        </div>
+      </div>
+      <div id="bstep-4" style="display:none">
+        <div style="display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start">
+          <div>
+            <div class="flow-card">
+              <div class="flow-card-title">Select Payment Method</div>
+              <div style="display:flex;gap:12px;margin-bottom:22px">
+                <div onclick="this.parentNode.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')" class="pay-opt sel" style="flex:1;border:2px solid var(--gold);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;background:rgba(200,169,110,.05);transition:all .2s">
+                  <div style="font-size:22px;margin-bottom:5px">💳</div><div style="font-size:13px;font-weight:700;color:var(--ink)">Credit / Debit Card</div>
+                </div>
+                <div onclick="this.parentNode.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')" class="pay-opt" style="flex:1;border:1.5px solid var(--surface3);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:all .2s">
+                  <div style="font-size:22px;margin-bottom:5px">🏦</div><div style="font-size:13px;font-weight:600;color:var(--slate)">Bank Transfer</div>
+                </div>
+                <div onclick="this.parentNode.querySelectorAll('.pay-opt').forEach(e=>e.classList.remove('sel'));this.classList.add('sel')" class="pay-opt" style="flex:1;border:1.5px solid var(--surface3);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:all .2s">
+                  <div style="font-size:22px;margin-bottom:5px">📱</div><div style="font-size:13px;font-weight:600;color:var(--slate)">Apple / Google Pay</div>
+                </div>
+              </div>
+              <div class="flow-grid">
+                <div class="field flow-full"><label>Name on Card</label><input type="text" placeholder="Full name as on card"></div>
+                <div class="field flow-full"><label>Card Number</label><input type="text" placeholder="0000  0000  0000  0000"></div>
+                <div class="field"><label>Expiry Date</label><input type="text" placeholder="MM / YY"></div>
+                <div class="field"><label>CVV / CVC</label><input type="text" placeholder="•••"></div>
+              </div>
+              <div style="background:var(--green-bg);border:1px solid rgba(15,123,91,.2);border-radius:var(--r);padding:12px 16px;display:flex;align-items:center;gap:10px;margin-top:16px">
+                <span>🔒</span><span style="font-size:13px;color:var(--slate)">256-bit SSL encryption. We never store your card details.</span>
+              </div>
+            </div>
+          </div>
+          <div class="book-widget">
+            <div style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--surface3)">Order Summary</div>
+            <div style="font-size:13.5px;color:var(--slate);margin-bottom:2px">Emirates · EK001 · Economy</div>
+            <div style="font-size:12px;color:var(--slate3);margin-bottom:16px">Dubai → London · 10 Jun 2026</div>
+            <div class="price-table">
+              <div class="pt-row"><span>Base fare</span><span>AED 1,850</span></div>
+              <div class="pt-row"><span>Taxes & fees</span><span>AED 460</span></div>
+              <div class="pt-row"><span>Checked baggage</span><span>AED 140</span></div>
+              <div class="pt-row total"><span>Total</span><span>AED 2,450</span></div>
+            </div>
+            <button class="btn-gold w100" style="font-size:15px;padding:14px" onclick="goStep(5)">Pay AED 2,450</button>
+            <div style="text-align:center;font-size:11px;color:var(--slate3);margin-top:10px">By proceeding you agree to our Terms of Service</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

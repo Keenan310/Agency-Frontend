@@ -1,0 +1,274 @@
+/* ── Auth Modal Container ─────────────────────────────────────── */
+.am-modal {
+  width: 520px;
+  max-width: 96vw;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.am-close {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--surface2);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--slate2);
+  transition: all .18s;
+  z-index: 2;
+}
+.am-close:hover { background: var(--surface3); color: var(--ink); }
+
+/* ── Brand ────────────────────────────────────────────────────── */
+.am-brand {
+  padding: 28px 32px 0;
+  text-align: center;
+}
+.am-logo {
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: .3px;
+}
+.am-logo span { color: var(--slate2); font-weight: 400; }
+
+/* ── Titles ───────────────────────────────────────────────────── */
+.am-titles {
+  padding: 10px 32px 0;
+  text-align: center;
+}
+.am-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+.am-subtitle {
+  font-size: 13.5px;
+  color: var(--slate2);
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+/* ── Tabs ─────────────────────────────────────────────────────── */
+.am-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 20px 32px 0;
+  background: var(--white);
+}
+.am-tab {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: 10px;
+  border: 1.5px solid var(--surface3);
+  background: var(--surface2);
+  color: var(--slate);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: var(--sans);
+}
+.am-tab:hover { border-color: var(--gold); color: var(--ink); }
+.am-tab.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+/* ── Body ─────────────────────────────────────────────────────── */
+.am-body { padding: 20px 32px 28px; }
+
+/* ── Alert ────────────────────────────────────────────────────── */
+.auth-alert {
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+.auth-alert.error {
+  background: var(--red-bg);
+  border: 1px solid rgba(185,28,28,.18);
+  color: var(--red);
+}
+.auth-alert.success {
+  background: var(--green-bg);
+  border: 1px solid rgba(15,123,91,.18);
+  color: var(--green);
+}
+.auth-alert.info {
+  background: var(--blue-bg);
+  border: 1px solid rgba(29,78,216,.18);
+  color: var(--blue);
+}
+
+/* ── Google Button ────────────────────────────────────────────── */
+.am-google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 11px 20px;
+  border: 1.5px solid var(--surface3);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: var(--sans);
+  box-shadow: 0 1px 3px rgba(0,0,0,.07);
+}
+.am-google-btn:hover {
+  border-color: #4285F4;
+  background: rgba(66,133,244,.04);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(66,133,244,.15);
+}
+.am-google-btn:active { transform: translateY(0); }
+
+/* ── Divider ──────────────────────────────────────────────────── */
+.am-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  color: var(--slate3);
+  font-size: 12px;
+}
+.am-divider::before,
+.am-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--surface3);
+}
+
+/* ── Form ─────────────────────────────────────────────────────── */
+.am-form { display: flex; flex-direction: column; gap: 14px; }
+
+.am-field-hint {
+  font-size: 11px;
+  color: var(--slate3);
+  margin-top: 3px;
+}
+
+/* ── Password wrapper ─────────────────────────────────────────── */
+.am-pw-wrap {
+  position: relative;
+}
+.am-pw-wrap input { padding-right: 42px; }
+.am-pw-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--slate3);
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  transition: color .15s;
+}
+.am-pw-eye:hover { color: var(--slate); }
+
+/* ── Strength meter ───────────────────────────────────────────── */
+.am-strength-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.am-strength-track {
+  flex: 1;
+  height: 4px;
+  background: var(--surface3);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.am-strength-fill {
+  height: 100%;
+  border-radius: 100px;
+  width: 0;
+  transition: width .3s, background-color .3s;
+}
+.am-strength-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--slate2);
+  min-width: 56px;
+  text-align: right;
+}
+
+/* ── Text links ───────────────────────────────────────────────── */
+.am-text-link {
+  background: none;
+  border: none;
+  color: var(--slate2);
+  font-size: 12.5px;
+  cursor: pointer;
+  font-family: var(--sans);
+  padding: 0;
+  transition: color .15s;
+}
+.am-text-link:hover { color: var(--gold3); }
+.am-text-link--bold { font-weight: 700; color: var(--gold3); font-size: 13px; }
+.am-text-link--bold:hover { color: var(--ink); }
+
+/* ── Submit button ────────────────────────────────────────────── */
+.am-submit {
+  width: 100%;
+  margin-top: 4px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all .18s;
+  font-family: var(--sans);
+  letter-spacing: .2px;
+}
+.am-submit:hover { background: var(--ink2); transform: translateY(-1px); }
+.am-submit:active { transform: translateY(0); }
+.am-submit:disabled { opacity: .55; cursor: default; transform: none; }
+
+/* ── Footer switch link ───────────────────────────────────────── */
+.am-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--slate2);
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+@media (max-width: 540px) {
+  .am-modal { border-radius: 16px 16px 0 0; }
+  .am-brand,
+  .am-titles,
+  .am-tabs,
+  .am-body { padding-left: 20px; padding-right: 20px; }
+  .modal-bg { align-items: flex-end; }
+}

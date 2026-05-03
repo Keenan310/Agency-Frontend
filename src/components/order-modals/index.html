@@ -1,0 +1,410 @@
+﻿<div class="modal-bg" id="m-add-slide" onclick="if(event.target===this)closeModal('m-add-slide')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Hero Slide</div><button class="modal-x" onclick="closeModal('m-add-slide')">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="field"><label>Slide Label (small text above title)</label><input type="text" id="ns-label" placeholder="e.g. New Destination · Summer 2026"></div>
+        <div class="field"><label>Title (use &lt;em&gt; for gold text)</label><input type="text" id="ns-title" placeholder="Discover Paradise in &lt;em&gt;Bali&lt;/em&gt;"></div>
+        <div class="field"><label>Subtitle</label><textarea id="ns-sub" placeholder="Brief description shown below the title" rows="2"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>CTA Button Text</label><input type="text" id="ns-cta" placeholder="Explore Packages"></div>
+          <div class="field"><label>CTA Links To</label><select id="ns-link"><option value="flights">Flights</option><option value="umrah">Umrah</option><option value="holiday">Holidays</option><option value="cruise">Cruise</option><option value="visa">Visa</option></select></div>
+        </div>
+        <div class="field"><label>Background Image URL (optional)</label><input type="url" id="ns-img" placeholder="https://images.unsplash.com/photo-... (leave blank for gradient)" oninput="previewModalImg(this.value,'ns-img-preview')"></div>
+        <div class="field"><label>Background Gradient (used if no image)</label>
+          <select id="ns-grad">
+            <option value="linear-gradient(135deg,#0B1120,#1C2B45,#1a3060)">Navy Blue (default)</option>
+            <option value="linear-gradient(135deg,#0d3d52,#1a6b8a,#0e5f82)">Ocean Teal</option>
+            <option value="linear-gradient(135deg,#1a3a6e,#2858a8,#12285e)">Royal Blue</option>
+            <option value="linear-gradient(135deg,#1a1a35,#2d2d60,#111128)">Deep Purple</option>
+            <option value="linear-gradient(135deg,#3d1a0d,#8a3022,#6b2010)">Warm Red</option>
+          </select>
+        </div>
+        <div id="ns-img-preview" style="height:80px;border-radius:var(--r);background:var(--surface2);border:2px dashed var(--surface3);background-size:cover;background-position:center;transition:all .3s"></div>
+        <div style="display:flex;align-items:center;gap:10px"><label class="toggle-switch"><input type="checkbox" id="ns-active" checked><span class="toggle-thumb"></span></label><span class="fs14">Slide Active</span></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-add-slide')">Cancel</button><button class="btn-navy" onclick="addSlideFromModal()">Add Slide</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-edit-slide" onclick="if(event.target===this)closeModal('m-edit-slide')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Edit Hero Slide</div><button class="modal-x" onclick="closeModal('m-edit-slide')">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" id="es-id">
+        <div class="field"><label>Slide Label</label><input type="text" id="es-label"></div>
+        <div class="field"><label>Title</label><input type="text" id="es-title"></div>
+        <div class="field"><label>Subtitle</label><textarea id="es-sub" rows="2"></textarea></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>CTA Button Text</label><input type="text" id="es-cta"></div>
+          <div class="field"><label>CTA Links To</label><select id="es-link"><option value="flights">Flights</option><option value="umrah">Umrah</option><option value="holiday">Holidays</option><option value="cruise">Cruise</option><option value="visa">Visa</option></select></div>
+        </div>
+        <div class="field"><label>Background Image URL</label><input type="url" id="es-img" oninput="document.getElementById('es-prev').style.backgroundImage=this.value?'url('+this.value+')':'none'"></div>
+        <div class="field"><label>Background Gradient</label><select id="es-grad"><option value="linear-gradient(135deg,#0B1120,#1C2B45,#1a3060)">Navy Blue</option><option value="linear-gradient(135deg,#0d3d52,#1a6b8a,#0e5f82)">Ocean Teal</option><option value="linear-gradient(135deg,#1a3a6e,#2858a8,#12285e)">Royal Blue</option><option value="linear-gradient(135deg,#1a1a35,#2d2d60,#111128)">Deep Purple</option><option value="linear-gradient(135deg,#3d1a0d,#8a3022,#6b2010)">Warm Red</option></select></div>
+        <div id="es-prev" style="height:80px;border-radius:var(--r);background:var(--surface2);background-size:cover;background-position:center"></div>
+        <div style="display:flex;align-items:center;gap:10px"><label class="toggle-switch"><input type="checkbox" id="es-active"><span class="toggle-thumb"></span></label><span class="fs14">Slide Active</span></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-edit-slide')">Cancel</button><button class="btn-navy" onclick="saveEditSlide()">Save Changes</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-add-pkg" onclick="if(event.target===this)closeModal('m-add-pkg')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Umrah Package</div><button class="modal-x" onclick="closeModal('m-add-pkg')">×</button></div>
+    <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="field"><label>Package Name</label><input type="text" id="up-name" placeholder="e.g. Premium Umrah 14 Nights"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Type</label><select id="up-type"><option value="economy">Economy</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="vip">VIP</option></select></div><div class="field"><label>Duration (Nights)</label><input type="number" id="up-nights" value="14" min="5" max="30"></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Makkah Hotel</label><input type="text" id="up-makkah" placeholder="Hotel name & stars"></div><div class="field"><label>Madinah Hotel</label><input type="text" id="up-madinah" placeholder="Hotel name & stars"></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Price / Person (AED)</label><input type="number" id="up-price" placeholder="0.00"></div><div class="field"><label>Max Capacity</label><input type="number" id="up-capacity" placeholder="50"></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px"><div class="field"><label>Visa Included</label><select id="up-visa"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Flights Included</label><select id="up-flights"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Transport</label><select id="up-transport"><option value="private">Private</option><option value="shared">Shared</option><option value="group">Group</option></select></div></div>
+        </div>
+      </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-add-pkg')">Cancel</button><button class="btn-navy" onclick="submitUmrahPackage()">Save Package</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-add-cust" onclick="if(event.target===this)closeModal('m-add-cust')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add New Customer</div><button class="modal-x" onclick="closeModal('m-add-cust')">×</button></div>
+    <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>First Name</label><input type="text" id="ac-first-name" placeholder="First name"></div><div class="field"><label>Last Name</label><input type="text" id="ac-last-name" placeholder="Last name"></div></div>
+          <div class="field"><label>Email Address</label><input type="email" id="ac-email" placeholder="customer@email.com"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Phone</label><input type="tel" id="ac-phone" placeholder="+971 50 000 0000"></div><div class="field"><label>Nationality</label><select id="ac-nationality"><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option><option>Pakistan</option></select></div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Date of Birth</label><input type="date" id="ac-dob"></div><div class="field"><label>Passport Number</label><input type="text" id="ac-passport" placeholder="A12345678"></div></div>
+        </div>
+      </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-add-cust')">Cancel</button><button class="btn-navy" onclick="submitCustomerCreate()">Create Customer</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-add-holiday" onclick="if(event.target===this)closeModal('m-add-holiday')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Holiday Package</div><button class="modal-x" onclick="closeModal('m-add-holiday')">×</button></div>
+    <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="field"><label>Package Name</label><input type="text" id="hp-name" placeholder="e.g. Maldives Luxury Escape · 7 Nights"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Destination</label><input type="text" id="hp-destination" placeholder="e.g. Maldives"></div>
+            <div class="field"><label>Country Code</label><input type="text" id="hp-country" placeholder="e.g. MV" maxlength="3"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Duration (Nights)</label><input type="number" id="hp-nights" placeholder="7" min="1" max="30"></div>
+            <div class="field"><label>Star Rating</label><select id="hp-stars"><option value="5">★★★★★ 5 Stars</option><option value="4">★★★★ 4 Stars</option><option value="3">★★★ 3 Stars</option></select></div>
+            <div class="field"><label>Price / Person (AED)</label><input type="number" id="hp-price" placeholder="0.00" min="0"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Meal Plan</label><select id="hp-meal"><option value="all_inclusive">All Inclusive</option><option value="full_board">Full Board</option><option value="half_board">Half Board</option><option value="bed_breakfast">Bed & Breakfast</option><option value="room_only">Room Only</option></select></div>
+            <div class="field"><label>Max Guests</label><input type="number" id="hp-max-guests" placeholder="e.g. 20" min="1"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Flights Included</label><select id="hp-flights"><option value="1">Yes</option><option value="0">No</option></select></div>
+            <div class="field"><label>Visa Included</label><select id="hp-visa"><option value="0">No</option><option value="1">Yes</option></select></div>
+            <div class="field"><label>Status</label><select id="hp-status"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+          </div>
+          <div class="field"><label>Short Description</label><textarea id="hp-description" placeholder="Brief description of this package shown to customers..." rows="3"></textarea></div>
+          <div class="field"><label>Hero Image URL (optional)</label><input type="url" id="hp-image" placeholder="https://images.unsplash.com/photo-..."></div>
+        </div>
+      </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-add-holiday')">Cancel</button>
+      <button class="btn-navy" onclick="submitHolidayPackage()">Save Package</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-add-cruise" onclick="if(event.target===this)closeModal('m-add-cruise')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Add Cruise Package</div><button class="modal-x" onclick="closeModal('m-add-cruise')">×</button></div>
+    <div class="modal-body">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="field"><label>Cruise Package Name</label><input type="text" id="cp-name" placeholder="e.g. Mediterranean Grand Voyage · 10 Nights"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Ship Name</label><input type="text" id="cp-ship" placeholder="e.g. MSC Grandiosa"></div>
+            <div class="field"><label>Cruise Line</label><input type="text" id="cp-line" placeholder="e.g. MSC Cruises"></div>
+          </div>
+          <div class="field"><label>Route / Ports of Call</label><input type="text" id="cp-route" placeholder="e.g. Rome → Barcelona → Marseille → Palermo → Naples"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Departure Port</label><input type="text" id="cp-port" placeholder="e.g. Rome (Civitavecchia)"></div>
+            <div class="field"><label>Departure Date</label><input type="date" id="cp-date"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Duration (Nights)</label><input type="number" id="cp-nights" placeholder="10" min="1"></div>
+            <div class="field"><label>Cabin Type</label><select id="cp-cabin"><option value="ocean_view">Ocean View</option><option value="balcony">Balcony</option><option value="suite">Suite</option><option value="interior">Interior</option></select></div>
+            <div class="field"><label>Price / Person (AED)</label><input type="number" id="cp-price" placeholder="0.00" min="0"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Max Passengers</label><input type="number" id="cp-max-passengers" placeholder="e.g. 50" min="1"></div>
+            <div class="field"><label>Status</label><select id="cp-status"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
+          </div>
+          <div class="field"><label>Inclusions</label><textarea id="cp-inclusions" placeholder="e.g. All meals onboard, entertainment, port taxes..." rows="2"></textarea></div>
+          <div class="field"><label>Hero Image URL (optional)</label><input type="url" id="cp-image" placeholder="https://images.unsplash.com/photo-..."></div>
+        </div>
+      </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-add-cruise')">Cancel</button>
+      <button class="btn-navy" onclick="submitCruisePackage()">Save Cruise</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-visa-fees" onclick="if(event.target===this)closeModal('m-visa-fees')">
+  <div class="modal" style="width:660px">
+    <div class="modal-head"><div class="modal-title">Visa Fee Settings</div><button class="modal-x" onclick="closeModal('m-visa-fees')">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <div style="background:var(--surface2);border-radius:var(--r);padding:18px;border:1px solid var(--surface3)">
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Add New Visa Fee</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+            <div class="field"><label>Destination Country</label><input type="text" id="vf-country" placeholder="e.g. United Kingdom"></div>
+            <div class="field"><label>Visa Type</label><select id="vf-type"><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option><option>Work</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
+            <div class="field"><label>Processing Fee (AED)</label><input type="number" id="vf-fee" placeholder="0.00" min="0"></div>
+            <div class="field"><label>Processing Time</label><input type="text" id="vf-time" placeholder="e.g. 5-10 business days"></div>
+            <div class="field"><label>Validity</label><input type="text" id="vf-validity" placeholder="e.g. 6 Months"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+            <div class="field"><label>Entry Type</label><select id="vf-entry"><option>Single Entry</option><option>Multiple Entry</option><option>Double Entry</option></select></div>
+            <div class="field"><label>Priority Processing Fee (AED)</label><input type="number" id="vf-priority" placeholder="0.00 (leave blank if N/A)" min="0"></div>
+          </div>
+          <button class="btn-gold" style="width:100%" onclick="addVisaFeeRow()">+ Add This Visa Fee</button>
+        </div>
+
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Current Fee Schedule</div>
+          <div style="border:1px solid var(--surface3);border-radius:var(--r);overflow:hidden">
+            <table style="width:100%;border-collapse:collapse">
+              <thead><tr style="background:#F6F8FC"><th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Destination</th><th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase">Type</th><th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase">Standard Fee</th><th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase">Priority</th><th style="text-align:left;padding:10px 14px;font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase">Time</th><th style="padding:10px 14px"></th></tr></thead>
+              <tbody id="visa-fee-tbody">
+                <tr style="border-top:1px solid #F0F3F9"><td style="padding:11px 14px;font-size:13px;font-weight:600">United Kingdom</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">Tourist</td><td style="padding:11px 14px;font-size:13px;font-weight:700">AED 450</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">AED 820</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">5-10 days</td><td style="padding:11px 14px;text-align:right"><button class="btn-danger" onclick="this.closest('tr').remove();toast('Fee removed','t-gold')">✕</button></td></tr>
+                <tr style="border-top:1px solid #F0F3F9"><td style="padding:11px 14px;font-size:13px;font-weight:600">United States</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">Tourist</td><td style="padding:11px 14px;font-size:13px;font-weight:700">AED 820</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">N/A</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">15-20 days</td><td style="padding:11px 14px;text-align:right"><button class="btn-danger" onclick="this.closest('tr').remove();toast('Fee removed','t-gold')">✕</button></td></tr>
+                <tr style="border-top:1px solid #F0F3F9"><td style="padding:11px 14px;font-size:13px;font-weight:600">Schengen</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">Tourist</td><td style="padding:11px 14px;font-size:13px;font-weight:700">AED 380</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">AED 620</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">7-14 days</td><td style="padding:11px 14px;text-align:right"><button class="btn-danger" onclick="this.closest('tr').remove();toast('Fee removed','t-gold')">✕</button></td></tr>
+                <tr style="border-top:1px solid #F0F3F9"><td style="padding:11px 14px;font-size:13px;font-weight:600">Canada</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">Tourist</td><td style="padding:11px 14px;font-size:13px;font-weight:700">AED 620</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">N/A</td><td style="padding:11px 14px;font-size:13px;color:var(--slate2)">10-15 days</td><td style="padding:11px 14px;text-align:right"><button class="btn-danger" onclick="this.closest('tr').remove();toast('Fee removed','t-gold')">✕</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-visa-fees')">Close</button>
+      <button class="btn-navy" onclick="closeModal('m-visa-fees');toast('Visa fee schedule saved','t-green')">Save All Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-view-order" onclick="if(event.target===this)closeModal('m-view-order')">
+  <div class="modal" style="width:680px">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title" id="vo-title">Order Details</div>
+        <div id="vo-ref" style="font-size:13px;color:var(--slate2);margin-top:2px;font-family:monospace"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="vo-status-badge"></span>
+        <button class="modal-x" onclick="closeModal('m-view-order')">×</button>
+      </div>
+    </div>
+    <div class="modal-body" id="vo-body" style="padding:24px 28px"></div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-view-order')">Close</button>
+      <button class="btn-outline" onclick="if(_activeEditRow&&_activeEditRow.dataset.service==='flights')printTicket(_activeEditRow);else toast('Ticket PDF is available for flight bookings','t-gold')">Print E-Ticket</button>
+      <button class="btn-navy" onclick="promoteToEdit()">Edit This Order</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-edit-order" onclick="if(event.target===this)closeModal('m-edit-order')">
+  <div class="modal" style="width:680px">
+    <div class="modal-head">
+      <div>
+        <div class="modal-title">Edit Order</div>
+        <div id="eo-ref" style="font-size:13px;color:var(--slate2);margin-top:2px;font-family:monospace"></div>
+      </div>
+      <button class="modal-x" onclick="closeModal('m-edit-order')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:16px">
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Customer Information</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Full Name</label><input type="text" id="eo-name"></div>
+            <div class="field"><label>Phone</label><input type="tel" id="eo-phone"></div>
+          </div>
+          <div class="field"><label>Email</label><input type="email" id="eo-email"></div>
+        </div>
+
+        <div id="eo-flight-block" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Flight Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>From</label><input type="text" id="eo-from" style="text-transform:uppercase"></div>
+            <div class="field"><label>To</label><input type="text" id="eo-to" style="text-transform:uppercase"></div>
+            <div class="field"><label>Flight No.</label><input type="text" id="eo-flight-num"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Departure Date</label><input type="text" id="eo-dep-date"></div>
+            <div class="field"><label>Return Date</label><input type="text" id="eo-ret-date"></div>
+            <div class="field"><label>Passengers</label><input type="number" id="eo-pax" min="1" max="9"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Cabin Class</label><select id="eo-cabin"><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+            <div class="field"><label>Baggage</label><select id="eo-baggage"><option>23 kg</option><option>30 kg</option><option>No Checked Baggage</option></select></div>
+          </div>
+          <div style="background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.2);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:12px;font-weight:700;color:var(--gold3);text-transform:uppercase;letter-spacing:.8px">Booking Reference Numbers</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <div class="field"><label>Agency PNR</label><input type="text" id="eo-agency-pnr" style="font-family:monospace;text-transform:uppercase"></div>
+              <div class="field"><label>Airline PNR / GDS</label><input type="text" id="eo-airline-pnr" style="font-family:monospace;text-transform:uppercase"></div>
+              <div class="field"><label>Ticket Number</label><input type="text" id="eo-ticket" style="font-family:monospace"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="eo-generic-block" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Service Details</div>
+          <div class="field"><label>Package / Service</label><input type="text" id="eo-package"></div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Order Summary</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Total Amount (AED)</label><input type="text" id="eo-amount"></div>
+            <div class="field"><label>Status</label><select id="eo-status"><option value="confirmed">Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select></div>
+          </div>
+          <div class="field"><label>Notes</label><textarea id="eo-notes" rows="2"></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-edit-order')">Cancel</button>
+      <button class="btn-navy" onclick="saveEditOrder()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-new-order" onclick="if(event.target===this)closeModal('m-new-order')">
+  <div class="modal" style="width:640px">
+    <div class="modal-head"><div class="modal-title">Create New Order</div><button class="modal-x" onclick="closeModal('m-new-order')">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div class="field">
+          <label>Service Type</label>
+          <select id="no-service" onchange="toggleOrderFields(this.value)" style="font-size:15px;padding:12px 14px;border:1.5px solid var(--gold);border-radius:var(--r);background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none;width:100%">
+            <option value="">Select a service to continue</option>
+            <option value="flights">Flights</option>
+            <option value="umrah">Umrah</option>
+            <option value="holiday">Holiday Package</option>
+            <option value="cruise">Cruise</option>
+            <option value="visa">Visa Services</option>
+          </select>
+        </div>
+        <div id="no-customer-block" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Customer Information</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Full Name</label><input type="text" id="no-name" placeholder="Customer full name"></div>
+            <div class="field"><label>Phone</label><input type="tel" id="no-phone" placeholder="+971 50 000 0000"></div>
+          </div>
+          <div class="field"><label>Email Address</label><input type="email" id="no-email" placeholder="customer@email.com"></div>
+        </div>
+
+        <div id="no-flights" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Flight Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>From (Airport Code)</label><input type="text" id="no-from" placeholder="e.g. DXB" style="text-transform:uppercase"></div>
+            <div class="field"><label>To (Airport Code)</label><input type="text" id="no-to" placeholder="e.g. LHR" style="text-transform:uppercase"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Airline & Flight No.</label><input type="text" id="no-flight-num" placeholder="e.g. EK001"></div>
+            <div class="field"><label>Departure Date</label><input type="date" id="no-dep-date"></div>
+            <div class="field"><label>Return Date</label><input type="date" id="no-ret-date"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Passengers</label><input type="number" id="no-pax" value="1" min="1" max="9"></div>
+            <div class="field"><label>Cabin Class</label><select id="no-cabin"><option>Economy</option><option>Business</option><option>First Class</option></select></div>
+            <div class="field"><label>Baggage Allowance</label><select id="no-baggage"><option>23 kg</option><option>30 kg</option><option>No Checked Baggage</option></select></div>
+          </div>
+          <div style="background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.2);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:12px;font-weight:700;color:var(--gold3);text-transform:uppercase;letter-spacing:.8px">Booking Reference Numbers</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+              <div class="field"><label>Agency PNR</label><input type="text" id="no-agency-pnr" placeholder="e.g. KT8820" style="font-family:monospace;text-transform:uppercase"></div>
+              <div class="field"><label>Airline PNR / GDS</label><input type="text" id="no-airline-pnr" placeholder="e.g. ABC123" style="font-family:monospace;text-transform:uppercase"></div>
+              <div class="field"><label>Ticket Number</label><input type="text" id="no-ticket" placeholder="e.g. 176-1234567890" style="font-family:monospace"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="no-umrah" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Umrah Package Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Package</label><select id="no-umrah-package"><option>Premium Umrah · 14N (AED 8,500)</option><option>Standard Umrah · 10N (AED 5,200)</option><option>Economy Umrah · 7N (AED 3,500)</option></select></div>
+            <div class="field"><label>Number of Pilgrims</label><input type="number" id="no-umrah-pilgrims" value="1" min="1" max="20"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Departure City</label><input type="text" id="no-umrah-city" placeholder="e.g. Dubai"></div>
+            <div class="field"><label>Preferred Travel Month</label><input type="month" id="no-umrah-month"></div>
+          </div>
+        </div>
+
+        <div id="no-holiday" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Holiday Package Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Package</label><select id="no-holiday-package"><option>Maldives Escape · 7N (AED 6,499)</option><option>Bali Discovery · 10N (AED 4,850)</option><option>Istanbul Cultural · 5N (AED 2,899)</option></select></div>
+            <div class="field"><label>Number of Guests</label><input type="number" id="no-holiday-guests" value="2" min="1" max="10"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Check-in Date</label><input type="date" id="no-holiday-checkin"></div>
+            <div class="field"><label>Room Type</label><select id="no-holiday-room"><option>Standard Room</option><option>Deluxe Room</option><option>Suite</option><option>Villa / Overwater</option></select></div>
+          </div>
+        </div>
+
+        <div id="no-cruise" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Cruise Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Cruise Package</label><select id="no-cruise-package"><option>Mediterranean Grand · 10N (AED 4,199)</option><option>Arabian Gulf Explorer · 7N (AED 3,650)</option></select></div>
+            <div class="field"><label>Number of Guests</label><input type="number" id="no-cruise-guests" value="2" min="1" max="8"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Cabin Type</label><select id="no-cruise-cabin"><option>Ocean View</option><option>Balcony</option><option>Suite</option><option>Interior</option></select></div>
+            <div class="field"><label>Departure Date</label><input type="date" id="no-cruise-date"></div>
+          </div>
+        </div>
+
+        <div id="no-visa" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Visa Application Details</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Applicant Nationality</label><select id="no-visa-nationality"><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option><option>Pakistan</option></select></div>
+            <div class="field"><label>Visa Destination</label><select id="no-visa-destination"><option>United Kingdom</option><option>Schengen (Europe)</option><option>United States</option><option>Canada</option><option>Australia</option></select></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Visa Type</label><select id="no-visa-type"><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option></select></div>
+            <div class="field"><label>Passport Number</label><input type="text" id="no-visa-passport" placeholder="A12345678"></div>
+            <div class="field"><label>Intended Travel Date</label><input type="date" id="no-visa-date"></div>
+          </div>
+        </div>
+
+        <div id="no-amount-block" style="display:none;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.8px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">Order Summary</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Total Amount (AED)</label><input type="number" id="no-amount" placeholder="0.00" min="0" step="0.01"></div>
+            <div class="field"><label>Initial Status</label><select id="no-status"><option value="confirmed">Confirmed</option><option value="onhold">On Hold</option><option value="pending">Pending Payment</option></select></div>
+          </div>
+          <div class="field"><label>Notes / Special Requests</label><textarea id="no-notes" placeholder="Any special requirements or internal comments..." rows="2"></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-new-order')">Cancel</button>
+      <button class="btn-navy" id="no-submit-btn" onclick="submitNewOrder()" disabled style="opacity:.5;cursor:not-allowed">Create Order</button>
+    </div>
+  </div>
+</div>
+
+
+

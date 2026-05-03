@@ -1,0 +1,171 @@
+/* Admin-login is a full-screen overlay — position:fixed takes it out of normal flow */
+#view-admin-login {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: linear-gradient(160deg, #04070d 0%, #0B1120 55%, #0e1a2e 100%);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  overflow-y: auto;
+}
+#view-admin-login.on {
+  display: flex !important;
+}
+
+.al-page {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.al-brand { text-align: center; }
+.al-logo {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+.al-logo span { color: rgba(255,255,255,0.45); font-weight: 400; }
+.al-brand-sub {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-top: 8px;
+}
+
+.al-card {
+  width: 100%;
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(200,169,110,0.14);
+  border-radius: 20px;
+  padding: 36px 40px 32px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+}
+.al-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.al-card-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 13px;
+  background: rgba(200,169,110,0.09);
+  border: 1px solid rgba(200,169,110,0.18);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.al-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+.al-card-subtitle {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.38);
+  margin-top: 3px;
+}
+
+.al-alert {
+  padding: 11px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+.al-alert.error {
+  background: rgba(185,28,28,0.12);
+  border: 1px solid rgba(185,28,28,0.22);
+  color: #fca5a5;
+}
+.al-alert.success {
+  background: rgba(15,123,91,0.12);
+  border: 1px solid rgba(15,123,91,0.22);
+  color: #6ee7b7;
+}
+
+.al-form { display: flex; flex-direction: column; gap: 18px; }
+.al-field { display: flex; flex-direction: column; gap: 7px; }
+.al-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.38);
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+}
+.al-input {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: #fff;
+  background: rgba(255,255,255,0.055);
+  border: 1.5px solid rgba(255,255,255,0.09);
+  border-radius: 10px;
+  padding: 11px 14px;
+  outline: none;
+  transition: all 0.2s;
+  width: 100%;
+}
+.al-input::placeholder { color: rgba(255,255,255,0.18); }
+.al-input:focus {
+  border-color: rgba(200,169,110,0.45);
+  background: rgba(255,255,255,0.075);
+}
+
+.al-btn {
+  width: 100%;
+  margin-top: 6px;
+  background: var(--gold);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 13px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--sans);
+  letter-spacing: 0.2px;
+}
+.al-btn:hover { background: #dbb96e; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(200,169,110,0.25); }
+.al-btn:disabled { opacity: 0.55; cursor: default; transform: none; box-shadow: none; }
+
+.al-notice {
+  margin-top: 22px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  line-height: 1.6;
+}
+.al-back { margin-top: 14px; text-align: center; }
+.al-back-link {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.3);
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: color 0.2s;
+  padding: 0;
+}
+.al-back-link:hover { color: var(--gold); }
+
+@media (max-width: 500px) {
+  .al-card { padding: 28px 22px 24px; }
+}

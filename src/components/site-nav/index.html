@@ -1,0 +1,19 @@
+﻿<nav id="site-nav">
+  <div class="nav-logo" onclick="go('home')">Keenan<span> Travel</span></div>
+  <div class="nav-links">
+    <button class="nl act" onclick="go('home')">Home</button>
+    <button class="nl" onclick="goSearch('flights')">Flights</button>
+    <button class="nl" onclick="goSearch('umrah')">Umrah</button>
+    <button class="nl" onclick="goSearch('holiday')">Holidays</button>
+    <button class="nl" onclick="goSearch('cruise')">Cruise</button>
+    <button class="nl" onclick="goSearch('visa')">Visa Services</button>
+    <button class="nl" onclick="go('track')">Track Booking</button>
+  </div>
+  <div class="nav-right">
+    <button class="nav-lang">🌐 EN / عربي</button>
+    <button class="nav-login" id="auth-trigger" onclick="openAuthModal('customer')">Sign In</button>
+    <button class="btn-outline btn-sm" id="account-trigger" onclick="openCustomerPortal()" style="display:none">My Account</button>
+    
+  </div>
+</nav>
+
