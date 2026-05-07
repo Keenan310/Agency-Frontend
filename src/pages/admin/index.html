@@ -1,107 +1,380 @@
-﻿<div id="view-admin" class="view">
+<div id="view-admin" class="view">
 
   <div class="admin-nav">
     <div class="an-logo">
-      <div class="an-logo-text">Keenan Admin</div>
+      <div class="an-logo-text">Admin</div>
       <div class="an-logo-sub">Services Control Panel v1.0</div>
     </div>
     <div class="an-sec">
       <div class="an-sec-label">Overview</div>
-      <div class="an-item act" onclick="aPanel('dashboard',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>Dashboard</div>
-      <div class="an-item" onclick="aPanel('orders',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>All Orders<div class="an-nb">47</div></div>
-      <div class="an-item" onclick="aPanel('customers',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Customers</div>
+      <div class="an-item act" onclick="aPanel('dashboard',this)"><svg viewBox="0 0 24 24" fill="none"
+          stroke="currentColor">
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
+        </svg>Dashboard</div>
+      <div class="an-item" onclick="aPanel('orders',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>All Orders<div class="an-nb">47</div>
+      </div>
+      <div class="an-item" onclick="aPanel('customers',this)"><svg viewBox="0 0 24 24" fill="none"
+          stroke="currentColor">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+        </svg>Customers</div>
     </div>
     <div class="an-divider"></div>
     <div class="an-sec">
       <div class="an-sec-label">Services</div>
-      <div class="an-item" onclick="aPanel('flights',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>Flights</div>
-      <div class="an-item" onclick="aPanel('umrah',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Umrah</div>
-      <div class="an-item" onclick="aPanel('holiday',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="3"/></svg>Holiday Packages</div>
-      <div class="an-item" onclick="aPanel('cruise',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17l3-8 6 2 6-2 3 8M12 4v6"/></svg>Cruise</div>
-      <div class="an-item" onclick="aPanel('visa',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>Visa Services<div class="an-nb">23</div></div>
+      <div class="an-item" onclick="aPanel('flights',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+        </svg>Flights</div>
+      <div class="an-item" onclick="aPanel('umrah',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>Umrah</div>
+      <div class="an-item" onclick="aPanel('holiday',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+          <circle cx="12" cy="9" r="3" />
+        </svg>Holiday Packages</div>
+      <div class="an-item" onclick="aPanel('cruise',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 17l3-8 6 2 6-2 3 8M12 4v6" />
+        </svg>Cruise</div>
+      <div class="an-item" onclick="aPanel('visa',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <path d="M2 10h20" />
+        </svg>Visa Services<div class="an-nb">23</div>
+      </div>
+    </div>
+    <div class="an-divider"></div>
+    <div class="an-sec">
+      <div class="an-sec-label">Operations</div>
+      <div class="an-item" onclick="aPanel('refunds',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0M15 9l-6 6M9 9l6 6" />
+        </svg>Refunds<div class="an-nb" id="refunds-nb" style="display:none">0</div>
+      </div>
+      <div class="an-item" onclick="aPanel('reissues',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M17 1l4 4-4 4" />
+          <path d="M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4" />
+          <path d="M21 13v2a4 4 0 01-4 4H3" />
+        </svg>Re-issues<div class="an-nb" id="reissues-nb" style="display:none">0</div>
+      </div>
     </div>
     <div class="an-divider"></div>
     <div class="an-sec">
       <div class="an-sec-label">Content</div>
-      <div class="an-item" onclick="aPanel('hero',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/></svg>Hero Slider<div class="an-nb gold">New</div></div>
+      <div class="an-item" onclick="aPanel('hero',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <rect x="2" y="6" width="20" height="12" rx="2" />
+          <path d="M2 10h20" />
+        </svg>Hero Slider<div class="an-nb gold">New</div>
+      </div>
     </div>
     <div class="an-divider"></div>
     <div class="an-sec">
       <div class="an-sec-label">Integration</div>
-      <div class="an-item" onclick="aPanel('api',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>API Integration</div>
-      <div class="an-item" onclick="aPanel('swagger',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>API Documentation</div>
-      <div class="an-item" onclick="aPanel('database',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>MySQL Database</div>
+      <div class="an-item" onclick="aPanel('api',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M18 20V10M12 20V4M6 20v-6" />
+        </svg>API Integration</div>
+      <div class="an-item" onclick="aPanel('swagger',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+          <polyline points="14,2 14,8 20,8" />
+          <line x1="16" y1="13" x2="8" y2="13" />
+          <line x1="16" y1="17" x2="8" y2="17" />
+        </svg>API Documentation</div>
+      <div class="an-item" onclick="aPanel('database',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3" />
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5" />
+        </svg>MySQL Database</div>
     </div>
     <div class="an-divider"></div>
     <div class="an-sec">
       <div class="an-sec-label">System</div>
-      <div class="an-item" onclick="aPanel('reports',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Reports & Analytics</div>
-      <div class="an-item" onclick="aPanel('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 5.34L3.93 6.75M21 12h-2M5 12H3M19.07 19.07l-1.41-1.41M5.34 18.66l-1.41-1.41M12 21v-2M12 5V3"/></svg>Settings</div>
-      <div class="an-item" style="margin-top:8px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px" onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Back to Website</div>
+      <div class="an-item" onclick="aPanel('payment-settings',this)"><svg viewBox="0 0 24 24" fill="none"
+          stroke="currentColor">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <path d="M2 10h20" />
+        </svg>Payment Settings</div>
+      <div class="an-item" onclick="aPanel('reports',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <line x1="18" y1="20" x2="18" y2="10" />
+          <line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>Reports & Analytics</div>
+      <div class="an-item" onclick="aPanel('settings',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.07 4.93l-1.41 1.41M5.34 5.34L3.93 6.75M21 12h-2M5 12H3M19.07 19.07l-1.41-1.41M5.34 18.66l-1.41-1.41M12 21v-2M12 5V3" />
+        </svg>Settings</div>
+      <div class="an-item" style="margin-top:8px;border-top:1px solid rgba(255,255,255,.06);padding-top:12px"
+        onclick="go('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+        </svg>Back to Website</div>
+      <div class="an-item" style="color:var(--red,#dc2626);margin-top:4px" onclick="adminLogout()"><svg
+          viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />
+        </svg>Logout</div>
     </div>
   </div>
 
   <div class="admin-main">
     <div class="admin-topbar">
-      <div><div class="apage-title" id="aTitle">Dashboard</div><div class="apage-sub" id="aSub">Overview · April 2026</div></div>
+      <div>
+        <div class="apage-title" id="aTitle">Dashboard</div>
+        <div class="apage-sub" id="aSub">Overview · April 2026</div>
+      </div>
       <div class="atb-right">
-        <div class="atb-btn">🔔<div class="notif-dot"></div></div>
+        <select id="admin-portal-selector" onchange="switchAdminPortal(this.value)"
+          style="padding:6px 12px;border-radius:6px;border:1px solid var(--surface3);background:var(--surface);font-size:13px;font-weight:600;color:var(--ink);margin-right:12px;outline:none;cursor:pointer">
+          <option value="AE">🇦🇪 UAE (AED)</option>
+          <option value="PK">🇵🇰 Pakistan (PKR)</option>
+          <option value="">Global (All)</option>
+        </select>
+        <div class="atb-btn">🔔<div class="notif-dot"></div>
+        </div>
         <div class="atb-btn">⚙️</div>
         <div class="atb-av" id="admin-avatar">KA</div>
-        <div><div style="font-size:13px;font-weight:600;color:var(--ink)" id="admin-name">Keenan Admin</div><div style="font-size:11px;color:var(--slate2)" id="admin-role">Super Admin</div></div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--ink)" id="admin-name">Keenan Admin</div>
+          <div style="font-size:11px;color:var(--slate2)" id="admin-role">Super Admin</div>
+        </div>
       </div>
     </div>
     <div class="admin-content">
 
       <div id="ap-dashboard">
         <div class="kpi-grid">
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Total Bookings</div><div class="kpi-num">1,284</div></div><div class="kpi-icon ki-gold">📋</div></div><div class="kpi-change up">↑ 12.4% vs last month</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Total Revenue</div><div class="kpi-num">AED 4.2M</div></div><div class="kpi-icon ki-green">💰</div></div><div class="kpi-change up">↑ 8.1% vs last month</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Active Customers</div><div class="kpi-num">3,891</div></div><div class="kpi-icon ki-blue">👥</div></div><div class="kpi-change up">↑ 201 this week</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Pending Actions</div><div class="kpi-num">47</div></div><div class="kpi-icon ki-amber">⏳</div></div><div class="kpi-change dn">↑ 3 new today</div></div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Total Bookings</div>
+                <div class="kpi-num">1,284</div>
+              </div>
+              <div class="kpi-icon ki-gold">📋</div>
+            </div>
+            <div class="kpi-change up">↑ 12.4% vs last month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-num">AED 4.2M</div>
+              </div>
+              <div class="kpi-icon ki-green">💰</div>
+            </div>
+            <div class="kpi-change up">↑ 8.1% vs last month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Active Customers</div>
+                <div class="kpi-num">3,891</div>
+              </div>
+              <div class="kpi-icon ki-blue">👥</div>
+            </div>
+            <div class="kpi-change up">↑ 201 this week</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Pending Actions</div>
+                <div class="kpi-num">47</div>
+              </div>
+              <div class="kpi-icon ki-amber">⏳</div>
+            </div>
+            <div class="kpi-change dn">↑ 3 new today</div>
+          </div>
         </div>
         <div class="grid g2 gap20 mb20">
           <div class="a-card">
-            <div class="a-card-head"><div><div class="a-card-title">Monthly Revenue</div><div class="a-card-sub">Jan–Jun 2026 (AED)</div></div><select class="tbl-select" style="padding:6px 10px;font-size:12px">All Services</select></div>
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Monthly Revenue</div>
+                <div class="a-card-sub">Jan–Jun 2026 (AED)</div>
+              </div><select class="tbl-select" style="padding:6px 10px;font-size:12px">All Services</select>
+            </div>
             <div class="bar-chart-wrap">
-              <div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="AED 3.1M" style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:64%"></div></div><div class="bc-label">Jan</div></div>
-              <div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="AED 3.4M" style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:70%"></div></div><div class="bc-label">Feb</div></div>
-              <div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="AED 3.8M" style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:79%"></div></div><div class="bc-label">Mar</div></div>
-              <div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="AED 4.2M" style="background:linear-gradient(to top,var(--gold3),var(--gold));height:87%"></div></div><div class="bc-label">Apr</div></div>
-              <div class="bc-group" style="opacity:.35"><div class="bc-bar-wrap"><div class="bc-bar" style="background:var(--surface3);height:90%"></div></div><div class="bc-label">May</div></div>
-              <div class="bc-group" style="opacity:.35"><div class="bc-bar-wrap"><div class="bc-bar" style="background:var(--surface3);height:94%"></div></div><div class="bc-label">Jun</div></div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="AED 3.1M"
+                    style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:64%"></div>
+                </div>
+                <div class="bc-label">Jan</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="AED 3.4M"
+                    style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:70%"></div>
+                </div>
+                <div class="bc-label">Feb</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="AED 3.8M"
+                    style="background:linear-gradient(to top,var(--ink2),var(--ink3));height:79%"></div>
+                </div>
+                <div class="bc-label">Mar</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="AED 4.2M"
+                    style="background:linear-gradient(to top,var(--gold3),var(--gold));height:87%"></div>
+                </div>
+                <div class="bc-label">Apr</div>
+              </div>
+              <div class="bc-group" style="opacity:.35">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" style="background:var(--surface3);height:90%"></div>
+                </div>
+                <div class="bc-label">May</div>
+              </div>
+              <div class="bc-group" style="opacity:.35">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" style="background:var(--surface3);height:94%"></div>
+                </div>
+                <div class="bc-label">Jun</div>
+              </div>
             </div>
           </div>
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">Revenue by Service</div></div>
+            <div class="a-card-head">
+              <div class="a-card-title">Revenue by Service</div>
+            </div>
             <div class="srev-grid">
-              <div class="srev-card sr-fl"><div style="font-size:20px;margin-bottom:6px">✈</div><div style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Flights</div><div style="font-size:17px;font-weight:700;color:var(--ink)">1.8M</div><div style="font-size:11px;color:var(--slate3)">612 bkgs</div></div>
-              <div class="srev-card sr-um"><div style="font-size:20px;margin-bottom:6px">🕌</div><div style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Umrah</div><div style="font-size:17px;font-weight:700;color:var(--ink)">980K</div><div style="font-size:11px;color:var(--slate3)">284 bkgs</div></div>
-              <div class="srev-card sr-ho"><div style="font-size:20px;margin-bottom:6px">🌴</div><div style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Holiday</div><div style="font-size:17px;font-weight:700;color:var(--ink)">870K</div><div style="font-size:11px;color:var(--slate3)">198 bkgs</div></div>
-              <div class="srev-card sr-cr"><div style="font-size:20px;margin-bottom:6px">🚢</div><div style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Cruise</div><div style="font-size:17px;font-weight:700;color:var(--ink)">340K</div><div style="font-size:11px;color:var(--slate3)">87 bkgs</div></div>
-              <div class="srev-card sr-vi"><div style="font-size:20px;margin-bottom:6px">🛂</div><div style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">Visa</div><div style="font-size:17px;font-weight:700;color:var(--ink)">210K</div><div style="font-size:11px;color:var(--slate3)">103 apps</div></div>
+              <div class="srev-card sr-fl">
+                <div style="font-size:20px;margin-bottom:6px">✈</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
+                  Flights</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)">1.8M</div>
+                <div style="font-size:11px;color:var(--slate3)">612 bkgs</div>
+              </div>
+              <div class="srev-card sr-um">
+                <div style="font-size:20px;margin-bottom:6px">🕌</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
+                  Umrah</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)">980K</div>
+                <div style="font-size:11px;color:var(--slate3)">284 bkgs</div>
+              </div>
+              <div class="srev-card sr-ho">
+                <div style="font-size:20px;margin-bottom:6px">🌴</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
+                  Holiday</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)">870K</div>
+                <div style="font-size:11px;color:var(--slate3)">198 bkgs</div>
+              </div>
+              <div class="srev-card sr-cr">
+                <div style="font-size:20px;margin-bottom:6px">🚢</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
+                  Cruise</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)">340K</div>
+                <div style="font-size:11px;color:var(--slate3)">87 bkgs</div>
+              </div>
+              <div class="srev-card sr-vi">
+                <div style="font-size:20px;margin-bottom:6px">🛂</div>
+                <div
+                  style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
+                  Visa</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)">210K</div>
+                <div style="font-size:11px;color:var(--slate3)">103 apps</div>
+              </div>
             </div>
           </div>
         </div>
         <div class="grid g2 gap20">
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">Recent Bookings</div><button class="btn-icon" onclick="aPanel('orders',document.querySelector('[onclick*=\'orders\']'))">View all →</button></div>
-            <div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Customer</th><th>Service</th><th>Amount</th><th>Status</th></tr></thead>
-            <tbody>
-              <tr><td class="td-mono">BK-8820</td><td>Ahmed Al-Rashidi</td><td>✈ Flights</td><td class="semi">AED 2,450</td><td><span class="badge b-green">Confirmed</span></td></tr>
-              <tr><td class="td-mono">BK-8819</td><td>Fatima Al-Sayed</td><td>🌴 Holiday</td><td class="semi">AED 12,998</td><td><span class="badge b-amber">On Hold</span></td></tr>
-              <tr><td class="td-mono">BK-8818</td><td>Mohammed Karim</td><td>✈ Flights</td><td class="semi">AED 4,120</td><td><span class="badge b-green">Confirmed</span></td></tr>
-              <tr><td class="td-mono">BK-8817</td><td>Sara Hassan</td><td>🕌 Umrah</td><td class="semi">AED 17,000</td><td><span class="badge b-green">Confirmed</span></td></tr>
-            </tbody></table></div>
+            <div class="a-card-head">
+              <div class="a-card-title">Recent Bookings</div><button class="btn-icon"
+                onclick="aPanel('orders',document.querySelector('[onclick*=\'orders\']'))">View all →</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ref</th>
+                    <th>Customer</th>
+                    <th>Service</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td-mono">BK-8820</td>
+                    <td>Ahmed Al-Rashidi</td>
+                    <td>✈ Flights</td>
+                    <td class="semi">AED 2,450</td>
+                    <td><span class="badge b-green">Confirmed</span></td>
+                  </tr>
+                  <tr>
+                    <td class="td-mono">BK-8819</td>
+                    <td>Fatima Al-Sayed</td>
+                    <td>🌴 Holiday</td>
+                    <td class="semi">AED 12,998</td>
+                    <td><span class="badge b-amber">On Hold</span></td>
+                  </tr>
+                  <tr>
+                    <td class="td-mono">BK-8818</td>
+                    <td>Mohammed Karim</td>
+                    <td>✈ Flights</td>
+                    <td class="semi">AED 4,120</td>
+                    <td><span class="badge b-green">Confirmed</span></td>
+                  </tr>
+                  <tr>
+                    <td class="td-mono">BK-8817</td>
+                    <td>Sara Hassan</td>
+                    <td>🕌 Umrah</td>
+                    <td class="semi">AED 17,000</td>
+                    <td><span class="badge b-green">Confirmed</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">Recent Activity</div></div>
+            <div class="a-card-head">
+              <div class="a-card-title">Recent Activity</div>
+            </div>
             <div style="padding:6px 20px 14px">
-              <div class="act-item"><div class="act-dot" style="background:var(--green)"></div><div><div class="act-text">Visa <strong>#VA-4821</strong> approved by Sarah K.</div><div class="act-time">2 min ago</div></div></div>
-              <div class="act-item"><div class="act-dot" style="background:var(--gold)"></div><div><div class="act-text">New flight booking <strong>#BK-8820</strong> — Emirates EK001</div><div class="act-time">14 min ago</div></div></div>
-              <div class="act-item"><div class="act-dot" style="background:var(--green)"></div><div><div class="act-text">Umrah "Premium 14N" received 2 new bookings</div><div class="act-time">32 min ago</div></div></div>
-              <div class="act-item"><div class="act-dot" style="background:var(--red)"></div><div><div class="act-text">Visa <strong>#VA-4809</strong> rejected — incomplete docs</div><div class="act-time">1 hr ago · Khalid M.</div></div></div>
-              <div class="act-item"><div class="act-dot" style="background:var(--blue)"></div><div><div class="act-text">Hero slide "Maldives" image updated via Admin</div><div class="act-time">2 hrs ago</div></div></div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--green)"></div>
+                <div>
+                  <div class="act-text">Visa <strong>#VA-4821</strong> approved by Sarah K.</div>
+                  <div class="act-time">2 min ago</div>
+                </div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--gold)"></div>
+                <div>
+                  <div class="act-text">New flight booking <strong>#BK-8820</strong> — Emirates EK001</div>
+                  <div class="act-time">14 min ago</div>
+                </div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--green)"></div>
+                <div>
+                  <div class="act-text">Umrah "Premium 14N" received 2 new bookings</div>
+                  <div class="act-time">32 min ago</div>
+                </div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--red)"></div>
+                <div>
+                  <div class="act-text">Visa <strong>#VA-4809</strong> rejected — incomplete docs</div>
+                  <div class="act-time">1 hr ago · Khalid M.</div>
+                </div>
+              </div>
+              <div class="act-item">
+                <div class="act-dot" style="background:var(--blue)"></div>
+                <div>
+                  <div class="act-text">Hero slide "Maldives" image updated via Admin</div>
+                  <div class="act-time">2 hrs ago</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -109,152 +382,1025 @@
 
       <div id="ap-orders" style="display:none">
         <div class="a-card">
-          <div class="a-card-head"><div><div class="a-card-title">All Orders & Bookings</div><div class="a-card-sub">1,284 total across all services</div></div><div class="a-card-right"><button class="btn-ghost btn-sm">Export CSV</button><button class="btn-gold btn-sm" onclick="openModal('m-new-order')">+ New Order</button></div></div>
-          <div class="tbl-controls">
-            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-orders" placeholder="Search ref, customer, route…" oninput="applyFilter('orders')"></div>
-            <select class="tbl-select" id="flt-ord-svc" onchange="applyFilter('orders')"><option value="">All Services</option><option value="flights">Flights</option><option value="holiday">Holiday</option><option value="umrah">Umrah</option><option value="cruise">Cruise</option><option value="visa">Visa</option></select>
-            <select class="tbl-select" id="flt-ord-st" onchange="applyFilter('orders')"><option value="">All Status</option><option value="confirmed">Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select>
-            <select class="tbl-select" id="flt-ord-dt" onchange="applyFilter('orders')"><option value="">All Dates</option><option value="Jun 2026">Jun 2026</option><option value="Jul 2026">Jul 2026</option><option value="Aug 2026">Aug 2026</option><option value="Sep 2026">Sep 2026</option></select>
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">All Orders & Bookings</div>
+              <div class="a-card-sub">1,284 total across all services</div>
+            </div>
+            <div class="a-card-right"><button class="btn-ghost btn-sm">Export CSV</button><button
+                class="btn-gold btn-sm" onclick="openModal('m-new-order')">+ New Order</button></div>
           </div>
-          <div class="tbl-wrap"><table><thead><tr><th><input type="checkbox"></th><th>Reference</th><th>Customer</th><th>Service</th><th>Details</th><th>Date</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-orders">
-            <tr data-service="flights" data-status="confirmed" data-ref="BK-8820" data-passenger="Ahmed Al-Rashidi" data-phone="+971 50 123 4567" data-email="ahmed@email.com" data-from="DXB" data-to="LHR" data-flight-num="EK001" data-dep-date="10 Jun 2026" data-ret-date="20 Jun 2026" data-pax="1" data-cabin="Economy" data-baggage="30 kg" data-agency-pnr="KT8820" data-airline-pnr="ABCXYZ" data-ticket="176-4812345678" data-amount="AED 2,450" data-notes=""><td><input type="checkbox"></td><td class="td-mono">BK-8820</td><td><div class="flex aic gap8"><div class="avatar" style="width:32px;height:32px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:11px">AA</div>Ahmed Al-Rashidi</div></td><td>✈ Flights</td><td class="fs13 slate2">DXB→LHR · EK001</td><td class="fs13">10 Jun 2026</td><td class="semi">AED 2,450</td><td><select class="ss ss-confirmed" onchange="chgStatus(this)"><option value="confirmed" selected>Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select></td><td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏</button></td></tr>
-            <tr data-service="holiday" data-status="onhold" data-ref="BK-8819" data-passenger="Fatima Al-Sayed" data-phone="+971 55 234 5678" data-email="fatima@email.com" data-package="Maldives Escape · 7N" data-guests="2" data-checkin="15 Jul 2026" data-room="Villa / Overwater" data-amount="AED 12,998" data-notes="Room upgrade requested"><td><input type="checkbox"></td><td class="td-mono">BK-8819</td><td><div class="flex aic gap8"><div class="avatar" style="width:32px;height:32px;background:rgba(29,78,216,.1);color:var(--blue);font-size:11px">FS</div>Fatima Al-Sayed</div></td><td>🌴 Holiday</td><td class="fs13 slate2">Maldives · 7N</td><td class="fs13">15 Jul 2026</td><td class="semi">AED 12,998</td><td><select class="ss ss-onhold" onchange="chgStatus(this)"><option value="confirmed">Confirmed</option><option value="onhold" selected>On Hold</option><option value="cancelled">Cancelled</option></select></td><td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏</button></td></tr>
-            <tr data-service="umrah" data-status="confirmed" data-ref="BK-8817" data-passenger="Sara Hassan" data-phone="+971 50 987 6543" data-email="sara@email.com" data-package="Premium Umrah · 14N" data-pilgrims="2" data-dep-city="Dubai" data-travel-month="Sep 2026" data-amount="AED 17,000" data-notes=""><td><input type="checkbox"></td><td class="td-mono">BK-8817</td><td><div class="flex aic gap8"><div class="avatar" style="width:32px;height:32px;background:rgba(15,123,91,.1);color:var(--green);font-size:11px">SH</div>Sara Hassan</div></td><td>🕌 Umrah</td><td class="fs13 slate2">Premium 14N · Dubai dep.</td><td class="fs13">1 Sep 2026</td><td class="semi">AED 17,000</td><td><select class="ss ss-confirmed" onchange="chgStatus(this)"><option value="confirmed" selected>Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select></td><td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏</button></td></tr>
-            <tr data-service="cruise" data-status="confirmed" data-ref="BK-8816" data-passenger="Tariq Al-Amri" data-phone="+971 54 321 0987" data-email="tariq@email.com" data-package="MSC Grandiosa · 10N" data-guests="2" data-cabin="Balcony" data-dep-date="1 Aug 2026" data-amount="AED 8,818" data-notes=""><td><input type="checkbox"></td><td class="td-mono">BK-8816</td><td><div class="flex aic gap8"><div class="avatar" style="width:32px;height:32px;background:rgba(180,83,9,.1);color:var(--amber);font-size:11px">TA</div>Tariq Al-Amri</div></td><td>🚢 Cruise</td><td class="fs13 slate2">MSC Grandiosa · 10N</td><td class="fs13">1 Aug 2026</td><td class="semi">AED 8,818</td><td><select class="ss ss-confirmed" onchange="chgStatus(this)"><option value="confirmed" selected>Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select></td><td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏</button></td></tr>
-            <tr data-service="flights" data-status="cancelled" data-ref="BK-8812" data-passenger="Layla Hassan" data-phone="+971 52 111 2222" data-email="layla@email.com" data-from="DXB" data-to="SYD" data-flight-num="EY450" data-dep-date="10 Jun 2026" data-ret-date="25 Jun 2026" data-pax="1" data-cabin="Economy" data-baggage="23 kg" data-agency-pnr="KT8812" data-airline-pnr="JKLMNO" data-ticket="607-1234567890" data-amount="AED 3,890" data-notes="Cancelled — customer request"><td><input type="checkbox"></td><td class="td-mono">BK-8812</td><td><div class="flex aic gap8"><div class="avatar" style="width:32px;height:32px;background:rgba(185,28,28,.1);color:var(--red);font-size:11px">LH</div>Layla Hassan</div></td><td>✈ Flights</td><td class="fs13 slate2">DXB→SYD · EY450</td><td class="fs13">10 Jun 2026</td><td class="semi">AED 3,890</td><td><select class="ss ss-cancelled" onchange="chgStatus(this)"><option value="confirmed">Confirmed</option><option value="onhold">On Hold</option><option value="cancelled" selected>Cancelled</option></select></td><td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁</button></td></tr>
-          </tbody></table></div>
-          <div class="pagination"><span class="pg-info">Showing 1–5 of 1,284</span><button class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button class="pg-btn">3</button><button class="pg-btn">…</button><button class="pg-btn">›</button></div>
+          <div class="tbl-controls">
+            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-orders"
+                placeholder="Search ref, customer, route…" oninput="applyFilter('orders')"></div>
+            <select class="tbl-select" id="flt-ord-svc" onchange="applyFilter('orders')">
+              <option value="">All Services</option>
+              <option value="flights">Flights</option>
+              <option value="holiday">Holiday</option>
+              <option value="umrah">Umrah</option>
+              <option value="cruise">Cruise</option>
+              <option value="visa">Visa</option>
+            </select>
+            <select class="tbl-select" id="flt-ord-st" onchange="applyFilter('orders')">
+              <option value="">All Status</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="onhold">On Hold</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+            <select class="tbl-select" id="flt-ord-dt" onchange="applyFilter('orders')">
+              <option value="">All Dates</option>
+              <option value="Jun 2026">Jun 2026</option>
+              <option value="Jul 2026">Jul 2026</option>
+              <option value="Aug 2026">Aug 2026</option>
+              <option value="Sep 2026">Sep 2026</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>Reference</th>
+                  <th>Customer</th>
+                  <th>Service</th>
+                  <th>Details</th>
+                  <th>Date</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-orders">
+                <tr data-service="flights" data-status="confirmed" data-ref="BK-8820" data-passenger="Ahmed Al-Rashidi"
+                  data-phone="+971 50 123 4567" data-email="ahmed@email.com" data-from="DXB" data-to="LHR"
+                  data-flight-num="EK001" data-dep-date="10 Jun 2026" data-ret-date="20 Jun 2026" data-pax="1"
+                  data-cabin="Economy" data-baggage="30 kg" data-agency-pnr="KT8820" data-airline-pnr="ABCXYZ"
+                  data-ticket="176-4812345678" data-amount="AED 2,450" data-notes="">
+                  <td><input type="checkbox"></td>
+                  <td class="td-mono">BK-8820</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:32px;height:32px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:11px">
+                        AA</div>Ahmed Al-Rashidi
+                    </div>
+                  </td>
+                  <td>✈ Flights</td>
+                  <td class="fs13 slate2">DXB→LHR · EK001</td>
+                  <td class="fs13">10 Jun 2026</td>
+                  <td class="semi">AED 2,450</td>
+                  <td><select class="ss ss-confirmed" onchange="chgStatus(this)">
+                      <option value="confirmed" selected>Confirmed</option>
+                      <option value="onhold">On Hold</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon"
+                      onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon"
+                      onclick="openEditModal(this.closest('tr'))">✏</button></td>
+                </tr>
+                <tr data-service="holiday" data-status="onhold" data-ref="BK-8819" data-passenger="Fatima Al-Sayed"
+                  data-phone="+971 55 234 5678" data-email="fatima@email.com" data-package="Maldives Escape · 7N"
+                  data-guests="2" data-checkin="15 Jul 2026" data-room="Villa / Overwater" data-amount="AED 12,998"
+                  data-notes="Room upgrade requested">
+                  <td><input type="checkbox"></td>
+                  <td class="td-mono">BK-8819</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:32px;height:32px;background:rgba(29,78,216,.1);color:var(--blue);font-size:11px">FS
+                      </div>Fatima Al-Sayed
+                    </div>
+                  </td>
+                  <td>🌴 Holiday</td>
+                  <td class="fs13 slate2">Maldives · 7N</td>
+                  <td class="fs13">15 Jul 2026</td>
+                  <td class="semi">AED 12,998</td>
+                  <td><select class="ss ss-onhold" onchange="chgStatus(this)">
+                      <option value="confirmed">Confirmed</option>
+                      <option value="onhold" selected>On Hold</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon"
+                      onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon"
+                      onclick="openEditModal(this.closest('tr'))">✏</button></td>
+                </tr>
+                <tr data-service="umrah" data-status="confirmed" data-ref="BK-8817" data-passenger="Sara Hassan"
+                  data-phone="+971 50 987 6543" data-email="sara@email.com" data-package="Premium Umrah · 14N"
+                  data-pilgrims="2" data-dep-city="Dubai" data-travel-month="Sep 2026" data-amount="AED 17,000"
+                  data-notes="">
+                  <td><input type="checkbox"></td>
+                  <td class="td-mono">BK-8817</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:32px;height:32px;background:rgba(15,123,91,.1);color:var(--green);font-size:11px">
+                        SH</div>Sara Hassan
+                    </div>
+                  </td>
+                  <td>🕌 Umrah</td>
+                  <td class="fs13 slate2">Premium 14N · Dubai dep.</td>
+                  <td class="fs13">1 Sep 2026</td>
+                  <td class="semi">AED 17,000</td>
+                  <td><select class="ss ss-confirmed" onchange="chgStatus(this)">
+                      <option value="confirmed" selected>Confirmed</option>
+                      <option value="onhold">On Hold</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon"
+                      onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon"
+                      onclick="openEditModal(this.closest('tr'))">✏</button></td>
+                </tr>
+                <tr data-service="cruise" data-status="confirmed" data-ref="BK-8816" data-passenger="Tariq Al-Amri"
+                  data-phone="+971 54 321 0987" data-email="tariq@email.com" data-package="MSC Grandiosa · 10N"
+                  data-guests="2" data-cabin="Balcony" data-dep-date="1 Aug 2026" data-amount="AED 8,818" data-notes="">
+                  <td><input type="checkbox"></td>
+                  <td class="td-mono">BK-8816</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:32px;height:32px;background:rgba(180,83,9,.1);color:var(--amber);font-size:11px">TA
+                      </div>Tariq Al-Amri
+                    </div>
+                  </td>
+                  <td>🚢 Cruise</td>
+                  <td class="fs13 slate2">MSC Grandiosa · 10N</td>
+                  <td class="fs13">1 Aug 2026</td>
+                  <td class="semi">AED 8,818</td>
+                  <td><select class="ss ss-confirmed" onchange="chgStatus(this)">
+                      <option value="confirmed" selected>Confirmed</option>
+                      <option value="onhold">On Hold</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon"
+                      onclick="openViewModal(this.closest('tr'))">👁</button><button class="btn-icon"
+                      onclick="openEditModal(this.closest('tr'))">✏</button></td>
+                </tr>
+                <tr data-service="flights" data-status="cancelled" data-ref="BK-8812" data-passenger="Layla Hassan"
+                  data-phone="+971 52 111 2222" data-email="layla@email.com" data-from="DXB" data-to="SYD"
+                  data-flight-num="EY450" data-dep-date="10 Jun 2026" data-ret-date="25 Jun 2026" data-pax="1"
+                  data-cabin="Economy" data-baggage="23 kg" data-agency-pnr="KT8812" data-airline-pnr="JKLMNO"
+                  data-ticket="607-1234567890" data-amount="AED 3,890" data-notes="Cancelled — customer request">
+                  <td><input type="checkbox"></td>
+                  <td class="td-mono">BK-8812</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:32px;height:32px;background:rgba(185,28,28,.1);color:var(--red);font-size:11px">LH
+                      </div>Layla Hassan
+                    </div>
+                  </td>
+                  <td>✈ Flights</td>
+                  <td class="fs13 slate2">DXB→SYD · EY450</td>
+                  <td class="fs13">10 Jun 2026</td>
+                  <td class="semi">AED 3,890</td>
+                  <td><select class="ss ss-cancelled" onchange="chgStatus(this)">
+                      <option value="confirmed">Confirmed</option>
+                      <option value="onhold">On Hold</option>
+                      <option value="cancelled" selected>Cancelled</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon"
+                      onclick="openViewModal(this.closest('tr'))">👁</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span class="pg-info">Showing 1–5 of 1,284</span><button
+              class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button
+              class="pg-btn">3</button><button class="pg-btn">…</button><button class="pg-btn">›</button></div>
         </div>
       </div>
 
       <div id="ap-customers" style="display:none">
         <div class="kpi-grid mb20">
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Total Customers</div><div class="kpi-num">3,891</div></div><div class="kpi-icon ki-blue">👥</div></div><div class="kpi-change up">↑ 201 this month</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Active This Month</div><div class="kpi-num">1,240</div></div><div class="kpi-icon ki-green">✓</div></div><div class="kpi-change up">↑ 8% vs last month</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">New Registrations</div><div class="kpi-num">284</div></div><div class="kpi-icon ki-amber">⭐</div></div><div class="kpi-change up">↑ 34 this week</div></div>
-          <div class="kpi-card"><div class="kpi-top"><div><div class="kpi-label">Avg. Bookings / Customer</div><div class="kpi-num">3.2</div></div><div class="kpi-icon ki-gold">📊</div></div><div class="kpi-change up">↑ 0.3 vs last period</div></div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Total Customers</div>
+                <div class="kpi-num">3,891</div>
+              </div>
+              <div class="kpi-icon ki-blue">👥</div>
+            </div>
+            <div class="kpi-change up">↑ 201 this month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Active This Month</div>
+                <div class="kpi-num">1,240</div>
+              </div>
+              <div class="kpi-icon ki-green">✓</div>
+            </div>
+            <div class="kpi-change up">↑ 8% vs last month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">New Registrations</div>
+                <div class="kpi-num">284</div>
+              </div>
+              <div class="kpi-icon ki-amber">⭐</div>
+            </div>
+            <div class="kpi-change up">↑ 34 this week</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-top">
+              <div>
+                <div class="kpi-label">Avg. Bookings / Customer</div>
+                <div class="kpi-num">3.2</div>
+              </div>
+              <div class="kpi-icon ki-gold">📊</div>
+            </div>
+            <div class="kpi-change up">↑ 0.3 vs last period</div>
+          </div>
         </div>
         <div class="a-card">
-          <div class="a-card-head"><div><div class="a-card-title">Customer Management</div><div class="a-card-sub">3,891 registered customers</div></div><div class="a-card-right"><button class="btn-ghost btn-sm">Export</button><button class="btn-gold btn-sm" onclick="openModal('m-add-cust')">+ Add Customer</button></div></div>
-          <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-cu" placeholder="Search name, email, phone…" oninput="applyFilter('customers')"></div><select class="tbl-select" id="flt-cu-st" onchange="applyFilter('customers')"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select><select class="tbl-select" id="flt-cu-nat" onchange="applyFilter('customers')"><option value="">All Nationalities</option><option value="uae">UAE</option><option value="ksa">Saudi Arabia</option><option value="egy">Egypt</option><option value="ind">India</option></select></div>
-          <div class="tbl-wrap"><table><thead><tr><th><input type="checkbox"></th><th>Customer</th><th>Phone</th><th>Nationality</th><th>Bookings</th><th>Total Spent</th><th>Last Activity</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-cu">
-            <tr data-status="active" data-nat="uae"><td><input type="checkbox"></td><td><div class="flex aic gap10"><div class="avatar" style="width:36px;height:36px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:13px;flex-shrink:0">AA</div><div><div class="semi fs14">Ahmed Al-Rashidi</div><div class="fs12 slate2">ahmed@email.com</div></div></div></td><td class="fs13">+971 50 123 4567</td><td class="fs13">UAE 🇦🇪</td><td class="semi">8</td><td class="semi">AED 24,800</td><td class="fs13">10 Apr 2026</td><td><select class="ss ss-active" onchange="chgStatus(this)"><option value="active" selected>Active</option><option value="inactive">Inactive</option></select></td><td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-status="active" data-nat="uae"><td><input type="checkbox"></td><td><div class="flex aic gap10"><div class="avatar" style="width:36px;height:36px;background:rgba(29,78,216,.1);color:var(--blue);font-size:13px;flex-shrink:0">FS</div><div><div class="semi fs14">Fatima Al-Sayed</div><div class="fs12 slate2">fatima@email.com</div></div></div></td><td class="fs13">+971 55 234 5678</td><td class="fs13">UAE 🇦🇪</td><td class="semi">5</td><td class="semi">AED 38,500</td><td class="fs13">8 Apr 2026</td><td><select class="ss ss-active" onchange="chgStatus(this)"><option value="active" selected>Active</option><option value="inactive">Inactive</option></select></td><td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-status="active" data-nat="ksa"><td><input type="checkbox"></td><td><div class="flex aic gap10"><div class="avatar" style="width:36px;height:36px;background:rgba(15,123,91,.1);color:var(--green);font-size:13px;flex-shrink:0">MK</div><div><div class="semi fs14">Mohammed Karim</div><div class="fs12 slate2">m.karim@email.com</div></div></div></td><td class="fs13">+966 50 345 6789</td><td class="fs13">KSA 🇸🇦</td><td class="semi">12</td><td class="semi">AED 61,200</td><td class="fs13">5 Apr 2026</td><td><select class="ss ss-active" onchange="chgStatus(this)"><option value="active" selected>Active</option><option value="inactive">Inactive</option></select></td><td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-status="inactive" data-nat="uae"><td><input type="checkbox"></td><td><div class="flex aic gap10"><div class="avatar" style="width:36px;height:36px;background:rgba(185,28,28,.1);color:var(--red);font-size:13px;flex-shrink:0">KI</div><div><div class="semi fs14">Khalid Ibrahim</div><div class="fs12 slate2">khalid@email.com</div></div></div></td><td class="fs13">+971 52 567 8901</td><td class="fs13">UAE 🇦🇪</td><td class="semi">3</td><td class="semi">AED 8,700</td><td class="fs13">1 Mar 2026</td><td><select class="ss ss-inactive" onchange="chgStatus(this)"><option value="active">Active</option><option value="inactive" selected>Inactive</option></select></td><td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-          </tbody></table></div>
-          <div class="pagination"><span class="pg-info">Showing 1–3 of 3,891</span><button class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button class="pg-btn">›</button></div>
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Customer Management</div>
+              <div class="a-card-sub">3,891 registered customers</div>
+            </div>
+            <div class="a-card-right"><button class="btn-ghost btn-sm">Export</button><button class="btn-gold btn-sm"
+                onclick="openModal('m-add-cust')">+ Add Customer</button></div>
+          </div>
+          <div class="tbl-controls">
+            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-cu"
+                placeholder="Search name, email, phone…" oninput="applyFilter('customers')"></div><select
+              class="tbl-select" id="flt-cu-st" onchange="applyFilter('customers')">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select><select class="tbl-select" id="flt-cu-nat" onchange="applyFilter('customers')">
+              <option value="">All Nationalities</option>
+              <option value="uae">UAE</option>
+              <option value="ksa">Saudi Arabia</option>
+              <option value="egy">Egypt</option>
+              <option value="ind">India</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th><input type="checkbox"></th>
+                  <th>Customer</th>
+                  <th>Phone</th>
+                  <th>Nationality</th>
+                  <th>Bookings</th>
+                  <th>Total Spent</th>
+                  <th>Last Activity</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-cu">
+                <tr data-status="active" data-nat="uae">
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex aic gap10">
+                      <div class="avatar"
+                        style="width:36px;height:36px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:13px;flex-shrink:0">
+                        AA</div>
+                      <div>
+                        <div class="semi fs14">Ahmed Al-Rashidi</div>
+                        <div class="fs12 slate2">ahmed@email.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="fs13">+971 50 123 4567</td>
+                  <td class="fs13">UAE 🇦🇪</td>
+                  <td class="semi">8</td>
+                  <td class="semi">AED 24,800</td>
+                  <td class="fs13">10 Apr 2026</td>
+                  <td><select class="ss ss-active" onchange="chgStatus(this)">
+                      <option value="active" selected>Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button
+                      class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+                <tr data-status="active" data-nat="uae">
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex aic gap10">
+                      <div class="avatar"
+                        style="width:36px;height:36px;background:rgba(29,78,216,.1);color:var(--blue);font-size:13px;flex-shrink:0">
+                        FS</div>
+                      <div>
+                        <div class="semi fs14">Fatima Al-Sayed</div>
+                        <div class="fs12 slate2">fatima@email.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="fs13">+971 55 234 5678</td>
+                  <td class="fs13">UAE 🇦🇪</td>
+                  <td class="semi">5</td>
+                  <td class="semi">AED 38,500</td>
+                  <td class="fs13">8 Apr 2026</td>
+                  <td><select class="ss ss-active" onchange="chgStatus(this)">
+                      <option value="active" selected>Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button
+                      class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+                <tr data-status="active" data-nat="ksa">
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex aic gap10">
+                      <div class="avatar"
+                        style="width:36px;height:36px;background:rgba(15,123,91,.1);color:var(--green);font-size:13px;flex-shrink:0">
+                        MK</div>
+                      <div>
+                        <div class="semi fs14">Mohammed Karim</div>
+                        <div class="fs12 slate2">m.karim@email.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="fs13">+966 50 345 6789</td>
+                  <td class="fs13">KSA 🇸🇦</td>
+                  <td class="semi">12</td>
+                  <td class="semi">AED 61,200</td>
+                  <td class="fs13">5 Apr 2026</td>
+                  <td><select class="ss ss-active" onchange="chgStatus(this)">
+                      <option value="active" selected>Active</option>
+                      <option value="inactive">Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button
+                      class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+                <tr data-status="inactive" data-nat="uae">
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex aic gap10">
+                      <div class="avatar"
+                        style="width:36px;height:36px;background:rgba(185,28,28,.1);color:var(--red);font-size:13px;flex-shrink:0">
+                        KI</div>
+                      <div>
+                        <div class="semi fs14">Khalid Ibrahim</div>
+                        <div class="fs12 slate2">khalid@email.com</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="fs13">+971 52 567 8901</td>
+                  <td class="fs13">UAE 🇦🇪</td>
+                  <td class="semi">3</td>
+                  <td class="semi">AED 8,700</td>
+                  <td class="fs13">1 Mar 2026</td>
+                  <td><select class="ss ss-inactive" onchange="chgStatus(this)">
+                      <option value="active">Active</option>
+                      <option value="inactive" selected>Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁</button><button class="btn-icon">✏</button><button
+                      class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span class="pg-info">Showing 1–3 of 3,891</span><button
+              class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button
+              class="pg-btn">›</button></div>
         </div>
       </div>
 
       <div id="ap-flights" style="display:none">
-        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-f1')">Bookings</button><button class="a-tab" onclick="aTab(this,'at-f2')">Routes & Fares</button><button class="a-tab" onclick="aTab(this,'at-f3')">Airline Partners</button></div>
+        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-f1')">Bookings</button><button
+            class="a-tab" onclick="aTab(this,'at-f2')">Routes & Fares</button><button class="a-tab"
+            onclick="aTab(this,'at-f3')">Airline Partners</button></div>
         <div class="a-tab-c act" id="at-f1">
-          <div class="a-card"><div class="a-card-head"><div><div class="a-card-title">Flight Bookings</div><div class="a-card-sub">612 this month</div></div><button class="btn-ghost btn-sm">Export</button></div>
-          <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-flt" placeholder="Search ref, passenger, route…" oninput="applyFilter('flights')"></div><select class="tbl-select" id="flt-flt-st" onchange="applyFilter('flights')"><option value="">All Status</option><option value="confirmed">Confirmed</option><option value="onhold">On Hold</option><option value="cancelled">Cancelled</option></select><select class="tbl-select" id="flt-flt-airline" onchange="applyFilter('flights')"><option value="">All Airlines</option><option value="emirates">Emirates</option><option value="etihad">Etihad</option><option value="british airways">British Airways</option></select><select class="tbl-select" id="flt-flt-class" onchange="applyFilter('flights')"><option value="">All Classes</option><option value="economy">Economy</option><option value="business">Business</option><option value="first">First Class</option></select></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Reference</th><th>Passenger</th><th>Route</th><th>Airline</th><th>Date</th><th>Class</th><th>Agency PNR</th><th>Airline PNR</th><th>Ticket No.</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-flt">
-            <tr data-status="confirmed" data-airline="emirates" data-class="economy"
-                data-ref="BK-8820" data-passenger="Ahmed Al-Rashidi" data-phone="+971 50 123 4567" data-email="ahmed@email.com"
-                data-from="DXB" data-to="LHR" data-flight-num="EK001" data-dep-date="10 Jun 2026" data-ret-date="20 Jun 2026"
-                data-pax="1" data-cabin="Economy" data-baggage="30 kg"
-                data-agency-pnr="KT8820" data-airline-pnr="ABCXYZ" data-ticket="176-4812345678" data-amount="AED 2,450" data-service="flights">
-              <td class="td-mono">BK-8820</td><td>Ahmed Al-Rashidi</td><td class="semi">DXB→LHR</td><td>Emirates EK001</td><td>10 Jun 2026</td><td><span class="badge b-slate">Economy</span></td>
-              <td class="td-mono" style="font-size:12px">KT8820</td><td class="td-mono" style="font-size:12px">ABCXYZ</td><td class="td-mono" style="font-size:12px">176-4812345678</td>
-              <td class="semi">AED 2,450</td>
-              <td><select class="ss ss-confirmed" onchange="chgStatus(this)"><option selected>Confirmed</option><option>On Hold</option><option>Cancelled</option></select></td>
-              <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁 View</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏ Edit</button><button class="btn-icon" onclick="printTicket(this.closest('tr'))">🎫 Ticket</button></td>
-            </tr>
-            <tr data-status="confirmed" data-airline="emirates" data-class="business"
-                data-ref="BK-8818" data-passenger="Mohammed Karim" data-phone="+966 50 345 6789" data-email="m.karim@email.com"
-                data-from="DXB" data-to="JFK" data-flight-num="EK201" data-dep-date="20 Jun 2026" data-ret-date="30 Jun 2026"
-                data-pax="1" data-cabin="Business" data-baggage="30 kg"
-                data-agency-pnr="KT8818" data-airline-pnr="DEFGHI" data-ticket="176-5923456789" data-amount="AED 8,900" data-service="flights">
-              <td class="td-mono">BK-8818</td><td>Mohammed Karim</td><td class="semi">DXB→JFK</td><td>Emirates EK201</td><td>20 Jun 2026</td><td><span class="badge b-gold">Business</span></td>
-              <td class="td-mono" style="font-size:12px">KT8818</td><td class="td-mono" style="font-size:12px">DEFGHI</td><td class="td-mono" style="font-size:12px">176-5923456789</td>
-              <td class="semi">AED 8,900</td>
-              <td><select class="ss ss-confirmed" onchange="chgStatus(this)"><option selected>Confirmed</option><option>On Hold</option><option>Cancelled</option></select></td>
-              <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁 View</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏ Edit</button><button class="btn-icon" onclick="printTicket(this.closest('tr'))">🎫 Ticket</button></td>
-            </tr>
-            <tr data-status="cancelled" data-airline="etihad" data-class="economy"
-                data-ref="BK-8812" data-passenger="Layla Hassan" data-phone="+971 52 111 2222" data-email="layla@email.com"
-                data-from="DXB" data-to="SYD" data-flight-num="EY450" data-dep-date="10 May 2026" data-ret-date="25 May 2026"
-                data-pax="1" data-cabin="Economy" data-baggage="23 kg"
-                data-agency-pnr="KT8812" data-airline-pnr="JKLMNO" data-ticket="607-1234567890" data-amount="AED 3,890" data-service="flights">
-              <td class="td-mono">BK-8812</td><td>Layla Hassan</td><td class="semi">DXB→SYD</td><td>Etihad EY450</td><td>10 May 2026</td><td><span class="badge b-slate">Economy</span></td>
-              <td class="td-mono" style="font-size:12px">KT8812</td><td class="td-mono" style="font-size:12px">JKLMNO</td><td class="td-mono" style="font-size:12px">607-1234567890</td>
-              <td class="semi">AED 3,890</td>
-              <td><select class="ss ss-cancelled" onchange="chgStatus(this)"><option>Confirmed</option><option>On Hold</option><option selected>Cancelled</option></select></td>
-              <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁 View</button></td>
-            </tr>
-          </tbody></table></div>
-          <div class="pagination"><span class="pg-info">Showing 1–3 of 612</span><button class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button class="pg-btn">›</button></div>
-        </div></div>
-        <div class="a-tab-c" id="at-f2"><div class="a-card" style="padding:24px"><div class="slate fs14">Route & fare management — configure airline partnerships and pricing.</div></div></div>
-        <div class="a-tab-c" id="at-f3"><div class="a-card" style="padding:24px"><div class="slate fs14">Manage airline partner agreements and GDS connectivity.</div></div></div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Flight Bookings</div>
+                <div class="a-card-sub">612 this month</div>
+              </div><button class="btn-ghost btn-sm">Export</button>
+            </div>
+            <div class="tbl-controls">
+              <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-flt"
+                  placeholder="Search ref, passenger, route…" oninput="applyFilter('flights')"></div><select
+                class="tbl-select" id="flt-flt-st" onchange="applyFilter('flights')">
+                <option value="">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="onhold">On Hold</option>
+                <option value="cancelled">Cancelled</option>
+              </select><select class="tbl-select" id="flt-flt-airline" onchange="applyFilter('flights')">
+                <option value="">All Airlines</option>
+                <option value="emirates">Emirates</option>
+                <option value="etihad">Etihad</option>
+                <option value="british airways">British Airways</option>
+              </select><select class="tbl-select" id="flt-flt-class" onchange="applyFilter('flights')">
+                <option value="">All Classes</option>
+                <option value="economy">Economy</option>
+                <option value="business">Business</option>
+                <option value="first">First Class</option>
+              </select>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Reference</th>
+                    <th>Passenger</th>
+                    <th>Route</th>
+                    <th>Airline</th>
+                    <th>Date</th>
+                    <th>Class</th>
+                    <th>Agency PNR</th>
+                    <th>Airline PNR</th>
+                    <th>Ticket No.</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-flt">
+                  <tr data-status="confirmed" data-airline="emirates" data-class="economy" data-ref="BK-8820"
+                    data-passenger="Ahmed Al-Rashidi" data-phone="+971 50 123 4567" data-email="ahmed@email.com"
+                    data-from="DXB" data-to="LHR" data-flight-num="EK001" data-dep-date="10 Jun 2026"
+                    data-ret-date="20 Jun 2026" data-pax="1" data-cabin="Economy" data-baggage="30 kg"
+                    data-agency-pnr="KT8820" data-airline-pnr="ABCXYZ" data-ticket="176-4812345678"
+                    data-amount="AED 2,450" data-service="flights">
+                    <td class="td-mono">BK-8820</td>
+                    <td>Ahmed Al-Rashidi</td>
+                    <td class="semi">DXB→LHR</td>
+                    <td>Emirates EK001</td>
+                    <td>10 Jun 2026</td>
+                    <td><span class="badge b-slate">Economy</span></td>
+                    <td class="td-mono" style="font-size:12px">KT8820</td>
+                    <td class="td-mono" style="font-size:12px">ABCXYZ</td>
+                    <td class="td-mono" style="font-size:12px">176-4812345678</td>
+                    <td class="semi">AED 2,450</td>
+                    <td><select class="ss ss-confirmed" onchange="chgStatus(this)">
+                        <option selected>Confirmed</option>
+                        <option>On Hold</option>
+                        <option>Cancelled</option>
+                      </select></td>
+                    <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁
+                        View</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏
+                        Edit</button><button class="btn-icon" onclick="printTicket(this.closest('tr'))">🎫
+                        Ticket</button></td>
+                  </tr>
+                  <tr data-status="confirmed" data-airline="emirates" data-class="business" data-ref="BK-8818"
+                    data-passenger="Mohammed Karim" data-phone="+966 50 345 6789" data-email="m.karim@email.com"
+                    data-from="DXB" data-to="JFK" data-flight-num="EK201" data-dep-date="20 Jun 2026"
+                    data-ret-date="30 Jun 2026" data-pax="1" data-cabin="Business" data-baggage="30 kg"
+                    data-agency-pnr="KT8818" data-airline-pnr="DEFGHI" data-ticket="176-5923456789"
+                    data-amount="AED 8,900" data-service="flights">
+                    <td class="td-mono">BK-8818</td>
+                    <td>Mohammed Karim</td>
+                    <td class="semi">DXB→JFK</td>
+                    <td>Emirates EK201</td>
+                    <td>20 Jun 2026</td>
+                    <td><span class="badge b-gold">Business</span></td>
+                    <td class="td-mono" style="font-size:12px">KT8818</td>
+                    <td class="td-mono" style="font-size:12px">DEFGHI</td>
+                    <td class="td-mono" style="font-size:12px">176-5923456789</td>
+                    <td class="semi">AED 8,900</td>
+                    <td><select class="ss ss-confirmed" onchange="chgStatus(this)">
+                        <option selected>Confirmed</option>
+                        <option>On Hold</option>
+                        <option>Cancelled</option>
+                      </select></td>
+                    <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁
+                        View</button><button class="btn-icon" onclick="openEditModal(this.closest('tr'))">✏
+                        Edit</button><button class="btn-icon" onclick="printTicket(this.closest('tr'))">🎫
+                        Ticket</button></td>
+                  </tr>
+                  <tr data-status="cancelled" data-airline="etihad" data-class="economy" data-ref="BK-8812"
+                    data-passenger="Layla Hassan" data-phone="+971 52 111 2222" data-email="layla@email.com"
+                    data-from="DXB" data-to="SYD" data-flight-num="EY450" data-dep-date="10 May 2026"
+                    data-ret-date="25 May 2026" data-pax="1" data-cabin="Economy" data-baggage="23 kg"
+                    data-agency-pnr="KT8812" data-airline-pnr="JKLMNO" data-ticket="607-1234567890"
+                    data-amount="AED 3,890" data-service="flights">
+                    <td class="td-mono">BK-8812</td>
+                    <td>Layla Hassan</td>
+                    <td class="semi">DXB→SYD</td>
+                    <td>Etihad EY450</td>
+                    <td>10 May 2026</td>
+                    <td><span class="badge b-slate">Economy</span></td>
+                    <td class="td-mono" style="font-size:12px">KT8812</td>
+                    <td class="td-mono" style="font-size:12px">JKLMNO</td>
+                    <td class="td-mono" style="font-size:12px">607-1234567890</td>
+                    <td class="semi">AED 3,890</td>
+                    <td><select class="ss ss-cancelled" onchange="chgStatus(this)">
+                        <option>Confirmed</option>
+                        <option>On Hold</option>
+                        <option selected>Cancelled</option>
+                      </select></td>
+                    <td class="td-actions"><button class="btn-icon" onclick="openViewModal(this.closest('tr'))">👁
+                        View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination"><span class="pg-info">Showing 1–3 of 612</span><button
+                class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button
+                class="pg-btn">›</button></div>
+          </div>
+        </div>
+        <div class="a-tab-c" id="at-f2">
+          <div class="a-card" style="padding:24px">
+            <div class="slate fs14">Route & fare management — configure airline partnerships and pricing.</div>
+          </div>
+        </div>
+        <div class="a-tab-c" id="at-f3">
+          <div class="a-card mb20">
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Airline Discounts</div>
+                <div class="a-card-sub">Manage promotional rates and partner discounts</div>
+              </div>
+              <div class="a-card-right">
+                <button class="btn-navy btn-sm" onclick="loadAirlineDiscounts()">↻ Refresh</button>
+                <button class="btn-gold btn-sm" onclick="openModal('m-add-discount')">+ Add Discount</button>
+              </div>
+            </div>
+            <div class="tbl-wrap" id="ad-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Airline</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Percentage (%)</th>
+                    <th>Flat Amount</th>
+                    <th>Booking Deadline</th>
+                    <th>Travel Deadline</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ad-tbody">
+                  <tr>
+                    <td colspan="9" style="text-align:center;color:var(--slate);padding:30px">Loading…</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="ap-umrah" style="display:none">
-        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-u1')">Packages</button><button class="a-tab" onclick="aTab(this,'at-u2')">Bookings</button><button class="a-tab" onclick="aTab(this,'at-u3')">Hotels</button></div>
+        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-u1')">Packages</button><button
+            class="a-tab" onclick="aTab(this,'at-u2')">Bookings</button><button class="a-tab"
+            onclick="aTab(this,'at-u3')">Hotels</button></div>
         <div class="a-tab-c act" id="at-u1">
-          <div class="a-card"><div class="a-card-head"><div class="a-card-title">Umrah Packages</div><button class="btn-gold btn-sm" onclick="openModal('m-add-pkg')">+ Add Package</button></div>
-          <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-um" placeholder="Search package name, hotel…" oninput="applyFilter('umrah')"></div><select class="tbl-select" id="flt-um-type" onchange="applyFilter('umrah')"><option value="">All Types</option><option value="vip">VIP</option><option value="standard">Standard</option><option value="economy">Economy</option></select><select class="tbl-select" id="flt-um-nights" onchange="applyFilter('umrah')"><option value="">All Durations</option><option value="7">7 Nights</option><option value="10">10 Nights</option><option value="14">14 Nights</option></select><select class="tbl-select" id="flt-um-visa" onchange="applyFilter('umrah')"><option value="">Visa: Any</option><option value="yes">Visa Included</option><option value="no">Visa Not Included</option></select></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Package</th><th>Type</th><th>Nights</th><th>Makkah Hotel</th><th>Madinah Hotel</th><th>Price</th><th>Visa</th><th>Bookings</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-um">
-            <tr data-type="vip" data-nights="14" data-visa="yes"><td class="semi">Premium Umrah</td><td><span class="badge b-gold">VIP</span></td><td>14</td><td>Towers Hotel ★★★★★</td><td>Mövenpick ★★★★★</td><td class="semi">AED 8,500</td><td><span class="badge b-green">Yes</span></td><td>47</td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-type="standard" data-nights="10" data-visa="yes"><td class="semi">Standard Umrah</td><td><span class="badge b-blue">Standard</span></td><td>10</td><td>Al Massa ★★★★</td><td>Al Eiman Royal ★★★★</td><td class="semi">AED 5,200</td><td><span class="badge b-green">Yes</span></td><td>89</td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-type="economy" data-nights="7" data-visa="yes"><td class="semi">Economy Umrah</td><td><span class="badge b-slate">Economy</span></td><td>7</td><td>Al Noor ★★★</td><td>Al Huda ★★★</td><td class="semi">AED 3,500</td><td><span class="badge b-green">Yes</span></td><td>148</td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-          </tbody></table></div></div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Umrah Packages</div><button class="btn-gold btn-sm"
+                onclick="openModal('m-add-pkg')">+ Add Package</button>
+            </div>
+            <div class="tbl-controls">
+              <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-um"
+                  placeholder="Search package name, hotel…" oninput="applyFilter('umrah')"></div><select
+                class="tbl-select" id="flt-um-type" onchange="applyFilter('umrah')">
+                <option value="">All Types</option>
+                <option value="vip">VIP</option>
+                <option value="standard">Standard</option>
+                <option value="economy">Economy</option>
+              </select><select class="tbl-select" id="flt-um-nights" onchange="applyFilter('umrah')">
+                <option value="">All Durations</option>
+                <option value="7">7 Nights</option>
+                <option value="10">10 Nights</option>
+                <option value="14">14 Nights</option>
+              </select><select class="tbl-select" id="flt-um-visa" onchange="applyFilter('umrah')">
+                <option value="">Visa: Any</option>
+                <option value="yes">Visa Included</option>
+                <option value="no">Visa Not Included</option>
+              </select>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Type</th>
+                    <th>Nights</th>
+                    <th>Makkah Hotel</th>
+                    <th>Madinah Hotel</th>
+                    <th>Price</th>
+                    <th>Visa</th>
+                    <th>Bookings</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-um">
+                  <tr data-type="vip" data-nights="14" data-visa="yes">
+                    <td class="semi">Premium Umrah</td>
+                    <td><span class="badge b-gold">VIP</span></td>
+                    <td>14</td>
+                    <td>Towers Hotel ★★★★★</td>
+                    <td>Mövenpick ★★★★★</td>
+                    <td class="semi">AED 8,500</td>
+                    <td><span class="badge b-green">Yes</span></td>
+                    <td>47</td>
+                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
+                        style="color:var(--red)">🗑</button></td>
+                  </tr>
+                  <tr data-type="standard" data-nights="10" data-visa="yes">
+                    <td class="semi">Standard Umrah</td>
+                    <td><span class="badge b-blue">Standard</span></td>
+                    <td>10</td>
+                    <td>Al Massa ★★★★</td>
+                    <td>Al Eiman Royal ★★★★</td>
+                    <td class="semi">AED 5,200</td>
+                    <td><span class="badge b-green">Yes</span></td>
+                    <td>89</td>
+                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
+                        style="color:var(--red)">🗑</button></td>
+                  </tr>
+                  <tr data-type="economy" data-nights="7" data-visa="yes">
+                    <td class="semi">Economy Umrah</td>
+                    <td><span class="badge b-slate">Economy</span></td>
+                    <td>7</td>
+                    <td>Al Noor ★★★</td>
+                    <td>Al Huda ★★★</td>
+                    <td class="semi">AED 3,500</td>
+                    <td><span class="badge b-green">Yes</span></td>
+                    <td>148</td>
+                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
+                        style="color:var(--red)">🗑</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="a-tab-c" id="at-u2"><div class="a-card" style="padding:24px"><div class="slate fs14">284 active Umrah bookings with pilgrim details and visa tracking.</div></div></div>
-        <div class="a-tab-c" id="at-u3"><div class="a-card" style="padding:24px"><div class="slate fs14">Hotel room allocations for Makkah and Madinah properties.</div></div></div>
+        <div class="a-tab-c" id="at-u2">
+          <div class="a-card" style="padding:24px">
+            <div class="slate fs14">284 active Umrah bookings with pilgrim details and visa tracking.</div>
+          </div>
+        </div>
+        <div class="a-tab-c" id="at-u3">
+          <div class="a-card" style="padding:24px">
+            <div class="slate fs14">Hotel room allocations for Makkah and Madinah properties.</div>
+          </div>
+        </div>
       </div>
 
       <div id="ap-holiday" style="display:none">
-        <div class="a-card"><div class="a-card-head"><div><div class="a-card-title">Holiday Packages</div><div class="a-card-sub">198 bookings this month</div></div><button class="btn-gold btn-sm" onclick="openModal('m-add-holiday')">+ Add Package</button></div>
-        <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-ho" placeholder="Search package name, destination…" oninput="applyFilter('holiday')"></div><select class="tbl-select" id="flt-ho-dest" onchange="applyFilter('holiday')"><option value="">All Destinations</option><option value="maldives">Maldives</option><option value="bali">Bali</option><option value="turkey">Turkey</option><option value="switzerland">Switzerland</option><option value="japan">Japan</option></select><select class="tbl-select" id="flt-ho-stars" onchange="applyFilter('holiday')"><option value="">All Star Ratings</option><option value="5">5 Stars</option><option value="4">4 Stars</option><option value="3">3 Stars</option></select><select class="tbl-select" id="flt-ho-meal" onchange="applyFilter('holiday')"><option value="">All Meal Plans</option><option value="all inclusive">All Inclusive</option><option value="half board">Half Board</option><option value="b&b">Bed & Breakfast</option></select><select class="tbl-select" id="flt-ho-st" onchange="applyFilter('holiday')"><option value="">All Status</option><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Package</th><th>Destination</th><th>Nights</th><th>Stars</th><th>Price/Person</th><th>Includes</th><th>Bookings</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody id="tbody-ho">
-          <tr data-dest="maldives" data-stars="5" data-meal="all inclusive" data-status="active"><td class="semi">Maldives Escape</td><td>Maldives 🇲🇻</td><td>7</td><td class="gold">★★★★★</td><td class="semi">AED 6,499</td><td><span class="badge b-green">All Inclusive</span></td><td>84</td><td><select class="ss ss-active" onchange="chgStatus(this)"><option selected>Active</option><option>Inactive</option></select></td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋 Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-          <tr data-dest="bali" data-stars="4" data-meal="half board" data-status="active"><td class="semi">Bali Discovery</td><td>Bali 🇮🇩</td><td>10</td><td class="gold">★★★★</td><td class="semi">AED 4,850</td><td><span class="badge b-amber">Half Board</span></td><td>52</td><td><select class="ss ss-active" onchange="chgStatus(this)"><option selected>Active</option><option>Inactive</option></select></td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋 Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-          <tr data-dest="turkey" data-stars="4" data-meal="b&b" data-status="inactive"><td class="semi">Istanbul Cultural</td><td>Turkey 🇹🇷</td><td>5</td><td class="gold">★★★★</td><td class="semi">AED 2,899</td><td><span class="badge b-slate">B&amp;B</span></td><td>31</td><td><select class="ss ss-inactive" onchange="chgStatus(this)"><option>Active</option><option selected>Inactive</option></select></td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋 Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-        </tbody></table></div></div>
+        <div class="a-card">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Holiday Packages</div>
+              <div class="a-card-sub">198 bookings this month</div>
+            </div><button class="btn-gold btn-sm" onclick="openModal('m-add-holiday')">+ Add Package</button>
+          </div>
+          <div class="tbl-controls">
+            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-ho"
+                placeholder="Search package name, destination…" oninput="applyFilter('holiday')"></div><select
+              class="tbl-select" id="flt-ho-dest" onchange="applyFilter('holiday')">
+              <option value="">All Destinations</option>
+              <option value="maldives">Maldives</option>
+              <option value="bali">Bali</option>
+              <option value="turkey">Turkey</option>
+              <option value="switzerland">Switzerland</option>
+              <option value="japan">Japan</option>
+            </select><select class="tbl-select" id="flt-ho-stars" onchange="applyFilter('holiday')">
+              <option value="">All Star Ratings</option>
+              <option value="5">5 Stars</option>
+              <option value="4">4 Stars</option>
+              <option value="3">3 Stars</option>
+            </select><select class="tbl-select" id="flt-ho-meal" onchange="applyFilter('holiday')">
+              <option value="">All Meal Plans</option>
+              <option value="all inclusive">All Inclusive</option>
+              <option value="half board">Half Board</option>
+              <option value="b&b">Bed & Breakfast</option>
+            </select><select class="tbl-select" id="flt-ho-st" onchange="applyFilter('holiday')">
+              <option value="">All Status</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Package</th>
+                  <th>Destination</th>
+                  <th>Nights</th>
+                  <th>Stars</th>
+                  <th>Price/Person</th>
+                  <th>Includes</th>
+                  <th>Bookings</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-ho">
+                <tr data-dest="maldives" data-stars="5" data-meal="all inclusive" data-status="active">
+                  <td class="semi">Maldives Escape</td>
+                  <td>Maldives 🇲🇻</td>
+                  <td>7</td>
+                  <td class="gold">★★★★★</td>
+                  <td class="semi">AED 6,499</td>
+                  <td><span class="badge b-green">All Inclusive</span></td>
+                  <td>84</td>
+                  <td><select class="ss ss-active" onchange="chgStatus(this)">
+                      <option selected>Active</option>
+                      <option>Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋
+                      Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+                <tr data-dest="bali" data-stars="4" data-meal="half board" data-status="active">
+                  <td class="semi">Bali Discovery</td>
+                  <td>Bali 🇮🇩</td>
+                  <td>10</td>
+                  <td class="gold">★★★★</td>
+                  <td class="semi">AED 4,850</td>
+                  <td><span class="badge b-amber">Half Board</span></td>
+                  <td>52</td>
+                  <td><select class="ss ss-active" onchange="chgStatus(this)">
+                      <option selected>Active</option>
+                      <option>Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋
+                      Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+                <tr data-dest="turkey" data-stars="4" data-meal="b&b" data-status="inactive">
+                  <td class="semi">Istanbul Cultural</td>
+                  <td>Turkey 🇹🇷</td>
+                  <td>5</td>
+                  <td class="gold">★★★★</td>
+                  <td class="semi">AED 2,899</td>
+                  <td><span class="badge b-slate">B&amp;B</span></td>
+                  <td>31</td>
+                  <td><select class="ss ss-inactive" onchange="chgStatus(this)">
+                      <option>Active</option>
+                      <option selected>Inactive</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">📋
+                      Itinerary</button><button class="btn-icon" style="color:var(--red)">🗑</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
 
       <div id="ap-cruise" style="display:none">
-        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-c1')">Packages</button><button class="a-tab" onclick="aTab(this,'at-c2')">Bookings</button><button class="a-tab" onclick="aTab(this,'at-c3')">Cabin Inventory</button></div>
+        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-c1')">Packages</button><button
+            class="a-tab" onclick="aTab(this,'at-c2')">Bookings</button><button class="a-tab"
+            onclick="aTab(this,'at-c3')">Cabin Inventory</button></div>
         <div class="a-tab-c act" id="at-c1">
-          <div class="a-card"><div class="a-card-head"><div class="a-card-title">Cruise Packages</div><button class="btn-gold btn-sm" onclick="openModal('m-add-cruise')">+ Add Cruise</button></div>
-          <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-cr" placeholder="Search cruise name, ship, route…" oninput="applyFilter('cruise')"></div><select class="tbl-select" id="flt-cr-region" onchange="applyFilter('cruise')"><option value="">All Regions</option><option value="mediterranean">Mediterranean</option><option value="arabian gulf">Arabian Gulf</option><option value="caribbean">Caribbean</option><option value="norway">Norwegian Fjords</option></select><select class="tbl-select" id="flt-cr-cabin" onchange="applyFilter('cruise')"><option value="">All Cabin Types</option><option value="ocean view">Ocean View</option><option value="balcony">Balcony</option><option value="suite">Suite</option><option value="interior">Interior</option></select><select class="tbl-select" id="flt-cr-nights" onchange="applyFilter('cruise')"><option value="">All Durations</option><option value="3">3–5 Nights</option><option value="7">6–9 Nights</option><option value="10">10–14 Nights</option><option value="15">15+ Nights</option></select></div>
-          <div class="tbl-wrap"><table><thead><tr><th>Cruise Name</th><th>Ship</th><th>Route</th><th>Departure</th><th>Nights</th><th>Cabin</th><th>Price/Person</th><th>Actions</th></tr></thead>
-          <tbody id="tbody-cr">
-            <tr data-region="mediterranean" data-cabin="ocean view" data-nights="10"><td class="semi">Mediterranean Grand</td><td>MSC Grandiosa</td><td>Rome → Barcelona</td><td>1 Aug 2026</td><td>10</td><td>Ocean View</td><td class="semi">AED 4,199</td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">🚢 Cabins</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-            <tr data-region="arabian gulf" data-cabin="balcony" data-nights="7"><td class="semi">Arabian Gulf Explorer</td><td>Anthem of the Seas</td><td>Dubai → Muscat</td><td>15 Aug 2026</td><td>7</td><td>Balcony</td><td class="semi">AED 3,650</td><td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">🚢 Cabins</button><button class="btn-icon" style="color:var(--red)">🗑</button></td></tr>
-          </tbody></table></div></div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Cruise Packages</div><button class="btn-gold btn-sm"
+                onclick="openModal('m-add-cruise')">+ Add Cruise</button>
+            </div>
+            <div class="tbl-controls">
+              <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-cr"
+                  placeholder="Search cruise name, ship, route…" oninput="applyFilter('cruise')"></div><select
+                class="tbl-select" id="flt-cr-region" onchange="applyFilter('cruise')">
+                <option value="">All Regions</option>
+                <option value="mediterranean">Mediterranean</option>
+                <option value="arabian gulf">Arabian Gulf</option>
+                <option value="caribbean">Caribbean</option>
+                <option value="norway">Norwegian Fjords</option>
+              </select><select class="tbl-select" id="flt-cr-cabin" onchange="applyFilter('cruise')">
+                <option value="">All Cabin Types</option>
+                <option value="ocean view">Ocean View</option>
+                <option value="balcony">Balcony</option>
+                <option value="suite">Suite</option>
+                <option value="interior">Interior</option>
+              </select><select class="tbl-select" id="flt-cr-nights" onchange="applyFilter('cruise')">
+                <option value="">All Durations</option>
+                <option value="3">3–5 Nights</option>
+                <option value="7">6–9 Nights</option>
+                <option value="10">10–14 Nights</option>
+                <option value="15">15+ Nights</option>
+              </select>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Cruise Name</th>
+                    <th>Ship</th>
+                    <th>Route</th>
+                    <th>Departure</th>
+                    <th>Nights</th>
+                    <th>Cabin</th>
+                    <th>Price/Person</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-cr">
+                  <tr data-region="mediterranean" data-cabin="ocean view" data-nights="10">
+                    <td class="semi">Mediterranean Grand</td>
+                    <td>MSC Grandiosa</td>
+                    <td>Rome → Barcelona</td>
+                    <td>1 Aug 2026</td>
+                    <td>10</td>
+                    <td>Ocean View</td>
+                    <td class="semi">AED 4,199</td>
+                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">🚢
+                        Cabins</button><button class="btn-icon" style="color:var(--red)">🗑</button></td>
+                  </tr>
+                  <tr data-region="arabian gulf" data-cabin="balcony" data-nights="7">
+                    <td class="semi">Arabian Gulf Explorer</td>
+                    <td>Anthem of the Seas</td>
+                    <td>Dubai → Muscat</td>
+                    <td>15 Aug 2026</td>
+                    <td>7</td>
+                    <td>Balcony</td>
+                    <td class="semi">AED 3,650</td>
+                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon">🚢
+                        Cabins</button><button class="btn-icon" style="color:var(--red)">🗑</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-        <div class="a-tab-c" id="at-c2"><div class="a-card" style="padding:24px"><div class="slate fs14">87 cruise bookings — manage cabin assignments and shore excursions.</div></div></div>
-        <div class="a-tab-c" id="at-c3"><div class="a-card" style="padding:24px"><div class="slate fs14">Cabin availability by ship, deck, and category with pricing controls.</div></div></div>
+        <div class="a-tab-c" id="at-c2">
+          <div class="a-card" style="padding:24px">
+            <div class="slate fs14">87 cruise bookings — manage cabin assignments and shore excursions.</div>
+          </div>
+        </div>
+        <div class="a-tab-c" id="at-c3">
+          <div class="a-card" style="padding:24px">
+            <div class="slate fs14">Cabin availability by ship, deck, and category with pricing controls.</div>
+          </div>
+        </div>
       </div>
 
       <div id="ap-visa" style="display:none">
         <div class="grid g4 gap16 mb20">
-          <div class="kpi-card"><div class="kpi-label">Pending</div><div class="kpi-num" style="color:var(--amber)">23</div><div class="kpi-change dn">↑ 3 new today</div></div>
-          <div class="kpi-card"><div class="kpi-label">Processing</div><div class="kpi-num" style="color:var(--blue)">14</div><div class="kpi-change nt">Avg. 5 days</div></div>
-          <div class="kpi-card"><div class="kpi-label">Approved</div><div class="kpi-num" style="color:var(--green)">58</div><div class="kpi-change up">94% rate</div></div>
-          <div class="kpi-card"><div class="kpi-label">Rejected</div><div class="kpi-num" style="color:var(--red)">8</div><div class="kpi-change nt">Missing docs (5)</div></div>
+          <div class="kpi-card">
+            <div class="kpi-label">Pending</div>
+            <div class="kpi-num" style="color:var(--amber)">23</div>
+            <div class="kpi-change dn">↑ 3 new today</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Processing</div>
+            <div class="kpi-num" style="color:var(--blue)">14</div>
+            <div class="kpi-change nt">Avg. 5 days</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Approved</div>
+            <div class="kpi-num" style="color:var(--green)">58</div>
+            <div class="kpi-change up">94% rate</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Rejected</div>
+            <div class="kpi-num" style="color:var(--red)">8</div>
+            <div class="kpi-change nt">Missing docs (5)</div>
+          </div>
         </div>
-        <div class="a-card"><div class="a-card-head"><div><div class="a-card-title">Visa Applications</div><div class="a-card-sub">103 this month</div></div><div class="a-card-right"><button class="btn-ghost btn-sm">Export</button><button class="btn-gold btn-sm" onclick="openModal('m-visa-fees')">Visa Fee Settings</button></div></div>
-        <div class="tbl-controls"><div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-vi" placeholder="Search name, ref, country…" oninput="applyFilter('visa')"></div><select class="tbl-select" id="flt-vi-st" onchange="applyFilter('visa')"><option value="">All Status</option><option value="pending">Pending</option><option value="processing">Processing</option><option value="approved">Approved</option><option value="rejected">Rejected</option></select><select class="tbl-select" id="flt-vi-country" onchange="applyFilter('visa')"><option value="">All Countries</option><option value="uk">UK</option><option value="schengen">Schengen</option><option value="usa">USA</option><option value="canada">Canada</option><option value="australia">Australia</option></select><select class="tbl-select" id="flt-vi-type" onchange="applyFilter('visa')"><option value="">All Types</option><option value="tourist">Tourist</option><option value="business">Business</option><option value="transit">Transit</option><option value="student">Student</option></select></div>
-        <div class="tbl-wrap"><table><thead><tr><th>Ref</th><th>Applicant</th><th>Nationality</th><th>Destination</th><th>Type</th><th>Travel Date</th><th>Submitted</th><th>Fee Paid</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody id="tbody-vi">
-          <tr data-status="approved" data-country="uk" data-type="tourist"><td class="td-mono">VA-4821</td><td><div class="flex aic gap8"><div class="avatar" style="width:30px;height:30px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:11px">SM</div>Sara Al-Mansoori</div></td><td>UAE 🇦🇪</td><td>🇬🇧 UK</td><td>Tourist</td><td>Sep 2026</td><td>6 Apr 2026</td><td class="semi">AED 450</td><td><select class="ss ss-approved" onchange="chgStatus(this)"><option>Pending</option><option>Processing</option><option selected>Approved</option><option>Rejected</option></select></td><td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄 Docs</button></td></tr>
-          <tr data-status="processing" data-country="usa" data-type="business"><td class="td-mono">VA-4820</td><td><div class="flex aic gap8"><div class="avatar" style="width:30px;height:30px;background:rgba(29,78,216,.1);color:var(--blue);font-size:11px">KI</div>Khalid Ibrahim</div></td><td>UAE 🇦🇪</td><td>🇺🇸 USA</td><td>Business</td><td>Oct 2026</td><td>5 Apr 2026</td><td class="semi">AED 820</td><td><select class="ss ss-processing" onchange="chgStatus(this)"><option>Pending</option><option selected>Processing</option><option>Approved</option><option>Rejected</option></select></td><td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄 Docs</button></td></tr>
-          <tr data-status="pending" data-country="schengen" data-type="tourist"><td class="td-mono">VA-4819</td><td><div class="flex aic gap8"><div class="avatar" style="width:30px;height:30px;background:rgba(15,123,91,.1);color:var(--green);font-size:11px">ME</div>Mona El-Sayed</div></td><td>EGY 🇪🇬</td><td>🇪🇺 Schengen</td><td>Tourist</td><td>Aug 2026</td><td>4 Apr 2026</td><td class="semi">AED 380</td><td><select class="ss ss-pending" onchange="chgStatus(this)"><option selected>Pending</option><option>Processing</option><option>Approved</option><option>Rejected</option></select></td><td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄 Docs</button></td></tr>
-          <tr data-status="rejected" data-country="uk" data-type="business"><td class="td-mono">VA-4809</td><td><div class="flex aic gap8"><div class="avatar" style="width:30px;height:30px;background:rgba(185,28,28,.1);color:var(--red);font-size:11px">RK</div>Reem Khalid</div></td><td>UAE 🇦🇪</td><td>🇬🇧 UK</td><td>Business</td><td>Jun 2026</td><td>1 Apr 2026</td><td class="semi">AED 820</td><td><select class="ss ss-rejected" onchange="chgStatus(this)"><option>Pending</option><option>Processing</option><option>Approved</option><option selected>Rejected</option></select></td><td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📋 Reason</button></td></tr>
-        </tbody></table></div>
-        <div class="pagination"><span class="pg-info">Showing 1–4 of 103</span><button class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button class="pg-btn">›</button></div>
+        <div class="a-card">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Visa Applications</div>
+              <div class="a-card-sub">103 this month</div>
+            </div>
+            <div class="a-card-right"><button class="btn-ghost btn-sm">Export</button><button class="btn-gold btn-sm"
+                onclick="openModal('m-visa-fees')">Visa Fee Settings</button></div>
+          </div>
+          <div class="tbl-controls">
+            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-vi"
+                placeholder="Search name, ref, country…" oninput="applyFilter('visa')"></div><select class="tbl-select"
+              id="flt-vi-st" onchange="applyFilter('visa')">
+              <option value="">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="processing">Processing</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select><select class="tbl-select" id="flt-vi-country" onchange="applyFilter('visa')">
+              <option value="">All Countries</option>
+              <option value="uk">UK</option>
+              <option value="schengen">Schengen</option>
+              <option value="usa">USA</option>
+              <option value="canada">Canada</option>
+              <option value="australia">Australia</option>
+            </select><select class="tbl-select" id="flt-vi-type" onchange="applyFilter('visa')">
+              <option value="">All Types</option>
+              <option value="tourist">Tourist</option>
+              <option value="business">Business</option>
+              <option value="transit">Transit</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ref</th>
+                  <th>Applicant</th>
+                  <th>Nationality</th>
+                  <th>Destination</th>
+                  <th>Type</th>
+                  <th>Travel Date</th>
+                  <th>Submitted</th>
+                  <th>Fee Paid</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-vi">
+                <tr data-status="approved" data-country="uk" data-type="tourist">
+                  <td class="td-mono">VA-4821</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:30px;height:30px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:11px">
+                        SM</div>Sara Al-Mansoori
+                    </div>
+                  </td>
+                  <td>UAE 🇦🇪</td>
+                  <td>🇬🇧 UK</td>
+                  <td>Tourist</td>
+                  <td>Sep 2026</td>
+                  <td>6 Apr 2026</td>
+                  <td class="semi">AED 450</td>
+                  <td><select class="ss ss-approved" onchange="chgStatus(this)">
+                      <option>Pending</option>
+                      <option>Processing</option>
+                      <option selected>Approved</option>
+                      <option>Rejected</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄
+                      Docs</button></td>
+                </tr>
+                <tr data-status="processing" data-country="usa" data-type="business">
+                  <td class="td-mono">VA-4820</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:30px;height:30px;background:rgba(29,78,216,.1);color:var(--blue);font-size:11px">KI
+                      </div>Khalid Ibrahim
+                    </div>
+                  </td>
+                  <td>UAE 🇦🇪</td>
+                  <td>🇺🇸 USA</td>
+                  <td>Business</td>
+                  <td>Oct 2026</td>
+                  <td>5 Apr 2026</td>
+                  <td class="semi">AED 820</td>
+                  <td><select class="ss ss-processing" onchange="chgStatus(this)">
+                      <option>Pending</option>
+                      <option selected>Processing</option>
+                      <option>Approved</option>
+                      <option>Rejected</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄
+                      Docs</button></td>
+                </tr>
+                <tr data-status="pending" data-country="schengen" data-type="tourist">
+                  <td class="td-mono">VA-4819</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:30px;height:30px;background:rgba(15,123,91,.1);color:var(--green);font-size:11px">
+                        ME</div>Mona El-Sayed
+                    </div>
+                  </td>
+                  <td>EGY 🇪🇬</td>
+                  <td>🇪🇺 Schengen</td>
+                  <td>Tourist</td>
+                  <td>Aug 2026</td>
+                  <td>4 Apr 2026</td>
+                  <td class="semi">AED 380</td>
+                  <td><select class="ss ss-pending" onchange="chgStatus(this)">
+                      <option selected>Pending</option>
+                      <option>Processing</option>
+                      <option>Approved</option>
+                      <option>Rejected</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📄
+                      Docs</button></td>
+                </tr>
+                <tr data-status="rejected" data-country="uk" data-type="business">
+                  <td class="td-mono">VA-4809</td>
+                  <td>
+                    <div class="flex aic gap8">
+                      <div class="avatar"
+                        style="width:30px;height:30px;background:rgba(185,28,28,.1);color:var(--red);font-size:11px">RK
+                      </div>Reem Khalid
+                    </div>
+                  </td>
+                  <td>UAE 🇦🇪</td>
+                  <td>🇬🇧 UK</td>
+                  <td>Business</td>
+                  <td>Jun 2026</td>
+                  <td>1 Apr 2026</td>
+                  <td class="semi">AED 820</td>
+                  <td><select class="ss ss-rejected" onchange="chgStatus(this)">
+                      <option>Pending</option>
+                      <option>Processing</option>
+                      <option>Approved</option>
+                      <option selected>Rejected</option>
+                    </select></td>
+                  <td class="td-actions"><button class="btn-icon">👁 View</button><button class="btn-icon">📋
+                      Reason</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination"><span class="pg-info">Showing 1–4 of 103</span><button
+              class="pg-btn">‹</button><button class="pg-btn act">1</button><button class="pg-btn">2</button><button
+              class="pg-btn">›</button></div>
         </div>
       </div>
 
@@ -263,43 +1409,106 @@
 
           <div>
             <div class="a-card mb16">
-              <div class="a-card-head"><div><div class="a-card-title">Hero Slides</div><div class="a-card-sub" id="hero-slide-count">4 slides · auto-play ON</div></div><button class="btn-gold btn-sm" onclick="openModal('m-add-slide')">+ Add Slide</button></div>
+              <div class="a-card-head">
+                <div>
+                  <div class="a-card-title">Hero Slides</div>
+                  <div class="a-card-sub" id="hero-slide-count">4 slides · auto-play ON</div>
+                </div><button class="btn-gold btn-sm" onclick="openModal('m-add-slide')">+ Add Slide</button>
+              </div>
               <div style="padding:16px;display:flex;flex-direction:column;gap:12px" id="slide-manager-list"></div>
             </div>
             <div class="a-card">
-              <div class="a-card-head"><div class="a-card-title">Slider Settings</div></div>
+              <div class="a-card-head">
+                <div class="a-card-title">Slider Settings</div>
+              </div>
               <div style="padding:16px 20px">
-                <div class="settings-row"><div><div class="settings-label">Auto-Play</div><div class="settings-sub">Automatically advance slides</div></div><label class="toggle-switch"><input type="checkbox" id="toggle-autoplay" checked onchange="updateSliderSetting('autoplay',this.checked)"><span class="toggle-thumb"></span></label></div>
-                <div class="settings-row"><div><div class="settings-label">Slide Interval</div><div class="settings-sub">Seconds between transitions</div></div><select class="tbl-select" id="sel-interval" onchange="updateSliderSetting('interval',parseInt(this.value))"><option value="4">4 seconds</option><option value="5" selected>5 seconds</option><option value="7">7 seconds</option><option value="10">10 seconds</option></select></div>
-                <div class="settings-row"><div><div class="settings-label">Show Navigation Arrows</div><div class="settings-sub">Prev/Next buttons</div></div><label class="toggle-switch"><input type="checkbox" id="toggle-arrows" checked onchange="updateSliderSetting('arrows',this.checked)"><span class="toggle-thumb"></span></label></div>
-                <div class="settings-row"><div><div class="settings-label">Show Dot Indicators</div><div class="settings-sub">Slide position dots</div></div><label class="toggle-switch"><input type="checkbox" id="toggle-dots" checked onchange="updateSliderSetting('dots',this.checked)"><span class="toggle-thumb"></span></label></div>
-                <div class="settings-row" style="border-bottom:none"><div><div class="settings-label">Show Slide Counter</div><div class="settings-sub">e.g. "1 / 4" indicator</div></div><label class="toggle-switch"><input type="checkbox" id="toggle-counter" checked onchange="updateSliderSetting('counter',this.checked)"><span class="toggle-thumb"></span></label></div>
+                <div class="settings-row">
+                  <div>
+                    <div class="settings-label">Auto-Play</div>
+                    <div class="settings-sub">Automatically advance slides</div>
+                  </div><label class="toggle-switch"><input type="checkbox" id="toggle-autoplay" checked
+                      onchange="updateSliderSetting('autoplay',this.checked)"><span class="toggle-thumb"></span></label>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <div class="settings-label">Slide Interval</div>
+                    <div class="settings-sub">Seconds between transitions</div>
+                  </div><select class="tbl-select" id="sel-interval"
+                    onchange="updateSliderSetting('interval',parseInt(this.value))">
+                    <option value="4">4 seconds</option>
+                    <option value="5" selected>5 seconds</option>
+                    <option value="7">7 seconds</option>
+                    <option value="10">10 seconds</option>
+                  </select>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <div class="settings-label">Show Navigation Arrows</div>
+                    <div class="settings-sub">Prev/Next buttons</div>
+                  </div><label class="toggle-switch"><input type="checkbox" id="toggle-arrows" checked
+                      onchange="updateSliderSetting('arrows',this.checked)"><span class="toggle-thumb"></span></label>
+                </div>
+                <div class="settings-row">
+                  <div>
+                    <div class="settings-label">Show Dot Indicators</div>
+                    <div class="settings-sub">Slide position dots</div>
+                  </div><label class="toggle-switch"><input type="checkbox" id="toggle-dots" checked
+                      onchange="updateSliderSetting('dots',this.checked)"><span class="toggle-thumb"></span></label>
+                </div>
+                <div class="settings-row" style="border-bottom:none">
+                  <div>
+                    <div class="settings-label">Show Slide Counter</div>
+                    <div class="settings-sub">e.g. "1 / 4" indicator</div>
+                  </div><label class="toggle-switch"><input type="checkbox" id="toggle-counter" checked
+                      onchange="updateSliderSetting('counter',this.checked)"><span class="toggle-thumb"></span></label>
+                </div>
               </div>
             </div>
           </div>
 
           <div>
             <div class="a-card mb16">
-              <div class="a-card-head"><div class="a-card-title">Live Slide Preview</div><span class="badge b-green">Live</span></div>
+              <div class="a-card-head">
+                <div class="a-card-title">Live Slide Preview</div><span class="badge b-green">Live</span>
+              </div>
               <div style="padding:16px">
-                <div id="hero-preview" style="height:260px;border-radius:var(--r2);overflow:hidden;position:relative;cursor:pointer" onclick="go('home')">
-                  <div id="prev-bg" style="position:absolute;inset:0;background-size:cover;background-position:center;transition:all .8s"></div>
-                  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,17,32,.2),rgba(11,17,32,.7))"></div>
-                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
-                    <div id="prev-label" style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;background:rgba(200,169,110,.15);padding:5px 14px;border-radius:100px"></div>
-                    <div id="prev-title" style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2"></div>
-                    <div id="prev-sub" style="font-size:13px;color:rgba(255,255,255,.6);max-width:280px;margin-bottom:16px"></div>
-                    <div id="prev-cta" style="background:var(--gold);color:var(--ink);font-size:12px;font-weight:700;padding:7px 18px;border-radius:7px"></div>
+                <div id="hero-preview"
+                  style="height:260px;border-radius:var(--r2);overflow:hidden;position:relative;cursor:pointer"
+                  onclick="go('home')">
+                  <div id="prev-bg"
+                    style="position:absolute;inset:0;background-size:cover;background-position:center;transition:all .8s">
+                  </div>
+                  <div
+                    style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,17,32,.2),rgba(11,17,32,.7))">
+                  </div>
+                  <div
+                    style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
+                    <div id="prev-label"
+                      style="font-size:10px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;background:rgba(200,169,110,.15);padding:5px 14px;border-radius:100px">
+                    </div>
+                    <div id="prev-title"
+                      style="font-family:var(--serif);font-size:22px;font-weight:700;color:var(--white);margin-bottom:8px;line-height:1.2">
+                    </div>
+                    <div id="prev-sub"
+                      style="font-size:13px;color:rgba(255,255,255,.6);max-width:280px;margin-bottom:16px"></div>
+                    <div id="prev-cta"
+                      style="background:var(--gold);color:var(--ink);font-size:12px;font-weight:700;padding:7px 18px;border-radius:7px">
+                    </div>
                   </div>
                 </div>
                 <div style="display:flex;gap:6px;justify-content:center;margin-top:12px" id="prev-dots"></div>
               </div>
             </div>
             <div class="a-card">
-              <div class="a-card-head"><div class="a-card-title">Quick Image Test</div></div>
+              <div class="a-card-head">
+                <div class="a-card-title">Quick Image Test</div>
+              </div>
               <div style="padding:16px">
-                <div class="field mb12"><label>Paste Image URL to Test</label><input type="text" id="img-test-url" placeholder="https://images.unsplash.com/photo-…" oninput="testImageUrl(this.value)"></div>
-                <div id="img-test-preview" style="height:100px;border-radius:var(--r);background:var(--surface2);border:2px dashed var(--surface3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--slate2);background-size:cover;background-position:center;transition:all .3s">Enter URL above to preview</div>
+                <div class="field mb12"><label>Paste Image URL to Test</label><input type="text" id="img-test-url"
+                    placeholder="https://images.unsplash.com/photo-…" oninput="testImageUrl(this.value)"></div>
+                <div id="img-test-preview"
+                  style="height:100px;border-radius:var(--r);background:var(--surface2);border:2px dashed var(--surface3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--slate2);background-size:cover;background-position:center;transition:all .3s">
+                  Enter URL above to preview</div>
               </div>
             </div>
           </div>
@@ -310,7 +1519,10 @@
 
         <div class="api-status-bar">
           <div class="api-status-dot" id="api-dot" style="background:var(--slate3)"></div>
-          <div><div class="api-status-text" id="api-status-text">Not Connected</div><span class="api-status-url" id="api-status-url">Configure your API URL below</span></div>
+          <div>
+            <div class="api-status-text" id="api-status-text">Not Connected</div><span class="api-status-url"
+              id="api-status-url">Configure your API URL below</span>
+          </div>
           <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
             <span class="badge b-slate" id="api-env-badge">No Environment</span>
             <span class="fs12 slate2" id="api-last-sync">Never synced</span>
@@ -320,67 +1532,193 @@
         <div class="grid g2 gap20 mb20">
 
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">API Configuration</div></div>
+            <div class="a-card-head">
+              <div class="a-card-title">API Configuration</div>
+            </div>
             <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
               <div class="field"><label>Environment</label>
-                <select id="api-env" onchange="document.getElementById('api-env-badge').textContent=this.options[this.selectedIndex].text;document.getElementById('api-env-badge').className='badge '+(this.value==='prod'?'b-red':this.value==='stage'?'b-amber':'b-blue')">
+                <select id="api-env"
+                  onchange="document.getElementById('api-env-badge').textContent=this.options[this.selectedIndex].text;document.getElementById('api-env-badge').className='badge '+(this.value==='prod'?'b-red':this.value==='stage'?'b-amber':'b-blue')">
                   <option value="">Select environment</option>
                   <option value="prod">Production</option>
                   <option value="stage">Staging</option>
                   <option value="dev">Development / Local</option>
                 </select>
               </div>
-              <div class="field"><label>API Base URL</label><input type="url" id="api-base-url" placeholder="https://api.keenantravel.com/v1" value="https://api.keenantravel.com/v1"></div>
-              <div class="field"><label>Bearer Token / API Key</label><input type="password" id="api-key" placeholder="sk_live_…" value="sk_live_kt_a1b2c3d4e5f6"></div>
-              <div class="field"><label>Request Timeout (ms)</label><input type="number" id="api-timeout" value="5000" min="1000" max="60000"></div>
+              <div class="field"><label>API Base URL</label><input type="url" id="api-base-url"
+                  placeholder="https://api.keenantravel.com/v1" value="https://api.keenantravel.com/v1"></div>
+              <div class="field"><label>Bearer Token / API Key</label><input type="password" id="api-key"
+                  placeholder="sk_live_…" value="sk_live_kt_a1b2c3d4e5f6"></div>
+              <div class="field"><label>Request Timeout (ms)</label><input type="number" id="api-timeout" value="5000"
+                  min="1000" max="60000"></div>
               <div style="display:flex;gap:10px">
                 <button class="btn-gold" onclick="saveApiConfig()" style="flex:1">Save Configuration</button>
-                <button class="btn-ghost" onclick="testApiConnection()" style="flex:1" id="test-btn">🔗 Test Connection</button>
+                <button class="btn-ghost" onclick="testApiConnection()" style="flex:1" id="test-btn">🔗 Test
+                  Connection</button>
               </div>
               <div id="api-test-result" style="display:none;padding:12px;border-radius:var(--r);font-size:13px"></div>
             </div>
           </div>
 
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">Custom Headers</div><button class="btn-icon" onclick="addHeader()">+ Add</button></div>
+            <div class="a-card-head">
+              <div class="a-card-title">Custom Headers</div><button class="btn-icon" onclick="addHeader()">+
+                Add</button>
+            </div>
             <div style="padding:16px" id="headers-list">
               <div class="header-row" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;margin-bottom:8px">
-                <input class="field input" type="text" placeholder="Header name" value="X-App-Version" style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
-                <input class="field input" type="text" placeholder="Value" value="1.0.0" style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
+                <input class="field input" type="text" placeholder="Header name" value="X-App-Version"
+                  style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
+                <input class="field input" type="text" placeholder="Value" value="1.0.0"
+                  style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
                 <button class="btn-danger" onclick="this.parentNode.remove()">✕</button>
               </div>
               <div class="header-row" style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px">
-                <input class="field input" type="text" placeholder="Header name" value="X-Platform" style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
-                <input class="field input" type="text" placeholder="Value" value="web" style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
+                <input class="field input" type="text" placeholder="Header name" value="X-Platform"
+                  style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
+                <input class="field input" type="text" placeholder="Value" value="web"
+                  style="font-size:13px;padding:8px 10px;border:1.5px solid var(--surface3);border-radius:8px;background:var(--surface2);font-family:var(--sans);color:var(--ink);outline:none">
                 <button class="btn-danger" onclick="this.parentNode.remove()">✕</button>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- ── Wonder Travel NDC Flight API ──────────────────────────────────── -->
         <div class="a-card mb20">
           <div class="a-card-head">
-            <div><div class="a-card-title">Endpoint Discovery</div><div class="a-card-sub">Auto-discovered from OpenAPI spec · Last sync: <span id="ep-last-sync">Never</span></div></div>
+            <div>
+              <div class="a-card-title">✈ Wonder Travel — NDC Flight API</div>
+              <div class="a-card-sub">Ocp-Apim-Subscription-Key authentication · IP whitelist required</div>
+            </div>
+            <span class="badge" id="ndc-status-badge" style="background:var(--surface2);color:var(--slate2)">Not
+              Configured</span>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div class="field">
+              <label>Environment</label>
+              <select id="ndc-env">
+                <option value="sandbox">Sandbox (Testing)</option>
+                <option value="production">Production (Live)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>NDC Base URL</label>
+              <input type="url" id="ndc-base-url" placeholder="https://sandbox.wondertravel.com">
+            </div>
+            <div class="field">
+              <label>Subscription Key (Ocp-Apim-Subscription-Key)</label>
+              <input type="password" id="ndc-api-key" placeholder="Paste your API key here">
+            </div>
+            <div
+              style="background:var(--amber-bg,#fffbeb);border:1px solid rgba(180,83,9,.2);border-radius:var(--r,8px);padding:12px 16px;font-size:13px;color:var(--amber,#b45309)">
+              ⚠ <strong>IP Whitelisting required.</strong> Your server's outbound IP must be registered with Wonder
+              Travel before this API will work.
+            </div>
+            <div style="display:flex;gap:10px">
+              <button class="btn-gold" onclick="saveNdcConfig()" style="flex:1">Save NDC Configuration</button>
+              <button class="btn-ghost" onclick="testNdcConnection()" id="ndc-test-btn" style="flex:1">🔗 Test
+                Connection</button>
+            </div>
+            <div id="ndc-test-result" style="display:none;padding:12px;border-radius:var(--r,8px);font-size:13px"></div>
+          </div>
+        </div>
+
+        <!-- ── Stripe Payment Gateway ────────────────────────────────────────── -->
+        <div class="a-card mb20">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">💳 Stripe Payment Gateway</div>
+              <div class="a-card-sub">Sandbox (test cards) → Production (live payments)</div>
+            </div>
+            <span class="badge" id="stripe-status-badge" style="background:var(--surface2);color:var(--slate2)">Not
+              Configured</span>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+            <div class="field">
+              <label>Environment</label>
+              <select id="stripe-env">
+                <option value="sandbox">Sandbox — use test cards (pk_test_ / sk_test_)</option>
+                <option value="production">Production — live payments (pk_live_ / sk_live_)</option>
+              </select>
+            </div>
+            <div
+              style="background:var(--blue-bg,#eff6ff);border:1px solid rgba(29,78,216,.2);border-radius:var(--r,8px);padding:12px 16px;font-size:13px;color:var(--blue,#1d4ed8)">
+              ℹ Sandbox test card: <strong>4242 4242 4242 4242</strong> · Any future expiry · Any CVC
+            </div>
+            <div class="field">
+              <label>Publishable Key (pk_test_… or pk_live_…)</label>
+              <input type="text" id="stripe-pub-key" placeholder="pk_test_xxxxxxxxxxxxxxxxxxxx">
+              <span style="font-size:11px;color:var(--slate2);margin-top:4px;display:block">Safe to expose in frontend —
+                used by Stripe.js in the browser.</span>
+            </div>
+            <div class="field">
+              <label>Secret Key (sk_test_… or sk_live_…)</label>
+              <input type="password" id="stripe-secret-key" placeholder="sk_test_xxxxxxxxxxxxxxxxxxxx">
+              <span style="font-size:11px;color:var(--slate2);margin-top:4px;display:block">Never exposed to frontend.
+                Stored server-side only.</span>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button class="btn-gold" onclick="saveStripeConfig()" style="flex:1">Save Stripe Keys</button>
+              <button class="btn-ghost" onclick="testStripeConnection()" id="stripe-test-btn" style="flex:1">🔗 Test
+                Connection</button>
+            </div>
+            <div id="stripe-test-result" style="display:none;padding:12px;border-radius:var(--r,8px);font-size:13px">
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Endpoint Discovery ─────────────────────────────────────────────── -->
+        <div class="a-card mb20">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Endpoint Discovery</div>
+              <div class="a-card-sub">Auto-discovered from OpenAPI spec · Last sync: <span
+                  id="ep-last-sync">Never</span></div>
+            </div>
             <div class="a-card-right">
               <button class="btn-ghost btn-sm" onclick="syncEndpoints()">🔄 Sync Endpoints</button>
-              <button class="btn-gold btn-sm" onclick="aPanel('swagger',document.querySelector('.an-item:nth-child(9)'))">View Full API Docs</button>
+              <button class="btn-gold btn-sm"
+                onclick="aPanel('swagger',document.querySelector('.an-item:nth-child(9)'))">View Full API Docs</button>
             </div>
           </div>
           <div style="padding:12px 16px">
-            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;font-size:12px;font-weight:600">
-              <div style="color:var(--green);background:var(--green-bg);padding:7px 12px;border-radius:8px;text-align:center">✓ <span id="ep-ok">0</span> OK</div>
-              <div style="color:var(--amber);background:var(--amber-bg);padding:7px 12px;border-radius:8px;text-align:center">⚠ <span id="ep-warn">0</span> Slow</div>
-              <div style="color:var(--red);background:var(--red-bg);padding:7px 12px;border-radius:8px;text-align:center">✕ <span id="ep-err">0</span> Error</div>
-              <div style="color:var(--slate2);background:var(--surface2);padding:7px 12px;border-radius:8px;text-align:center">· <span id="ep-total">0</span> Total</div>
+            <div
+              style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;font-size:12px;font-weight:600">
+              <div
+                style="color:var(--green);background:var(--green-bg);padding:7px 12px;border-radius:8px;text-align:center">
+                ✓ <span id="ep-ok">0</span> OK</div>
+              <div
+                style="color:var(--amber);background:var(--amber-bg);padding:7px 12px;border-radius:8px;text-align:center">
+                ⚠ <span id="ep-warn">0</span> Slow</div>
+              <div
+                style="color:var(--red);background:var(--red-bg);padding:7px 12px;border-radius:8px;text-align:center">✕
+                <span id="ep-err">0</span> Error</div>
+              <div
+                style="color:var(--slate2);background:var(--surface2);padding:7px 12px;border-radius:8px;text-align:center">
+                · <span id="ep-total">0</span> Total</div>
             </div>
             <div class="endpoint-list" id="endpoint-list"></div>
           </div>
         </div>
 
         <div class="a-card">
-          <div class="a-card-head"><div><div class="a-card-title">Request Log</div><div class="a-card-sub">Last 10 API calls</div></div><button class="btn-icon" onclick="document.getElementById('req-log').innerHTML='<div class=\'req-log-row head\'><div>Method</div><div>Endpoint</div><div>Status</div><div>Time</div><div>Latency</div></div>'">Clear Log</button></div>
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Request Log</div>
+              <div class="a-card-sub">Last 10 API calls</div>
+            </div><button class="btn-icon"
+              onclick="document.getElementById('req-log').innerHTML='<div class=\'req-log-row head\'><div>Method</div><div>Endpoint</div><div>Status</div><div>Time</div><div>Latency</div></div>'">Clear
+              Log</button>
+          </div>
           <div id="req-log">
-            <div class="req-log-row head"><div>Method</div><div>Endpoint</div><div>Status</div><div>Timestamp</div><div>Latency</div></div>
+            <div class="req-log-row head">
+              <div>Method</div>
+              <div>Endpoint</div>
+              <div>Status</div>
+              <div>Timestamp</div>
+              <div>Latency</div>
+            </div>
           </div>
         </div>
       </div>
@@ -388,7 +1726,10 @@
       <div id="ap-swagger" style="display:none">
         <div class="a-card">
           <div class="a-card-head">
-            <div><div class="a-card-title">API Documentation — Swagger UI</div><div class="a-card-sub">Keenan Travel REST API · OpenAPI 3.0 · Interactive</div></div>
+            <div>
+              <div class="a-card-title">API Documentation — Swagger UI</div>
+              <div class="a-card-sub">Keenan Travel REST API · OpenAPI 3.0 · Interactive</div>
+            </div>
             <div class="a-card-right">
               <span class="badge b-green">v1.0.0</span>
               <button class="btn-ghost btn-sm" onclick="downloadSpec()">⬇ Download Spec</button>
@@ -400,16 +1741,36 @@
 
       <div id="ap-database" style="display:none">
         <div class="kpi-grid mb20">
-          <div class="kpi-card"><div class="kpi-label">Total Tables</div><div class="kpi-num">14</div><div class="kpi-change up" style="color:var(--slate2)">MySQL 8.0+</div></div>
-          <div class="kpi-card"><div class="kpi-label">Est. Total Rows</div><div class="kpi-num">~52K</div><div class="kpi-change up">Across all tables</div></div>
-          <div class="kpi-card"><div class="kpi-label">Database Size</div><div class="kpi-num">~128 MB</div><div class="kpi-change nt">Incl. indexes</div></div>
-          <div class="kpi-card"><div class="kpi-label">Last Migration</div><div class="kpi-num">v1.0</div><div class="kpi-change up">10 Apr 2026</div></div>
+          <div class="kpi-card">
+            <div class="kpi-label">Total Tables</div>
+            <div class="kpi-num">14</div>
+            <div class="kpi-change up" style="color:var(--slate2)">MySQL 8.0+</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Est. Total Rows</div>
+            <div class="kpi-num">~52K</div>
+            <div class="kpi-change up">Across all tables</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Database Size</div>
+            <div class="kpi-num">~128 MB</div>
+            <div class="kpi-change nt">Incl. indexes</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Last Migration</div>
+            <div class="kpi-num">v1.0</div>
+            <div class="kpi-change up">10 Apr 2026</div>
+          </div>
         </div>
-        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'db-schema')">Schema Explorer</button><button class="a-tab" onclick="aTab(this,'db-erd')">Entity Diagram (ERD)</button><button class="a-tab" onclick="aTab(this,'db-sql')">Full SQL Export</button></div>
+        <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'db-schema')">Schema Explorer</button><button
+            class="a-tab" onclick="aTab(this,'db-erd')">Entity Diagram (ERD)</button><button class="a-tab"
+            onclick="aTab(this,'db-sql')">Full SQL Export</button></div>
         <div class="a-tab-c act" id="db-schema">
           <div class="grid" style="grid-template-columns:220px 1fr;gap:16px">
             <div class="a-card" style="padding:12px">
-              <div style="font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:1px;padding:4px 10px 10px">Tables</div>
+              <div
+                style="font-size:11px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:1px;padding:4px 10px 10px">
+                Tables</div>
               <div class="schema-table-nav" id="schema-nav"></div>
             </div>
             <div class="a-card" id="schema-detail" style="padding:24px">
@@ -419,34 +1780,399 @@
         </div>
         <div class="a-tab-c" id="db-erd">
           <div class="a-card">
-            <div class="a-card-head"><div class="a-card-title">Entity Relationship Diagram</div><div class="a-card-sub">Click any table to view schema</div></div>
+            <div class="a-card-head">
+              <div class="a-card-title">Entity Relationship Diagram</div>
+              <div class="a-card-sub">Click any table to view schema</div>
+            </div>
             <div class="erd-wrap" id="erd-wrap"></div>
           </div>
         </div>
         <div class="a-tab-c" id="db-sql">
           <div class="a-card">
-            <div class="a-card-head"><div><div class="a-card-title">Full MySQL Schema Export</div><div class="a-card-sub">Complete CREATE TABLE statements</div></div><div class="a-card-right"><button class="btn-ghost btn-sm" onclick="copySql()">📋 Copy All</button><button class="btn-gold btn-sm" onclick="downloadSql()">⬇ Download .sql</button></div></div>
-            <div style="padding:20px"><div class="sql-block" id="full-sql-export"><button class="sql-copy-btn" onclick="copySql()">Copy</button><div id="full-sql-content"></div></div></div>
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Full MySQL Schema Export</div>
+                <div class="a-card-sub">Complete CREATE TABLE statements</div>
+              </div>
+              <div class="a-card-right"><button class="btn-ghost btn-sm" onclick="copySql()">📋 Copy All</button><button
+                  class="btn-gold btn-sm" onclick="downloadSql()">⬇ Download .sql</button></div>
+            </div>
+            <div style="padding:20px">
+              <div class="sql-block" id="full-sql-export"><button class="sql-copy-btn" onclick="copySql()">Copy</button>
+                <div id="full-sql-content"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
       <div id="ap-reports" style="display:none">
         <div class="grid g2 gap20 mb20">
-          <div class="a-card"><div class="a-card-head"><div class="a-card-title">Bookings Trend</div></div><div class="bar-chart-wrap"><div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="312" style="background:var(--ink2);height:60%"></div></div><div class="bc-label">Jan</div></div><div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="340" style="background:var(--ink2);height:65%"></div></div><div class="bc-label">Feb</div></div><div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="390" style="background:var(--ink2);height:75%"></div></div><div class="bc-label">Mar</div></div><div class="bc-group"><div class="bc-bar-wrap"><div class="bc-bar" data-v="420" style="background:var(--gold);height:80%"></div></div><div class="bc-label">Apr</div></div><div class="bc-group" style="opacity:.3"><div class="bc-bar-wrap"><div class="bc-bar" style="background:var(--surface3);height:84%"></div></div><div class="bc-label">May</div></div><div class="bc-group" style="opacity:.3"><div class="bc-bar-wrap"><div class="bc-bar" style="background:var(--surface3);height:88%"></div></div><div class="bc-label">Jun</div></div></div></div>
-          <div class="a-card"><div class="a-card-head"><div class="a-card-title">Service Performance</div></div><div style="padding:20px 22px"><div class="report-bar-row"><div class="report-bar-label">✈ Flights</div><div class="report-bar-track"><div class="report-bar-fill" style="background:var(--gold);width:43%"></div></div><div class="report-bar-val">AED 1.8M</div></div><div class="report-bar-row"><div class="report-bar-label">🕌 Umrah</div><div class="report-bar-track"><div class="report-bar-fill" style="background:var(--green);width:23%"></div></div><div class="report-bar-val">AED 980K</div></div><div class="report-bar-row"><div class="report-bar-label">🌴 Holiday</div><div class="report-bar-track"><div class="report-bar-fill" style="background:var(--blue);width:21%"></div></div><div class="report-bar-val">AED 870K</div></div><div class="report-bar-row"><div class="report-bar-label">🚢 Cruise</div><div class="report-bar-track"><div class="report-bar-fill" style="background:var(--amber);width:8%"></div></div><div class="report-bar-val">AED 340K</div></div><div class="report-bar-row" style="margin-bottom:0"><div class="report-bar-label">🛂 Visa</div><div class="report-bar-track"><div class="report-bar-fill" style="background:var(--purple);width:5%"></div></div><div class="report-bar-val">AED 210K</div></div></div></div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Bookings Trend</div>
+            </div>
+            <div class="bar-chart-wrap">
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="312" style="background:var(--ink2);height:60%"></div>
+                </div>
+                <div class="bc-label">Jan</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="340" style="background:var(--ink2);height:65%"></div>
+                </div>
+                <div class="bc-label">Feb</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="390" style="background:var(--ink2);height:75%"></div>
+                </div>
+                <div class="bc-label">Mar</div>
+              </div>
+              <div class="bc-group">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" data-v="420" style="background:var(--gold);height:80%"></div>
+                </div>
+                <div class="bc-label">Apr</div>
+              </div>
+              <div class="bc-group" style="opacity:.3">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" style="background:var(--surface3);height:84%"></div>
+                </div>
+                <div class="bc-label">May</div>
+              </div>
+              <div class="bc-group" style="opacity:.3">
+                <div class="bc-bar-wrap">
+                  <div class="bc-bar" style="background:var(--surface3);height:88%"></div>
+                </div>
+                <div class="bc-label">Jun</div>
+              </div>
+            </div>
+          </div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Service Performance</div>
+            </div>
+            <div style="padding:20px 22px">
+              <div class="report-bar-row">
+                <div class="report-bar-label">✈ Flights</div>
+                <div class="report-bar-track">
+                  <div class="report-bar-fill" style="background:var(--gold);width:43%"></div>
+                </div>
+                <div class="report-bar-val">AED 1.8M</div>
+              </div>
+              <div class="report-bar-row">
+                <div class="report-bar-label">🕌 Umrah</div>
+                <div class="report-bar-track">
+                  <div class="report-bar-fill" style="background:var(--green);width:23%"></div>
+                </div>
+                <div class="report-bar-val">AED 980K</div>
+              </div>
+              <div class="report-bar-row">
+                <div class="report-bar-label">🌴 Holiday</div>
+                <div class="report-bar-track">
+                  <div class="report-bar-fill" style="background:var(--blue);width:21%"></div>
+                </div>
+                <div class="report-bar-val">AED 870K</div>
+              </div>
+              <div class="report-bar-row">
+                <div class="report-bar-label">🚢 Cruise</div>
+                <div class="report-bar-track">
+                  <div class="report-bar-fill" style="background:var(--amber);width:8%"></div>
+                </div>
+                <div class="report-bar-val">AED 340K</div>
+              </div>
+              <div class="report-bar-row" style="margin-bottom:0">
+                <div class="report-bar-label">🛂 Visa</div>
+                <div class="report-bar-track">
+                  <div class="report-bar-fill" style="background:var(--purple);width:5%"></div>
+                </div>
+                <div class="report-bar-val">AED 210K</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="settings-section"><div class="settings-section-title">Generate Report</div><div class="field-row"><div class="field"><label>Report Type</label><select><option>Revenue Report</option><option>Booking Summary</option><option>Customer Activity</option><option>Visa Status Report</option></select></div><div class="field"><label>Date Range</label><select><option>This Month</option><option>Last Month</option><option>Last Quarter</option><option>Custom Range</option></select></div><div class="field"><label>Service</label><select><option>All Services</option><option>Flights</option><option>Umrah</option><option>Holiday</option><option>Cruise</option><option>Visa</option></select></div><div class="field"><label>Format</label><select><option>PDF</option><option>Excel (CSV)</option></select></div></div><div style="margin-top:16px"><button class="btn-navy">⬇ Generate & Download</button></div></div>
+        <div class="settings-section">
+          <div class="settings-section-title">Generate Report</div>
+          <div class="field-row">
+            <div class="field"><label>Report Type</label><select>
+                <option>Revenue Report</option>
+                <option>Booking Summary</option>
+                <option>Customer Activity</option>
+                <option>Visa Status Report</option>
+              </select></div>
+            <div class="field"><label>Date Range</label><select>
+                <option>This Month</option>
+                <option>Last Month</option>
+                <option>Last Quarter</option>
+                <option>Custom Range</option>
+              </select></div>
+            <div class="field"><label>Service</label><select>
+                <option>All Services</option>
+                <option>Flights</option>
+                <option>Umrah</option>
+                <option>Holiday</option>
+                <option>Cruise</option>
+                <option>Visa</option>
+              </select></div>
+            <div class="field"><label>Format</label><select>
+                <option>PDF</option>
+                <option>Excel (CSV)</option>
+              </select></div>
+          </div>
+          <div style="margin-top:16px"><button class="btn-navy">⬇ Generate & Download</button></div>
+        </div>
+      </div>
+
+      <!-- ── Refunds Panel ─────────────────────────────────────────────────── -->
+      <div id="ap-refunds" style="display:none">
+        <div class="a-card mb20">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Refund Requests</div>
+              <div class="a-card-sub">Review and process customer refunds</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select id="refund-status-filter" class="tbl-select" onchange="loadRefunds()"
+                style="padding:7px 10px;font-size:12px">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="processed">Processed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button class="btn-navy btn-sm" onclick="loadRefunds()">↻ Refresh</button>
+            </div>
+          </div>
+          <div id="refunds-table-wrap">
+            <table class="a-table">
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Booking</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Reason</th>
+                  <th>Requested</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="refunds-tbody">
+                <tr>
+                  <td colspan="8" style="text-align:center;color:var(--slate);padding:30px">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Reissues Panel ─────────────────────────────────────────────────── -->
+      <div id="ap-reissues" style="display:none">
+        <div class="a-card mb20">
+          <div class="a-card-head">
+            <div>
+              <div class="a-card-title">Re-issue Requests</div>
+              <div class="a-card-sub">Manage flight ticket changes and re-issuances</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select id="reissue-status-filter" class="tbl-select" onchange="loadReissues()"
+                style="padding:7px 10px;font-size:12px">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="approved">Approved</option>
+                <option value="processed">Processed</option>
+                <option value="rejected">Rejected</option>
+              </select>
+              <button class="btn-navy btn-sm" onclick="loadReissues()">↻ Refresh</button>
+            </div>
+          </div>
+          <div id="reissues-table-wrap">
+            <table class="a-table">
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Booking</th>
+                  <th>Customer</th>
+                  <th>Original Flight</th>
+                  <th>New Flight</th>
+                  <th>Fee</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="reissues-tbody">
+                <tr>
+                  <td colspan="8" style="text-align:center;color:var(--slate);padding:30px">Loading…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Payment Settings Panel ─────────────────────────────────────────── -->
+      <div id="ap-payment-settings" style="display:none">
+        <div class="grid g2 gap20">
+          <div>
+            <div class="settings-section">
+              <div class="settings-section-title">Stripe Payment Gateway</div>
+              <p style="font-size:13px;color:var(--slate);margin-bottom:16px">Configure your Stripe API keys for
+                processing customer payments. These keys are stored securely in the database.</p>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="field">
+                  <label>Environment</label>
+                  <select id="ps-stripe-env">
+                    <option value="sandbox">Sandbox (Test)</option>
+                    <option value="production">Production (Live)</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label>Publishable Key</label>
+                  <input type="text" id="ps-stripe-pub-key" placeholder="pk_test_…" autocomplete="off">
+                </div>
+                <div class="field">
+                  <label>Secret Key</label>
+                  <input type="password" id="ps-stripe-secret-key" placeholder="sk_test_…" autocomplete="off">
+                </div>
+                <div
+                  style="background:var(--blue-bg,#eff6ff);border:1px solid rgba(29,78,216,.15);border-radius:8px;padding:12px;font-size:12px;color:var(--blue,#1d4ed8)">
+                  💡 For testing, use Stripe test card <strong>4242 4242 4242 4242</strong> · Any future expiry · Any
+                  3-digit CVC
+                </div>
+                <div style="display:flex;gap:10px">
+                  <button class="btn-navy" onclick="savePaymentSettings()">Save Keys</button>
+                  <button class="btn-outline" id="ps-stripe-test-btn" onclick="testPaymentSettings()">🔗 Test
+                    Connection</button>
+                </div>
+                <div id="ps-stripe-test-result" style="display:none;padding:12px;border-radius:8px;font-size:13px">
+                </div>
+                <div id="ps-stripe-status"
+                  style="display:none;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:600;width:fit-content">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="settings-section">
+              <div class="settings-section-title">Payment Overview</div>
+              <div id="ps-payment-kpis" style="display:flex;flex-direction:column;gap:12px">
+                <div
+                  style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--surface3)">
+                  <span class="fs13">Gateway Status</span>
+                  <span class="badge" id="ps-gateway-status-badge"
+                    style="background:var(--surface2);color:var(--slate)">Not Configured</span>
+                </div>
+                <div
+                  style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--surface3)">
+                  <span class="fs13">Environment</span>
+                  <span id="ps-env-badge" style="font-size:12px;color:var(--slate)">—</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0">
+                  <span class="fs13">Pending Refunds</span>
+                  <span id="ps-pending-refunds"
+                    style="font-size:13px;font-weight:700;color:var(--amber,#d97706)">—</span>
+                </div>
+              </div>
+            </div>
+            <div class="settings-section mt16">
+              <div class="settings-section-title">Security Notes</div>
+              <ul style="font-size:13px;color:var(--slate);padding-left:16px;line-height:1.8;margin:0">
+                <li>Secret keys are encrypted at rest in the database</li>
+                <li>Keys are never exposed in frontend responses</li>
+                <li>Use test keys in sandbox; switch to live keys only when ready</li>
+                <li>Rotate keys immediately if you suspect a compromise</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div id="ap-settings" style="display:none">
         <div class="grid g2 gap20">
           <div>
-            <div class="settings-section"><div class="settings-section-title">General Settings</div><div style="display:flex;flex-direction:column;gap:14px"><div class="field"><label>Company Name</label><input type="text" value="Keenan Travel LLC"></div><div class="field"><label>Support Email</label><input type="email" value="info@keenantravel.com"></div><div class="field"><label>Support Phone</label><input type="tel" value="+971 4 000 0000"></div><div class="field"><label>Default Currency</label><select><option selected>AED — UAE Dirham</option><option>USD — US Dollar</option><option>GBP — British Pound</option><option>SAR — Saudi Riyal</option></select></div><div class="field"><label>Default Language</label><select><option selected>English</option><option>Arabic</option><option>Both</option></select></div><button class="btn-navy" onclick="toast('Settings saved successfully','t-green')">Save Settings</button></div></div>
+            <div class="settings-section">
+              <div class="settings-section-title">General Settings</div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <div class="field"><label>Company Name</label><input type="text" value="Keenan Travel LLC"></div>
+                <div class="field"><label>Support Email</label><input type="email" value="info@keenantravel.com"></div>
+                <div class="field"><label>Support Phone</label><input type="tel" value="+971 4 000 0000"></div>
+                <div class="field"><label>Default Currency</label><select>
+                    <option selected>AED — UAE Dirham</option>
+                    <option>USD — US Dollar</option>
+                    <option>GBP — British Pound</option>
+                    <option>SAR — Saudi Riyal</option>
+                  </select></div>
+                <div class="field"><label>Default Language</label><select>
+                    <option selected>English</option>
+                    <option>Arabic</option>
+                    <option>Both</option>
+                  </select></div><button class="btn-navy" onclick="toast('Settings saved successfully','t-green')">Save
+                  Settings</button>
+              </div>
+            </div>
           </div>
           <div>
-            <div class="settings-section mb16"><div class="settings-section-title">Notifications</div><div style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">New booking alerts</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-thumb"></span></label></div><div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Visa application updates</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-thumb"></span></label></div><div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Payment confirmations</span><label class="toggle-switch"><input type="checkbox" checked><span class="toggle-thumb"></span></label></div><div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Daily revenue summary</span><label class="toggle-switch"><input type="checkbox"><span class="toggle-thumb"></span></label></div></div></div>
-            <div class="settings-section"><div class="settings-section-title">Admin Users</div><div style="display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--surface3)"><div class="flex aic gap10"><div class="avatar" style="width:34px;height:34px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:12px">KA</div><div><div class="fs13 semi">Keenan Admin</div><div class="fs12 slate2">Super Admin</div></div></div><span class="badge b-gold">Super Admin</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--surface3)"><div class="flex aic gap10"><div class="avatar" style="width:34px;height:34px;background:rgba(29,78,216,.1);color:var(--blue);font-size:12px">SK</div><div><div class="fs13 semi">Sarah Khalil</div><div class="fs12 slate2">Visa Manager</div></div></div><span class="badge b-blue">Manager</span></div><div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0"><div class="flex aic gap10"><div class="avatar" style="width:34px;height:34px;background:rgba(15,123,91,.1);color:var(--green);font-size:12px">KM</div><div><div class="fs13 semi">Khalid Mohammed</div><div class="fs12 slate2">Bookings Agent</div></div></div><span class="badge b-green">Agent</span></div></div><button class="btn-outline btn-sm mt16">+ Invite Admin User</button></div>
+            <div class="settings-section mb16">
+              <div class="settings-section-title">Notifications</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">New
+                    booking alerts</span><label class="toggle-switch"><input type="checkbox" checked><span
+                      class="toggle-thumb"></span></label></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Visa
+                    application updates</span><label class="toggle-switch"><input type="checkbox" checked><span
+                      class="toggle-thumb"></span></label></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Payment
+                    confirmations</span><label class="toggle-switch"><input type="checkbox" checked><span
+                      class="toggle-thumb"></span></label></div>
+                <div style="display:flex;align-items:center;justify-content:space-between"><span class="fs14">Daily
+                    revenue summary</span><label class="toggle-switch"><input type="checkbox"><span
+                      class="toggle-thumb"></span></label></div>
+              </div>
+            </div>
+            <div class="settings-section">
+              <div class="settings-section-title">Admin Users</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div
+                  style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--surface3)">
+                  <div class="flex aic gap10">
+                    <div class="avatar"
+                      style="width:34px;height:34px;background:rgba(200,169,110,.15);color:var(--gold3);font-size:12px">
+                      KA</div>
+                    <div>
+                      <div class="fs13 semi">Keenan Admin</div>
+                      <div class="fs12 slate2">Super Admin</div>
+                    </div>
+                  </div><span class="badge b-gold">Super Admin</span>
+                </div>
+                <div
+                  style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--surface3)">
+                  <div class="flex aic gap10">
+                    <div class="avatar"
+                      style="width:34px;height:34px;background:rgba(29,78,216,.1);color:var(--blue);font-size:12px">SK
+                    </div>
+                    <div>
+                      <div class="fs13 semi">Sarah Khalil</div>
+                      <div class="fs12 slate2">Visa Manager</div>
+                    </div>
+                  </div><span class="badge b-blue">Manager</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+                  <div class="flex aic gap10">
+                    <div class="avatar"
+                      style="width:34px;height:34px;background:rgba(15,123,91,.1);color:var(--green);font-size:12px">KM
+                    </div>
+                    <div>
+                      <div class="fs13 semi">Khalid Mohammed</div>
+                      <div class="fs12 slate2">Bookings Agent</div>
+                    </div>
+                  </div><span class="badge b-green">Agent</span>
+                </div>
+              </div><button class="btn-outline btn-sm mt16">+ Invite Admin User</button>
+            </div>
           </div>
         </div>
       </div>
@@ -454,4 +2180,3 @@
     </div>
   </div>
 </div>
-

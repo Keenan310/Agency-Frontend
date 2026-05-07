@@ -1,0 +1,13 @@
+.umr-card { background: var(--surface, #fff); border: 1px solid var(--surface3, #e5e7eb); border-radius: var(--r, 12px); padding: 20px; cursor: pointer; transition: box-shadow .15s, border-color .15s; }
+.umr-card:hover { border-color: var(--gold, #c8a45a); box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.umr-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+.umr-name { font-size: 16px; font-weight: 700; color: var(--ink, #111); }
+.umr-nights { font-size: 12px; background: var(--gold-bg, #fdf8ef); color: var(--gold, #c8a45a); padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+.umr-hotel { font-size: 13px; color: var(--slate, #6b7280); margin-bottom: 8px; }
+.umr-includes { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.umr-tag { font-size: 11px; background: var(--surface2, #f3f4f6); color: var(--ink2, #374151); padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+.umr-footer { display: flex; align-items: center; justify-content: space-between; }
+.umr-price { font-size: 20px; font-weight: 700; color: var(--gold, #c8a45a); }
+.umr-price-label { font-size: 11px; color: var(--slate2, #9ca3af); }
+.umr-btn { padding: 10px 20px; background: var(--gold, #c8a45a); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+.umr-btn:hover { background: var(--gold2, #b8943a); }

@@ -1,1 +1,38 @@
 #site-nav{position:sticky;top:0;z-index:80;}
+
+/* Country Selector */
+.country-selector { position: relative; }
+.country-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: none; border: 1px solid rgba(255,255,255,.18);
+  color: rgba(255,255,255,.75); font-size: 13px; font-weight: 600;
+  padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  transition: all .2s; font-family: var(--sans);
+}
+.country-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cs-cur {
+  background: rgba(200,169,110,.18); color: var(--gold);
+  font-size: 11px; font-weight: 700; padding: 2px 7px;
+  border-radius: 5px; letter-spacing: .5px;
+}
+.country-menu {
+  display: none; position: absolute; top: calc(100% + 8px); right: 0;
+  background: var(--ink2); border: 1px solid rgba(200,169,110,.2);
+  border-radius: 12px; padding: 8px; min-width: 240px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35); z-index: 300;
+}
+.country-menu.open { display: block; }
+.cm-option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px; border-radius: 8px; cursor: pointer;
+  transition: background .15s;
+}
+.cm-option:hover { background: rgba(255,255,255,.07); }
+.cm-flag { font-size: 22px; }
+.cm-name { font-size: 14px; font-weight: 700; color: #fff; }
+.cm-detail { font-size: 11px; color: rgba(255,255,255,.4); margin-top: 1px; }
+.cm-check { margin-left: auto; color: var(--gold); font-weight: 700; }
+.cm-divider { border-top: 1px solid rgba(255,255,255,.08); margin: 6px 0; }
+.cm-lang-row { display: flex; gap: 8px; padding: 4px 12px; }
+.cm-lang-btn { background: none; border: none; color: var(--gold); cursor: pointer; font-size: 12px; font-weight: 600; }
+.cm-lang-btn:hover { text-decoration: underline; }

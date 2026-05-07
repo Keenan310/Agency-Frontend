@@ -28,6 +28,11 @@
       <div data-module-slot="auth-modal"></div>
       <div data-module-slot="customer-portal"></div>
       <div data-module-slot="page-admin-login"></div>
+      <!-- service modules: logic-only, not visible -->
+      <div data-module-slot="service-flights"  style="display:none"></div>
+      <div data-module-slot="service-umrah"    style="display:none"></div>
+      <div data-module-slot="service-holidays" style="display:none"></div>
+      <div data-module-slot="service-payments" style="display:none"></div>
     </div>
   `;
 
@@ -46,7 +51,12 @@
     { name: 'order-modals',    slot: '[data-module-slot="order-modals"]',    html: './src/components/order-modals/index.html',   css: './src/components/order-modals/index.css',    js: './src/components/order-modals/index.js' },
     { name: 'auth-modal',      slot: '[data-module-slot="auth-modal"]',      html: './src/components/auth-modal/index.html',     css: './src/components/auth-modal/index.css',      js: './src/components/auth-modal/index.js' },
     { name: 'customer-portal', slot: '[data-module-slot="customer-portal"]', html: './src/components/customer-portal/index.html', css: './src/components/customer-portal/index.css', js: './src/components/customer-portal/index.js' },
-    { name: 'page-admin-login', slot: '[data-module-slot="page-admin-login"]', html: './src/pages/admin-login/index.html',      css: './src/pages/admin-login/index.css',          js: './src/pages/admin-login/index.js' },
+    { name: 'page-admin-login', slot: '[data-module-slot="page-admin-login"]', html: './src/pages/admin-login/index.html',         css: './src/pages/admin-login/index.css',             js: './src/pages/admin-login/index.js' },
+    // ── Service modules (logic-only, no visible HTML) ──────────────────────────
+    { name: 'service-flights',  slot: '[data-module-slot="service-flights"]',  html: './src/services/flights/index.html',          css: './src/services/flights/style.css',             js: './src/services/flights/script.js' },
+    { name: 'service-umrah',    slot: '[data-module-slot="service-umrah"]',    html: './src/services/umrah/index.html',            css: './src/services/umrah/style.css',               js: './src/services/umrah/script.js' },
+    { name: 'service-holidays', slot: '[data-module-slot="service-holidays"]', html: './src/services/holidays/index.html',         css: './src/services/holidays/style.css',            js: './src/services/holidays/script.js' },
+    { name: 'service-payments', slot: '[data-module-slot="service-payments"]', html: './src/services/payments/index.html',         css: './src/services/payments/style.css',            js: './src/services/payments/script.js' },
   ];
 
   function showLoadingState() {

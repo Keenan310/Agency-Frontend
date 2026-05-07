@@ -218,8 +218,13 @@
     const adminRole = document.getElementById("admin-role");
 
     if (authBtn) {
-      authBtn.textContent = state.session ? sessionUserName() : "Sign In";
-      authBtn.onclick = isCustomerSession() ? openCustomerPortal : () => openAuthModal("customer");
+      if (isAdminSession()) {
+        authBtn.textContent = "Return to Admin";
+        authBtn.onclick = () => { if (typeof window.go === "function") window.go("admin"); };
+      } else {
+        authBtn.textContent = state.session ? sessionUserName() : "Sign In";
+        authBtn.onclick = isCustomerSession() ? openCustomerPortal : () => openAuthModal("customer");
+      }
     }
 
     if (accountBtn) {
@@ -509,7 +514,7 @@
           <td class="fs13">${escapeHtml(customer.phone || "—")}</td>
           <td class="fs13">${escapeHtml(nationality)}</td>
           <td class="semi">${Number(customer.total_bookings || 0)}</td>
-          <td class="semi">${escapeHtml(formatCurrency(customer.total_spent || 0, "AED"))}</td>
+          <td class="semi">${escapeHtml(formatCurrency(customer.total_spent || 0, localStorage.getItem("admin_country") === "PK" ? "PKR" : "AED"))}</td>
           <td class="fs13">${escapeHtml(formatDate(customer.updated_at || customer.created_at))}</td>
           <td><select class="${statusSelectClass(status)}" onchange="chgStatus(this)"><option value="active"${status === "active" ? " selected" : ""}>Active</option><option value="inactive"${status === "inactive" ? " selected" : ""}>Inactive</option><option value="blocked"${status === "blocked" ? " selected" : ""}>Blocked</option></select></td>
           <td class="td-actions"><button class="btn-icon">View</button></td>
@@ -595,7 +600,7 @@
           <td>${escapeHtml(item.destination_country)}</td>
           <td>${escapeHtml(item.visa_type)}</td>
           <td>${escapeHtml(formatDate(item.travel_date))}</td>
-          <td class="semi">${escapeHtml(formatCurrency(item.fee_paid, "AED"))}</td>
+          <td class="semi">${escapeHtml(formatCurrency(item.fee_paid, item.currency || (localStorage.getItem("admin_country") === "PK" ? "PKR" : "AED")))}</td>
           <td><select class="${statusSelectClass(status)}" onchange="chgStatus(this)"><option value="pending"${status === "pending" ? " selected" : ""}>Pending</option><option value="processing"${status === "processing" ? " selected" : ""}>Processing</option><option value="approved"${status === "approved" ? " selected" : ""}>Approved</option><option value="rejected"${status === "rejected" ? " selected" : ""}>Rejected</option></select></td>
           <td class="td-actions"><button class="btn-icon">View</button></td>
         </tr>`;
@@ -615,7 +620,7 @@
         <td>${Number(item.nights || 0)}</td>
         <td>${escapeHtml(item.makkah_hotel || "—")}</td>
         <td>${escapeHtml(item.madinah_hotel || "—")}</td>
-        <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, "AED"))}</td>
+        <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))}</td>
         <td><span class="badge ${item.visa_included ? "b-green" : "b-red"}">${item.visa_included ? "Yes" : "No"}</span></td>
         <td>${Number(item.bookings_count || 0)}</td>
         <td class="td-actions"><button class="btn-icon" onclick="deletePackage('umrah', ${item.id})">Delete</button></td>
@@ -636,7 +641,7 @@
           <td>${escapeHtml(item.destination)}</td>
           <td>${Number(item.nights || 0)}</td>
           <td class="gold">${"★".repeat(Number(item.star_rating || 0))}</td>
-          <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, "AED"))}</td>
+          <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))}</td>
           <td><span class="badge ${item.meal_plan === "all_inclusive" ? "b-green" : item.meal_plan === "half_board" ? "b-amber" : "b-slate"}">${escapeHtml(titleCase(item.meal_plan))}</span></td>
           <td>${Number(item.bookings_count || 0)}</td>
           <td><select class="${statusSelectClass(status)}" onchange="chgStatus(this)"><option value="active"${status === "active" ? " selected" : ""}>Active</option><option value="inactive"${status === "inactive" ? " selected" : ""}>Inactive</option></select></td>
@@ -660,7 +665,7 @@
           <td>${escapeHtml(formatDate(item.departure_date))}</td>
           <td>${Number(item.nights || 0)}</td>
           <td>${escapeHtml(titleCase(item.cabin_type))}</td>
-          <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, "AED"))}</td>
+          <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))}</td>
           <td class="td-actions"><button class="btn-icon" onclick="deletePackage('cruise', ${item.id})">Delete</button></td>
         </tr>`,
       )
@@ -675,7 +680,7 @@
       umrahSelect.innerHTML = state.umrahPackages
         .map(
           (item) =>
-            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} — ${Number(item.nights || 0)}N (${escapeHtml(formatCurrency(item.price_per_person, "AED"))})</option>`,
+            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} — ${Number(item.nights || 0)}N (${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))})</option>`,
         )
         .join("");
     }
@@ -683,7 +688,7 @@
       holidaySelect.innerHTML = state.holidayPackages
         .map(
           (item) =>
-            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} (${escapeHtml(formatCurrency(item.price_per_person, "AED"))})</option>`,
+            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} (${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))})</option>`,
         )
         .join("");
     }
@@ -691,18 +696,20 @@
       cruiseSelect.innerHTML = state.cruisePackages
         .map(
           (item) =>
-            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} (${escapeHtml(formatCurrency(item.price_per_person, "AED"))})</option>`,
+            `<option value="${item.id}" data-price="${item.price_per_person}">${escapeHtml(item.name)} (${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))})</option>`,
         )
         .join("");
     }
   }
 
-  async function loadAdminDashboard() {
-    const data = await apiRequest("/admin/dashboard");
+  async function loadAdminDashboard(q = "") {
+    const data = await apiRequest(`/admin/dashboard${q}`);
+    const ac = localStorage.getItem("admin_country");
+    const currency = ac === "PK" ? "PKR" : "AED";
     const cards = document.querySelectorAll("#ap-dashboard .kpi-card .kpi-num");
     if (cards.length >= 4) {
       cards[0].textContent = Number(data.total_bookings || 0).toLocaleString();
-      cards[1].textContent = formatCurrency(data.total_revenue || 0, "AED");
+      cards[1].textContent = formatCurrency(data.total_revenue || 0, currency);
       cards[2].textContent = Number(data.active_customers || 0).toLocaleString();
       cards[3].textContent = Number(data.pending_actions || 0).toLocaleString();
     }
@@ -719,18 +726,36 @@
     }
   }
 
+  window.switchAdminPortal = function(countryCode) {
+    if (countryCode) {
+      localStorage.setItem("admin_country", countryCode);
+    } else {
+      localStorage.removeItem("admin_country");
+    }
+    syncAdminData();
+  };
+
   async function syncAdminData() {
     if (!isAdminSession()) return;
 
+    const sel = document.getElementById("admin-portal-selector");
+    if (sel) {
+      sel.value = localStorage.getItem("admin_country") || "";
+    }
+
+    const ac = localStorage.getItem("admin_country");
+    const q = ac ? `?country_code=${ac}` : "";
+    const qA = ac ? `&country_code=${ac}` : "";
+
     const results = await Promise.allSettled([
-      loadAdminDashboard(),
-      apiRequest("/admin/bookings?limit=50").then((data) => renderOrderRows(data.data || [])),
-      apiRequest("/customers?limit=25").then((data) => renderCustomerRows(data.data || [])),
-      apiRequest("/flights/bookings?limit=25").then((data) => renderFlightRows(data.data || [])),
-      apiRequest("/visa/applications?limit=25").then((data) => renderVisaRows(data.data || [])),
-      apiRequest("/umrah/packages").then((data) => renderUmrahRows(data.data || data || [])),
-      apiRequest("/holiday/packages").then((data) => renderHolidayRows(data.data || data || [])),
-      apiRequest("/cruise/packages").then((data) => renderCruiseRows(data.data || data || [])),
+      loadAdminDashboard(q),
+      apiRequest(`/admin/bookings?limit=50${qA}`).then((data) => renderOrderRows(data.data || [])),
+      apiRequest(`/customers?limit=25${qA}`).then((data) => renderCustomerRows(data.data || [])),
+      apiRequest(`/flights/bookings?limit=25${qA}`).then((data) => renderFlightRows(data.data || [])),
+      apiRequest(`/visa/applications?limit=25${qA}`).then((data) => renderVisaRows(data.data || [])),
+      apiRequest(`/umrah/packages${q}`).then((data) => renderUmrahRows(data.data || data || [])),
+      apiRequest(`/holiday/packages${q}`).then((data) => renderHolidayRows(data.data || data || [])),
+      apiRequest(`/cruise/packages${q}`).then((data) => renderCruiseRows(data.data || data || [])),
       refreshHeroSlidesAdmin(),
     ]);
 
@@ -862,6 +887,7 @@
       visa_included: document.getElementById("up-visa").value === "1",
       flights_included: document.getElementById("up-flights").value === "1",
       transport_type: document.getElementById("up-transport").value,
+      country_code: document.getElementById("up-portal").value,
     };
     if (!payload.name || !payload.makkah_hotel || !payload.madinah_hotel || !payload.price_per_person) {
       toast("Complete the Umrah package form before saving", "t-red");
@@ -891,6 +917,7 @@
       meal_plan: document.getElementById("hp-meal").value,
       flights_included: document.getElementById("hp-flights").value === "1",
       is_active: document.getElementById("hp-status").value === "active",
+      portal_country: document.getElementById("hp-portal").value,
     };
     if (!payload.name || !payload.destination || !payload.country_code || !payload.price_per_person) {
       toast("Complete the holiday package form before saving", "t-red");
@@ -919,6 +946,7 @@
       cabin_type: document.getElementById("cp-cabin").value,
       price_per_person: Number(document.getElementById("cp-price").value || 0),
       is_active: document.getElementById("cp-status").value === "active",
+      country_code: document.getElementById("cp-portal").value,
     };
     if (!payload.name || !payload.ship_name || !payload.cruise_line || !payload.departure_date || !payload.price_per_person) {
       toast("Complete the cruise package form before saving", "t-red");
@@ -1493,6 +1521,7 @@
   window.signInWithGoogle = signInWithGoogle;
   window.openCustomerPortal = openCustomerPortal;
   window.logoutSession = logoutSession;
+  window.persistSession = persistSession;
   window.openAdminAccess = openAdminAccess;
   window.submitCustomerCreate = submitCustomerCreate;
   window.submitUmrahPackage = submitUmrahPackage;

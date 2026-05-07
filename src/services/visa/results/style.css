@@ -1,0 +1,14 @@
+.vis-card { background: var(--surface, #fff); border: 1px solid var(--surface3, #e5e7eb); border-radius: var(--r, 12px); padding: 20px; cursor: pointer; transition: box-shadow .15s, border-color .15s; }
+.vis-card:hover { border-color: var(--gold, #c8a45a); box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+.vis-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.vis-country { font-size: 16px; font-weight: 700; color: var(--ink, #111); }
+.vis-type-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; text-transform: capitalize; }
+.vis-type-badge.tourist  { background: var(--green-bg, #f0fdf4); color: var(--green, #0f7b5b); }
+.vis-type-badge.business { background: var(--blue-bg, #eff6ff); color: var(--blue, #1d4ed8); }
+.vis-type-badge.transit  { background: var(--surface2, #f3f4f6); color: var(--ink2, #374151); }
+.vis-type-badge.student  { background: #fef3c7; color: #92400e; }
+.vis-info { font-size: 13px; color: var(--slate, #6b7280); margin-bottom: 12px; }
+.vis-footer { display: flex; align-items: center; justify-content: space-between; }
+.vis-fee { font-size: 18px; font-weight: 700; color: var(--gold, #c8a45a); }
+.vis-fee-label { font-size: 11px; color: var(--slate2, #9ca3af); }
+.vis-btn { padding: 10px 20px; background: var(--gold, #c8a45a); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }

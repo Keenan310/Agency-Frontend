@@ -1,0 +1,20 @@
+.conf-wrap { text-align: center; padding: 40px 20px; }
+.conf-icon { font-size: 56px; margin-bottom: 16px; }
+.conf-title { font-size: 24px; font-weight: 700; color: var(--ink, #111); margin-bottom: 8px; }
+.conf-subtitle { font-size: 15px; color: var(--slate, #6b7280); margin-bottom: 28px; }
+
+.conf-ref-card { background: var(--gold-bg, #fdf8ef); border: 1px solid var(--gold-border, #e9c96d); border-radius: 12px; padding: 20px 24px; display: inline-block; margin: 0 auto 28px; min-width: 260px; text-align: left; }
+.conf-ref-label { font-size: 11px; font-weight: 700; color: var(--slate, #6b7280); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 6px; }
+.conf-ref-value { font-size: 22px; font-weight: 700; color: var(--gold, #c8a45a); letter-spacing: 2px; }
+
+.conf-details { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 480px; margin: 0 auto 28px; text-align: left; }
+.conf-detail-row { background: var(--surface, #fff); border: 1px solid var(--surface3, #e5e7eb); border-radius: 10px; padding: 14px 16px; }
+.conf-detail-label { font-size: 11px; font-weight: 600; color: var(--slate2, #9ca3af); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 4px; }
+.conf-detail-value { font-size: 14px; font-weight: 600; color: var(--ink, #111); }
+
+.conf-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.conf-btn { padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; }
+.conf-btn.primary { background: var(--gold, #c8a45a); color: #fff; }
+.conf-btn.primary:hover { background: var(--gold2, #b8943a); }
+.conf-btn.secondary { background: var(--surface2, #f3f4f6); color: var(--ink2, #374151); }
+.conf-btn.secondary:hover { background: var(--surface3, #e5e7eb); }

@@ -1,4 +1,4 @@
-﻿// HERO SLIDER SYSTEM
+// HERO SLIDER SYSTEM
 let slides=[
   {id:1,label:'Sacred Journeys · Umrah 2026',title:'Experience the<br><em>Sacred Journey</em>',sub:'Premium Umrah packages with 5-star hotels and all-inclusive services — crafted for the spiritual traveller.',cta:'Explore Umrah',link:'umrah',bg:'linear-gradient(135deg,#0B1120 0%,#1C2B45 55%,#2a4070 100%)',img:'',active:true},
   {id:2,label:'Holiday Escapes · Maldives',title:'Paradise Found<br><em>in the Maldives</em>',sub:'Overwater villas, pristine turquoise lagoons, and world-class service — your dream escape awaits.',cta:'View Holiday Packages',link:'holiday',bg:'linear-gradient(135deg,#0d3d52 0%,#1a6b8a 55%,#0e5f82 100%)',img:'',active:true},
@@ -749,39 +749,72 @@ function swTab(tab,el){
   });
 }
 // RESULTS BUILDER
-const RESULTS={
-  flights:{title:'Dubai (DXB) → London (LHR)',sub:'10–20 Jun 2026 · 1 Adult · Economy · 18 results found',
-    items:[
-      {name:'Emirates · EK001',tags:['Non-stop','7h 25m','08:00 → 12:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:'AED 2,450',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
-      {name:'Etihad · EY021',tags:['1 Stop (AUH)','9h 10m','10:30 → 17:40','A380'],meta:['Economy · 23kg baggage · Meals included'],price:'AED 1,890',plabel:'per person · return',rating:'4.7',bg:'#2d1a5f'},
-      {name:'British Airways · BA106',tags:['Non-stop','7h 40m','14:15 → 19:55','Boeing 787'],meta:['Economy · 23kg baggage'],price:'AED 2,750',plabel:'per person · return',rating:'4.6',bg:'#1a3d5f'},
-    ]},
-  umrah:{title:'Umrah Packages',sub:'Departing Dubai · September 2026 · 12 packages found',
-    items:[
-      {name:'Premium Umrah · 14 Nights',tags:['VIP','Visa Included','Flights Included','5★ Hotels'],meta:['Towers Hotel — 200m from Haram · Private transport'],price:'AED 8,500',plabel:'per person',rating:'5.0',bg:'#1a1a35'},
-      {name:'Standard Umrah · 10 Nights',tags:['Standard','Visa Included','Flights Included','4★ Hotels'],meta:['Al Massa Hotel — 500m from Haram · Shared transport'],price:'AED 5,200',plabel:'per person',rating:'4.9',bg:'#1a2e20'},
-      {name:'Economy Umrah · 7 Nights',tags:['Economy','Visa Included','Flights Included','3★ Hotels'],meta:['Al Noor Hotel — 1km from Haram · Group transport'],price:'AED 3,500',plabel:'per person',rating:'4.8',bg:'#2e1a10'},
-    ]},
-  holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 18 packages found',
-    items:[
-      {name:'Maldives Escape · 7 Nights',tags:['5★ Overwater Villa','All Inclusive','Flights Included'],meta:['Private beach & lagoon · Water sports · Complimentary spa'],price:'AED 6,499',plabel:'per person',rating:'4.9',bg:'#0d3d52'},
-      {name:'Bali Discovery · 10 Nights',tags:['4★ Private Pool Villa','Half Board','Flights Included'],meta:['Temple tours included · Rice terrace trekking'],price:'AED 4,850',plabel:'per person',rating:'4.8',bg:'#3d1a0d'},
-      {name:'Istanbul Cultural · 5 Nights',tags:['4★ Boutique Hotel','Breakfast','Flights Included'],meta:['Guided Bosphorus cruise · Blue Mosque tour'],price:'AED 2,899',plabel:'per person',rating:'4.7',bg:'#1a2d3d'},
-    ]},
-  cruise:{title:'Mediterranean Cruises',sub:'Departing August 2026 · 2 Guests · 9 cruises found',
-    items:[
-      {name:'MSC Grandiosa · 10 Nights',tags:['Mediterranean','6 Ports','Ocean View Cabin'],meta:['Rome · Barcelona · Marseille · Palermo · All dining included'],price:'AED 4,199',plabel:'per person',rating:'4.7',bg:'#1a3060'},
-      {name:'Arabian Gulf Explorer · 7 Nights',tags:['Arabian Gulf','4 Ports','Balcony Cabin'],meta:['Dubai · Muscat · Abu Dhabi · All dining included'],price:'AED 3,650',plabel:'per person',rating:'4.9',bg:'#1a2040'},
-    ]},
-  visa:{title:'UK Visa — Tourist',sub:'UAE Nationality · Travel: September 2026',
-    items:[
-      {name:'UK Standard Visitor Visa',tags:['Tourist','6 Months','Multiple Entry','10 Year Validity'],meta:['5–10 business days · 94% approval rate for UAE nationals'],price:'AED 450',plabel:'per applicant · all fees included',rating:'',bg:'#0d2040'},
-      {name:'UK Priority Visitor Visa',tags:['Tourist · Priority','6 Months','Multiple Entry'],meta:['3–5 business days · Dedicated case officer'],price:'AED 820',plabel:'per applicant · priority processing',rating:'',bg:'#1a1a40'},
-    ]},
+window.RESULTS_BY_COUNTRY = {
+  AE: {
+    flights:{title:'Dubai (DXB) → London (LHR)',sub:'10–20 Jun 2026 · 1 Adult · Economy · 18 results found',
+      items:[
+        {name:'Emirates · EK001',tags:['Non-stop','7h 25m','08:00 → 12:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:2450,currency:'AED',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
+        {name:'Etihad · EY021',tags:['1 Stop (AUH)','9h 10m','10:30 → 17:40','A380'],meta:['Economy · 23kg baggage · Meals included'],price:1890,currency:'AED',plabel:'per person · return',rating:'4.7',bg:'#2d1a5f'},
+        {name:'British Airways · BA106',tags:['Non-stop','7h 40m','14:15 → 19:55','Boeing 787'],meta:['Economy · 23kg baggage'],price:2750,currency:'AED',plabel:'per person · return',rating:'4.6',bg:'#1a3d5f'},
+      ]},
+    umrah:{title:'Umrah Packages',sub:'Departing Dubai · September 2026 · 12 packages found',
+      items:[
+        {name:'Premium Umrah · 14 Nights',tags:['VIP','Visa Included','Flights Included','5★ Hotels'],meta:['Towers Hotel — 200m from Haram · Private transport'],price:8500,currency:'AED',plabel:'per person',rating:'5.0',bg:'#1a1a35'},
+        {name:'Standard Umrah · 10 Nights',tags:['Standard','Visa Included','Flights Included','4★ Hotels'],meta:['Al Massa Hotel — 500m from Haram · Shared transport'],price:5200,currency:'AED',plabel:'per person',rating:'4.9',bg:'#1a2e20'},
+        {name:'Economy Umrah · 7 Nights',tags:['Economy','Visa Included','Flights Included','3★ Hotels'],meta:['Al Noor Hotel — 1km from Haram · Group transport'],price:3500,currency:'AED',plabel:'per person',rating:'4.8',bg:'#2e1a10'},
+      ]},
+    holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 18 packages found',
+      items:[
+        {name:'Maldives Escape · 7 Nights',tags:['5★ Overwater Villa','All Inclusive','Flights Included'],meta:['Private beach & lagoon · Water sports · Complimentary spa'],price:6499,currency:'AED',plabel:'per person',rating:'4.9',bg:'#0d3d52'},
+        {name:'Bali Discovery · 10 Nights',tags:['4★ Private Pool Villa','Half Board','Flights Included'],meta:['Temple tours included · Rice terrace trekking'],price:4850,currency:'AED',plabel:'per person',rating:'4.8',bg:'#3d1a0d'},
+        {name:'Istanbul Cultural · 5 Nights',tags:['4★ Boutique Hotel','Breakfast','Flights Included'],meta:['Guided Bosphorus cruise · Blue Mosque tour'],price:2899,currency:'AED',plabel:'per person',rating:'4.7',bg:'#1a2d3d'},
+      ]},
+    cruise:{title:'Mediterranean Cruises',sub:'Departing August 2026 · 2 Guests · 9 cruises found',
+      items:[
+        {name:'MSC Grandiosa · 10 Nights',tags:['Mediterranean','6 Ports','Ocean View Cabin'],meta:['Rome · Barcelona · Marseille · Palermo · All dining included'],price:4199,currency:'AED',plabel:'per person',rating:'4.7',bg:'#1a3060'},
+        {name:'Arabian Gulf Explorer · 7 Nights',tags:['Arabian Gulf','4 Ports','Balcony Cabin'],meta:['Dubai · Muscat · Abu Dhabi · All dining included'],price:3650,currency:'AED',plabel:'per person',rating:'4.9',bg:'#1a2040'},
+      ]},
+    visa:{title:'UK Visa — Tourist',sub:'UAE Nationality · Travel: September 2026',
+      items:[
+        {name:'UK Standard Visitor Visa',tags:['Tourist','6 Months','Multiple Entry','10 Year Validity'],meta:['5–10 business days · 94% approval rate for UAE nationals'],price:450,currency:'AED',plabel:'per applicant · all fees included',rating:'',bg:'#0d2040'},
+        {name:'UK Priority Visitor Visa',tags:['Tourist · Priority','6 Months','Multiple Entry'],meta:['3–5 business days · Dedicated case officer'],price:820,currency:'AED',plabel:'per applicant · priority processing',rating:'',bg:'#1a1a40'},
+      ]},
+  },
+  PK: {
+    flights:{title:'Karachi (KHI) → Dubai (DXB)',sub:'10–20 Jun 2026 · 1 Adult · Economy · 15 results found',
+      items:[
+        {name:'Pakistan International · PK204',tags:['Non-stop','3h 10m','09:00 → 11:10','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:85000,currency:'PKR',plabel:'per person · return',rating:'4.2',bg:'#1a3a20'},
+        {name:'Emirates · EK601',tags:['Non-stop','3h 25m','12:00 → 14:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:115000,currency:'PKR',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
+        {name:'flydubai · FZ328',tags:['Non-stop','3h 30m','15:00 → 17:30','Boeing 737'],meta:['Economy · 20kg baggage'],price:75000,currency:'PKR',plabel:'per person · return',rating:'4.3',bg:'#ff6a00'},
+      ]},
+    umrah:{title:'Umrah Packages',sub:'Departing Karachi · September 2026 · 8 packages found',
+      items:[
+        {name:'Premium Umrah · 14 Nights',tags:['VIP','Visa Included','Flights Included','5★ Hotels'],meta:['Towers Hotel — 200m from Haram · Private transport'],price:450000,currency:'PKR',plabel:'per person',rating:'5.0',bg:'#1a1a35'},
+        {name:'Standard Umrah · 10 Nights',tags:['Standard','Visa Included','Flights Included','4★ Hotels'],meta:['Al Massa Hotel — 500m from Haram · Shared transport'],price:320000,currency:'PKR',plabel:'per person',rating:'4.9',bg:'#1a2e20'},
+        {name:'Economy Umrah · 7 Nights',tags:['Economy','Visa Included','Flights Included','3★ Hotels'],meta:['Al Noor Hotel — 1km from Haram · Group transport'],price:250000,currency:'PKR',plabel:'per person',rating:'4.8',bg:'#2e1a10'},
+      ]},
+    holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 10 packages found',
+      items:[
+        {name:'Turkey Explorer · 7 Nights',tags:['4★ Hotel','Breakfast','Flights Included'],meta:['Istanbul & Cappadocia · Guided Tours'],price:280000,currency:'PKR',plabel:'per person',rating:'4.7',bg:'#1a2d3d'},
+        {name:'Baku Escape · 5 Nights',tags:['4★ Hotel','Breakfast','Flights Included'],meta:['City tour included · Visa assistance'],price:190000,currency:'PKR',plabel:'per person',rating:'4.5',bg:'#3d1a0d'},
+        {name:'Dubai Shopping Festival · 5 Nights',tags:['3★ Hotel','Breakfast','Flights Included'],meta:['Close to metro · Desert Safari included'],price:150000,currency:'PKR',plabel:'per person',rating:'4.6',bg:'#0d3d52'},
+      ]},
+    cruise:{title:'Arabian Gulf Cruises',sub:'Departing August 2026 · 2 Guests · 3 cruises found',
+      items:[
+        {name:'Arabian Gulf Explorer · 7 Nights',tags:['Arabian Gulf','4 Ports','Balcony Cabin'],meta:['Dubai · Muscat · Abu Dhabi · (Connecting flight KHI-DXB included)'],price:295000,currency:'PKR',plabel:'per person',rating:'4.9',bg:'#1a2040'},
+      ]},
+    visa:{title:'UAE Visa — Tourist',sub:'Pakistan Nationality · Travel: September 2026',
+      items:[
+        {name:'UAE 30 Days Tourist Visa',tags:['Tourist','30 Days','Single Entry'],meta:['3–5 business days'],price:25000,currency:'PKR',plabel:'per applicant · all fees included',rating:'',bg:'#0d2040'},
+        {name:'UAE 60 Days Tourist Visa',tags:['Tourist','60 Days','Single Entry'],meta:['3–5 business days'],price:45000,currency:'PKR',plabel:'per applicant · all fees included',rating:'',bg:'#1a1a40'},
+      ]},
+  }
 };
-function buildResults(type){
+window.buildResults = function(type){
   const el=document.getElementById('view-results-'+type);
-  const d=RESULTS[type];if(!d||!el)return;
+  const code = (window.KT && window.KT.get().code) || 'AE';
+  const d=window.RESULTS_BY_COUNTRY[code] && window.RESULTS_BY_COUNTRY[code][type];
+  if(!d||!el)return;
   const isVisa=type==='visa';
   const dest=isVisa?'detail':'booking';
   const cards=d.items.map(it=>`
@@ -794,7 +827,7 @@ function buildResults(type){
         ${it.rating?`<div style="display:flex;align-items:center;gap:5px;font-size:13px;margin-top:8px"><span style="color:var(--gold)">★</span><strong>${it.rating}</strong><span style="font-size:12px;color:var(--slate2)">Excellent</span></div>`:''}
       </div>
       <div class="rc-price-col">
-        <div><div class="rc-price">${it.price}</div><div class="rc-price-label">${it.plabel}</div></div>
+        <div><div class="rc-price">${window.formatPrice(it.price, it.currency)}</div><div class="rc-price-label">${it.plabel}</div></div>
         <button class="btn-gold btn-sm" onclick="event.stopPropagation();go('${dest}')">${isVisa?'Apply Now':'Book Now'}</button>
         <div style="font-size:11px;color:var(--slate3)">Free cancellation 24h</div>
       </div>
@@ -862,18 +895,21 @@ const PANEL_META={
   settings:{title:'Settings',sub:'System configuration and admin users'},
 };
 function aPanel(name,el){
-  PANELS.forEach(p=>{const e=document.getElementById('ap-'+p);if(e)e.style.display='none'});
+  if (typeof window.resetState === 'function') window.resetState();
+  document.querySelectorAll('.admin-content > div[id^="ap-"]').forEach(p=>{p.style.display='none'});
   const e=document.getElementById('ap-'+name);if(e)e.style.display='block';
   document.querySelectorAll('.an-item').forEach(i=>i.classList.remove('act'));
   if(el)el.classList.add('act');
-  const meta=PANEL_META[name]||{title:name,sub:''};
-  document.getElementById('aTitle').textContent=meta.title;
-  document.getElementById('aSub').textContent=meta.sub;
+  const meta=PANEL_META[name]||{title:name.charAt(0).toUpperCase() + name.slice(1),sub:''};
+  const tEl = document.getElementById('aTitle'); if(tEl) tEl.textContent=meta.title;
+  const sEl = document.getElementById('aSub'); if(sEl) sEl.textContent=meta.sub;
   // Lazy init panels
   if(name==='hero')renderSlideManager();
   if(name==='swagger')setTimeout(initSwagger,100);
   if(name==='database'){renderSchemaNav();renderERD();renderFullSql()}
   if(name==='api')syncEndpoints();
+  if(name==='refunds' && typeof window.loadRefunds === 'function') window.loadRefunds();
+  if(name==='reissues' && typeof window.loadReissues === 'function') window.loadReissues();
 }
 function aTab(el,targetId){
   const tabEl=el.closest('.a-tabs');
@@ -882,6 +918,7 @@ function aTab(el,targetId){
   const container=tabEl.nextElementSibling?.parentElement||el.closest('.admin-content');
   container.querySelectorAll('.a-tab-c').forEach(c=>c.classList.remove('act'));
   const t=document.getElementById(targetId);if(t)t.classList.add('act');
+  if (targetId === 'at-f3' && typeof window.loadAirlineDiscounts === 'function') window.loadAirlineDiscounts();
 }
 // TABLE FILTER ENGINE
 const FILTER_CFG={
@@ -1562,3 +1599,63 @@ if(document.readyState==='loading'){
 }else{
   bootstrapLegacyApp();
 }
+
+window.updateSearchWidgetDefaults = function() {
+  if (!window.KT) return;
+  const ctx = window.KT.get();
+  // Update departure city inputs
+  document.querySelectorAll('input[data-role="dep-city"]')
+    .forEach(el => el.value = ctx.depCities[0]);
+  // Update Umrah departure default
+  document.querySelectorAll('input[data-role="umrah-dep"]')
+    .forEach(el => el.value = ctx.umrahDep);
+};
+
+window.updateDestinationCards = function() {
+  if (!window.KT) return;
+  const ctx = window.KT.get();
+  const isAE = ctx.code === 'AE';
+  
+  const container = document.getElementById('dest-cards-container');
+  if (!container) return;
+
+  if (isAE) {
+    container.innerHTML = `
+      <div class="dest-card" onclick="go('results-holiday')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#0e5f82,#1a9ed4,#0d3d52)"><span class="dc-ribbon">Holiday</span></div>
+        <div class="dc-body"><div class="dc-name">Maldives</div><div class="dc-info">7 Nights · 5★ Overwater Villas · All Inclusive</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(6499)}</span></div><div class="dc-stars">★★★★★ 4.9</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-holiday')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#6b3a2a,#b85c38,#8a3022)"><span class="dc-ribbon">Holiday</span></div>
+        <div class="dc-body"><div class="dc-name">Istanbul</div><div class="dc-info">5 Nights · 4★ Boutique Hotels · Guided Tours</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(2899)}</span></div><div class="dc-stars">★★★★★ 4.8</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-cruise')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#1a3a6e,#2858a8,#12285e)"><span class="dc-ribbon">Cruise</span></div>
+        <div class="dc-body"><div class="dc-name">Mediterranean</div><div class="dc-info">10 Nights · 6 Countries · MSC Grandiosa</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(4199)}</span></div><div class="dc-stars">★★★★★ 4.7</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-umrah')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#1a1a35,#2d2d60,#111128)"><span class="dc-ribbon">Umrah</span></div>
+        <div class="dc-body"><div class="dc-name">Makkah & Madinah</div><div class="dc-info">14 Nights · Visa + Flights Included · 5★</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(3500)}</span></div><div class="dc-stars">★★★★★ 5.0</div></div></div>
+      </div>
+    `;
+  } else {
+    container.innerHTML = `
+      <div class="dest-card" onclick="go('results-holiday')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#0e5f82,#1a9ed4,#0d3d52)"><span class="dc-ribbon">Holiday</span></div>
+        <div class="dc-body"><div class="dc-name">Turkey</div><div class="dc-info">7 Nights · Istanbul & Cappadocia · Guided Tours</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(280000)}</span></div><div class="dc-stars">★★★★★ 4.7</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-holiday')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#6b3a2a,#b85c38,#8a3022)"><span class="dc-ribbon">Holiday</span></div>
+        <div class="dc-body"><div class="dc-name">Baku</div><div class="dc-info">5 Nights · 4★ Hotels · City Tour</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(190000)}</span></div><div class="dc-stars">★★★★★ 4.5</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-flights')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#1a3a6e,#2858a8,#12285e)"><span class="dc-ribbon">Flights</span></div>
+        <div class="dc-body"><div class="dc-name">Dubai</div><div class="dc-info">Direct Flights · 30kg Baggage</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(75000)}</span></div><div class="dc-stars">★★★★★ 4.3</div></div></div>
+      </div>
+      <div class="dest-card" onclick="go('results-umrah')">
+        <div class="dc-img" style="background:linear-gradient(160deg,#1a1a35,#2d2d60,#111128)"><span class="dc-ribbon">Umrah</span></div>
+        <div class="dc-body"><div class="dc-name">Makkah & Madinah</div><div class="dc-info">14 Nights · Direct Flights · Premium</div><div class="dc-foot"><div class="dc-price"><span class="from">from</span><span class="amount">${window.KT.format(450000)}</span></div><div class="dc-stars">★★★★★ 5.0</div></div></div>
+      </div>
+    `;
+  }
+};

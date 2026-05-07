@@ -1,0 +1,41 @@
+/* Stripe Elements mount point styling */
+.stripe-card-element {
+  background: var(--surface2, #f8fafc);
+  border: 1.5px solid var(--surface3, #e2e8f0);
+  border-radius: var(--r, 8px);
+  padding: 12px 14px;
+  transition: border-color .2s, background .2s;
+}
+
+.stripe-card-element.focused {
+  border-color: var(--gold, #c8a96e);
+  background: #fff;
+}
+
+.stripe-card-errors {
+  color: var(--red, #dc2626);
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.stripe-amount-confirmed {
+  background: var(--green-bg, #f0fdf4);
+  border: 1px solid rgba(15,123,91,.2);
+  border-radius: var(--r, 8px);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stripe-secure-note {
+  background: var(--green-bg, #f0fdf4);
+  border: 1px solid rgba(15,123,91,.2);
+  border-radius: var(--r, 8px);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--slate, #64748b);
+}

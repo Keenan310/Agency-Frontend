@@ -1,0 +1,17 @@
+.pd-section { margin-bottom: 28px; }
+.pd-section-title { font-size: 14px; font-weight: 700; color: var(--ink, #111); margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--surface3, #e5e7eb); }
+.pd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pd-grid.g3 { grid-template-columns: 1fr 1fr 1fr; }
+.pd-field { display: flex; flex-direction: column; gap: 6px; }
+.pd-field label { font-size: 12px; font-weight: 600; color: var(--slate, #6b7280); text-transform: uppercase; letter-spacing: .4px; }
+.pd-field input, .pd-field select { padding: 10px 12px; border: 1px solid var(--surface3, #e5e7eb); border-radius: 8px; font-size: 14px; color: var(--ink, #111); background: var(--surface, #fff); outline: none; transition: border-color .15s; }
+.pd-field input:focus, .pd-field select:focus { border-color: var(--gold, #c8a45a); }
+.pd-field input.error, .pd-field select.error { border-color: var(--red, #dc2626); }
+.pd-error-msg { font-size: 11px; color: var(--red, #dc2626); margin-top: 2px; }
+
+.pd-pax-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.pd-pax-tag { font-size: 12px; background: var(--blue-bg, #eff6ff); color: var(--blue, #1d4ed8); padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+
+@media (max-width: 600px) {
+  .pd-grid, .pd-grid.g3 { grid-template-columns: 1fr; }
+}

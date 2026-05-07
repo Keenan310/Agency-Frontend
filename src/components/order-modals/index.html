@@ -1,4 +1,4 @@
-﻿<div class="modal-bg" id="m-add-slide" onclick="if(event.target===this)closeModal('m-add-slide')">
+<div class="modal-bg" id="m-add-slide" onclick="if(event.target===this)closeModal('m-add-slide')">
   <div class="modal">
     <div class="modal-head"><div class="modal-title">Add Hero Slide</div><button class="modal-x" onclick="closeModal('m-add-slide')">×</button></div>
     <div class="modal-body">
@@ -56,7 +56,10 @@
     <div class="modal-head"><div class="modal-title">Add Umrah Package</div><button class="modal-x" onclick="closeModal('m-add-pkg')">×</button></div>
     <div class="modal-body">
         <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="field"><label>Package Name</label><input type="text" id="up-name" placeholder="e.g. Premium Umrah 14 Nights"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
+            <div class="field"><label>Package Name</label><input type="text" id="up-name" placeholder="e.g. Premium Umrah 14 Nights"></div>
+            <div class="field"><label>Portal Country</label><select id="up-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Type</label><select id="up-type"><option value="economy">Economy</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="vip">VIP</option></select></div><div class="field"><label>Duration (Nights)</label><input type="number" id="up-nights" value="14" min="5" max="30"></div></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Makkah Hotel</label><input type="text" id="up-makkah" placeholder="Hotel name & stars"></div><div class="field"><label>Madinah Hotel</label><input type="text" id="up-madinah" placeholder="Hotel name & stars"></div></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Price / Person (AED)</label><input type="number" id="up-price" placeholder="0.00"></div><div class="field"><label>Max Capacity</label><input type="number" id="up-capacity" placeholder="50"></div></div>
@@ -87,7 +90,10 @@
     <div class="modal-head"><div class="modal-title">Add Holiday Package</div><button class="modal-x" onclick="closeModal('m-add-holiday')">×</button></div>
     <div class="modal-body">
         <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="field"><label>Package Name</label><input type="text" id="hp-name" placeholder="e.g. Maldives Luxury Escape · 7 Nights"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
+            <div class="field"><label>Package Name</label><input type="text" id="hp-name" placeholder="e.g. Maldives Luxury Escape · 7 Nights"></div>
+            <div class="field"><label>Portal Country</label><select id="hp-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div class="field"><label>Destination</label><input type="text" id="hp-destination" placeholder="e.g. Maldives"></div>
             <div class="field"><label>Country Code</label><input type="text" id="hp-country" placeholder="e.g. MV" maxlength="3"></div>
@@ -122,7 +128,10 @@
     <div class="modal-head"><div class="modal-title">Add Cruise Package</div><button class="modal-x" onclick="closeModal('m-add-cruise')">×</button></div>
     <div class="modal-body">
         <div style="display:flex;flex-direction:column;gap:14px">
-          <div class="field"><label>Cruise Package Name</label><input type="text" id="cp-name" placeholder="e.g. Mediterranean Grand Voyage · 10 Nights"></div>
+          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
+            <div class="field"><label>Cruise Package Name</label><input type="text" id="cp-name" placeholder="e.g. Mediterranean Grand Voyage · 10 Nights"></div>
+            <div class="field"><label>Portal Country</label><select id="cp-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+          </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
             <div class="field"><label>Ship Name</label><input type="text" id="cp-ship" placeholder="e.g. MSC Grandiosa"></div>
             <div class="field"><label>Cruise Line</label><input type="text" id="cp-line" placeholder="e.g. MSC Cruises"></div>
@@ -160,9 +169,10 @@
 
         <div style="background:var(--surface2);border-radius:var(--r);padding:18px;border:1px solid var(--surface3)">
           <div style="font-size:13px;font-weight:700;color:var(--ink);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px">Add New Visa Fee</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
             <div class="field"><label>Destination Country</label><input type="text" id="vf-country" placeholder="e.g. United Kingdom"></div>
             <div class="field"><label>Visa Type</label><select id="vf-type"><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option><option>Work</option></select></div>
+            <div class="field"><label>Portal Country</label><select id="vf-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px">
             <div class="field"><label>Processing Fee (AED)</label><input type="number" id="vf-fee" placeholder="0.00" min="0"></div>
@@ -406,5 +416,63 @@
   </div>
 </div>
 
-
-
+<div class="modal-bg" id="m-add-discount" onclick="if(event.target===this)closeModal('m-add-discount')">
+  <div class="modal" style="width:640px">
+    <div class="modal-head">
+      <div class="modal-title" id="discount-modal-title">Add Airline Discount</div>
+      <button class="modal-x" onclick="closeModal('m-add-discount')">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="discount-form" onsubmit="submitDiscountForm(event)">
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <input type="hidden" id="ad-id" name="id">
+          <div class="field">
+            <label>Airline Name</label>
+            <input type="text" id="ad-airline" name="airline_name" placeholder="e.g. Emirates" required>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field">
+              <label>Origin Airport (Optional)</label>
+              <input type="text" id="ad-origin" name="origin_airport" placeholder="e.g. DXB">
+            </div>
+            <div class="field">
+              <label>Destination Airport (Optional)</label>
+              <input type="text" id="ad-destination" name="destination_airport" placeholder="e.g. LHR">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field">
+              <label>Percentage Discount (%)</label>
+              <input type="number" step="0.01" id="ad-percentage" name="percentage_discount" placeholder="0.00">
+            </div>
+            <div class="field">
+              <label>Flat Discount (Amount)</label>
+              <input type="number" step="0.01" id="ad-flat" name="flat_discount" placeholder="0.00">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field">
+              <label>Booking Deadline (Optional)</label>
+              <input type="date" id="ad-booking-deadline" name="booking_deadline">
+            </div>
+            <div class="field">
+              <label>Travel Deadline (Optional)</label>
+              <input type="date" id="ad-travel-deadline" name="travel_deadline">
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+            <label class="toggle-switch">
+              <input type="checkbox" id="ad-active" name="is_active" value="true" checked>
+              <span class="toggle-thumb"></span>
+            </label>
+            <span class="fs14">Active Status</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-add-discount')">Cancel</button>
+      <button class="btn-navy" onclick="document.getElementById('discount-form').requestSubmit()">Save Discount</button>
+    </div>
+  </div>
+</div>

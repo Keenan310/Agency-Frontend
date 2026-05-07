@@ -1,4 +1,4 @@
-﻿<nav id="site-nav">
+<nav id="site-nav">
   <div class="nav-logo" onclick="go('home')">Keenan<span> Travel</span></div>
   <div class="nav-links">
     <button class="nl act" onclick="go('home')">Home</button>
@@ -10,7 +10,39 @@
     <button class="nl" onclick="go('track')">Track Booking</button>
   </div>
   <div class="nav-right">
-    <button class="nav-lang">🌐 EN / عربي</button>
+    <!-- Country Selector Dropdown -->
+    <div class="country-selector" id="country-selector">
+      <button class="country-btn" onclick="toggleCountryMenu()">
+        <span id="cs-flag">🇦🇪</span>
+        <span id="cs-name">UAE</span>
+        <span id="cs-currency" class="cs-cur">AED</span>
+        <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      </button>
+      <div class="country-menu" id="country-menu">
+        <div class="cm-option" onclick="switchCountry('AE')">
+          <span class="cm-flag">🇦🇪</span>
+          <div class="cm-info">
+            <div class="cm-name">UAE</div>
+            <div class="cm-detail">Packages in AED · English / Arabic</div>
+          </div>
+          <span class="cm-check" id="cm-check-AE">✓</span>
+        </div>
+        <div class="cm-option" onclick="switchCountry('PK')">
+          <span class="cm-flag">🇵🇰</span>
+          <div class="cm-info">
+            <div class="cm-name">Pakistan</div>
+            <div class="cm-detail">Packages in PKR · English / Urdu</div>
+          </div>
+          <span class="cm-check" id="cm-check-PK" style="display:none">✓</span>
+        </div>
+        <div class="cm-divider"></div>
+        <!-- Language options (filtered per country) -->
+        <div class="cm-lang-row" id="cm-langs"></div>
+      </div>
+    </div>
+    
+    <!-- Language toggle (updates when country changes) -->
+    <button class="nav-lang" id="nav-lang-btn" onclick="toggleLang()">EN</button>
     <button class="nav-login" id="auth-trigger" onclick="openAuthModal('customer')">Sign In</button>
     <button class="btn-outline btn-sm" id="account-trigger" onclick="openCustomerPortal()" style="display:none">My Account</button>
     
