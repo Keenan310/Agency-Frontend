@@ -32,7 +32,7 @@
       <div class="an-item" onclick="aPanel('flights',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
         </svg>Flights</div>
-      <div class="an-item" onclick="aPanel('umrah',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <div class="an-item" onclick="aPanel('umrah',this); if(typeof adminLoadUmrahPackages==='function') adminLoadUmrahPackages();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         </svg>Umrah</div>
       <div class="an-item" onclick="aPanel('holiday',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -948,7 +948,7 @@
           <div class="a-card">
             <div class="a-card-head">
               <div class="a-card-title">Umrah Packages</div><button class="btn-gold btn-sm"
-                onclick="openModal('m-add-pkg')">+ Add Package</button>
+                onclick="openUmrahModal()">+ Add Package</button>
             </div>
             <div class="tbl-controls">
               <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-um"
@@ -985,42 +985,7 @@
                   </tr>
                 </thead>
                 <tbody id="tbody-um">
-                  <tr data-type="vip" data-nights="14" data-visa="yes">
-                    <td class="semi">Premium Umrah</td>
-                    <td><span class="badge b-gold">VIP</span></td>
-                    <td>14</td>
-                    <td>Towers Hotel ★★★★★</td>
-                    <td>Mövenpick ★★★★★</td>
-                    <td class="semi">AED 8,500</td>
-                    <td><span class="badge b-green">Yes</span></td>
-                    <td>47</td>
-                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
-                        style="color:var(--red)">🗑</button></td>
-                  </tr>
-                  <tr data-type="standard" data-nights="10" data-visa="yes">
-                    <td class="semi">Standard Umrah</td>
-                    <td><span class="badge b-blue">Standard</span></td>
-                    <td>10</td>
-                    <td>Al Massa ★★★★</td>
-                    <td>Al Eiman Royal ★★★★</td>
-                    <td class="semi">AED 5,200</td>
-                    <td><span class="badge b-green">Yes</span></td>
-                    <td>89</td>
-                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
-                        style="color:var(--red)">🗑</button></td>
-                  </tr>
-                  <tr data-type="economy" data-nights="7" data-visa="yes">
-                    <td class="semi">Economy Umrah</td>
-                    <td><span class="badge b-slate">Economy</span></td>
-                    <td>7</td>
-                    <td>Al Noor ★★★</td>
-                    <td>Al Huda ★★★</td>
-                    <td class="semi">AED 3,500</td>
-                    <td><span class="badge b-green">Yes</span></td>
-                    <td>148</td>
-                    <td class="td-actions"><button class="btn-icon">✏</button><button class="btn-icon"
-                        style="color:var(--red)">🗑</button></td>
-                  </tr>
+                  <tr><td colspan="9" style="text-align:center;padding:20px;">Loading…</td></tr>
                 </tbody>
               </table>
             </div>

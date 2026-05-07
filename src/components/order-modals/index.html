@@ -53,20 +53,76 @@
 
 <div class="modal-bg" id="m-add-pkg" onclick="if(event.target===this)closeModal('m-add-pkg')">
   <div class="modal">
-    <div class="modal-head"><div class="modal-title">Add Umrah Package</div><button class="modal-x" onclick="closeModal('m-add-pkg')">×</button></div>
+    <div class="modal-head"><div class="modal-title" id="up-modal-title">Add Umrah Package</div><button class="modal-x" onclick="closeModal('m-add-pkg')">×</button></div>
     <div class="modal-body">
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
-            <div class="field"><label>Package Name</label><input type="text" id="up-name" placeholder="e.g. Premium Umrah 14 Nights"></div>
-            <div class="field"><label>Portal Country</label><select id="up-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+        <form id="up-form">
+          <input type="hidden" id="up-id">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
+              <div class="field"><label>Package Name</label><input type="text" id="up-name" placeholder="e.g. Premium Umrah 14 Nights"></div>
+              <div class="field"><label>Portal Country</label><select id="up-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Type</label><select id="up-type"><option value="economy">Economy</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="vip">VIP</option></select></div><div class="field"><label>Duration (Nights)</label><input type="number" id="up-nights" value="14" min="5" max="30"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Makkah Hotel</label><input type="text" id="up-makkah" placeholder="Hotel name & stars"></div><div class="field"><label>Madinah Hotel</label><input type="text" id="up-madinah" placeholder="Hotel name & stars"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Price / Person (AED)</label><input type="number" id="up-price" placeholder="0.00"></div><div class="field"><label>Max Capacity</label><input type="number" id="up-capacity" placeholder="50"></div></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px"><div class="field"><label>Visa Included</label><select id="up-visa"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Flights Included</label><select id="up-flights"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Transport</label><select id="up-transport"><option value="private">Private</option><option value="shared">Shared</option><option value="group">Group</option></select></div></div>
+            <div class="field"><label>Package Description</label><textarea id="up-description" placeholder="Enter package details and comments" rows="3"></textarea></div>
+            <div class="field">
+              <label>Package Images</label>
+              <div id="up-image-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px"></div>
+              <button type="button" class="btn-outline btn-sm" onclick="addUmrahImageSlot()" style="width:fit-content">+ Attach New Image</button>
+              <p style="font-size:12px;color:var(--slate2);margin-top:4px">The first image will be used as the primary cover photo.</p>
+            </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Type</label><select id="up-type"><option value="economy">Economy</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="vip">VIP</option></select></div><div class="field"><label>Duration (Nights)</label><input type="number" id="up-nights" value="14" min="5" max="30"></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Makkah Hotel</label><input type="text" id="up-makkah" placeholder="Hotel name & stars"></div><div class="field"><label>Madinah Hotel</label><input type="text" id="up-madinah" placeholder="Hotel name & stars"></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div class="field"><label>Price / Person (AED)</label><input type="number" id="up-price" placeholder="0.00"></div><div class="field"><label>Max Capacity</label><input type="number" id="up-capacity" placeholder="50"></div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px"><div class="field"><label>Visa Included</label><select id="up-visa"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Flights Included</label><select id="up-flights"><option value="1">Yes</option><option value="0">No</option></select></div><div class="field"><label>Transport</label><select id="up-transport"><option value="private">Private</option><option value="shared">Shared</option><option value="group">Group</option></select></div></div>
-        </div>
+        </form>
       </div>
     <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-add-pkg')">Cancel</button><button class="btn-navy" onclick="submitUmrahPackage()">Save Package</button></div>
+  </div>
+</div>
+
+<div class="modal-bg" id="m-view-pkg" onclick="if(event.target===this)closeModal('m-view-pkg')">
+  <div class="modal" style="max-width:700px">
+    <div class="modal-head"><div class="modal-title" id="vp-title">Package Details</div><button class="modal-x" onclick="closeModal('m-view-pkg')">×</button></div>
+    <div class="modal-body">
+      <div style="display:flex;gap:20px;flex-direction:column">
+        <!-- Cover Image -->
+        <div id="vp-cover-container" style="display:none;width:100%;height:250px;border-radius:12px;overflow:hidden;background:var(--surface2)">
+          <img id="vp-cover-image" style="width:100%;height:100%;object-fit:cover" />
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <div>
+            <h3 style="margin:0 0 10px 0;font-size:20px" id="vp-name"></h3>
+            <p style="color:var(--slate2);margin:0 0 15px 0" id="vp-type-nights"></p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--slate)">Price</span><strong id="vp-price"></strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--slate)">Country Portal</span><strong id="vp-country"></strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--slate)">Makkah Hotel</span><strong id="vp-makkah"></strong></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:var(--slate)">Madinah Hotel</span><strong id="vp-madinah"></strong></div>
+            </div>
+          </div>
+          <div>
+            <div style="background:var(--surface2);padding:15px;border-radius:8px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--slate)">Visa Included</span><span id="vp-visa" class="badge"></span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--slate)">Flights Included</span><span id="vp-flights" class="badge"></span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--slate)">Transport</span><span id="vp-transport" style="text-transform:capitalize;font-weight:600"></span></div>
+              <div style="display:flex;justify-content:space-between;align-items:center"><span style="color:var(--slate)">Max Capacity</span><strong id="vp-capacity"></strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4 style="margin:0 0 8px 0">Description</h4>
+          <p id="vp-description" style="color:var(--slate);line-height:1.5;margin:0"></p>
+        </div>
+
+        <div id="vp-gallery-section" style="display:none">
+          <h4 style="margin:0 0 8px 0">Gallery</h4>
+          <div id="vp-gallery" style="display:flex;gap:10px;overflow-x:auto;padding-bottom:10px"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn-ghost" onclick="closeModal('m-view-pkg')">Close</button></div>
   </div>
 </div>
 

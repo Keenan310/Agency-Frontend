@@ -112,6 +112,7 @@
     try {
       const response = await fetch(`${getApiBaseUrl()}${path}`, {
         method: options.method || "GET",
+        cache: 'no-store',
         headers,
         body: options.body ? JSON.stringify(options.body) : undefined,
         signal: controller.signal,
@@ -609,23 +610,11 @@
   }
 
   function renderUmrahRows(packages) {
-    const tbody = document.getElementById("tbody-um");
-    if (!tbody || !Array.isArray(packages) || !packages.length) return;
     state.umrahPackages = packages;
     populateOrderPackageOptions();
-    tbody.innerHTML = packages
-      .map((item) => `<tr data-type="${escapeHtml(item.type)}" data-nights="${Number(item.nights || 0)}" data-visa="${item.visa_included ? "yes" : "no"}" data-umrah-package-id="${item.id}">
-        <td class="semi">${escapeHtml(item.name)}</td>
-        <td><span class="badge b-gold">${escapeHtml(item.type)}</span></td>
-        <td>${Number(item.nights || 0)}</td>
-        <td>${escapeHtml(item.makkah_hotel || "—")}</td>
-        <td>${escapeHtml(item.madinah_hotel || "—")}</td>
-        <td class="semi">${escapeHtml(formatCurrency(item.price_per_person, item.currency || "AED"))}</td>
-        <td><span class="badge ${item.visa_included ? "b-green" : "b-red"}">${item.visa_included ? "Yes" : "No"}</span></td>
-        <td>${Number(item.bookings_count || 0)}</td>
-        <td class="td-actions"><button class="btn-icon" onclick="deletePackage('umrah', ${item.id})">Delete</button></td>
-      </tr>`)
-      .join("");
+    if (typeof window.adminLoadUmrahPackages === 'function') {
+      window.adminLoadUmrahPackages();
+    }
   }
 
   function renderHolidayRows(packages) {
@@ -875,36 +864,7 @@
     }
   }
 
-  async function submitUmrahPackage() {
-    const payload = {
-      name: document.getElementById("up-name").value.trim(),
-      type: document.getElementById("up-type").value,
-      nights: Number(document.getElementById("up-nights").value || 0),
-      makkah_hotel: document.getElementById("up-makkah").value.trim(),
-      madinah_hotel: document.getElementById("up-madinah").value.trim(),
-      price_per_person: Number(document.getElementById("up-price").value || 0),
-      max_capacity: Number(document.getElementById("up-capacity").value || 0) || null,
-      visa_included: document.getElementById("up-visa").value === "1",
-      flights_included: document.getElementById("up-flights").value === "1",
-      transport_type: document.getElementById("up-transport").value,
-      country_code: document.getElementById("up-portal").value,
-    };
-    if (!payload.name || !payload.makkah_hotel || !payload.madinah_hotel || !payload.price_per_person) {
-      toast("Complete the Umrah package form before saving", "t-red");
-      return;
-    }
-    try {
-      await apiRequest("/umrah/packages", { method: "POST", body: payload });
-      closeModal("m-add-pkg");
-      resetFields(["up-name", "up-makkah", "up-madinah", "up-price", "up-capacity"]);
-      document.getElementById("up-type").selectedIndex = 0;
-      document.getElementById("up-transport").value = "private";
-      await syncAdminData();
-      toast("Package added successfully", "t-green");
-    } catch (error) {
-      toast(error.message || "Package creation failed", "t-red");
-    }
-  }
+
 
   async function submitHolidayPackage() {
     const payload = {
@@ -1524,7 +1484,7 @@
   window.persistSession = persistSession;
   window.openAdminAccess = openAdminAccess;
   window.submitCustomerCreate = submitCustomerCreate;
-  window.submitUmrahPackage = submitUmrahPackage;
+
   window.submitHolidayPackage = submitHolidayPackage;
   window.submitCruisePackage = submitCruisePackage;
   window.deletePackage = deletePackage;

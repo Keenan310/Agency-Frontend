@@ -39,9 +39,20 @@ window.KeenanFrontend.modules['page-results-umrah'] = {
           const hotels = [p.makkah_hotel, p.madinah_hotel].filter(Boolean).join(' & ');
           const formattedPrice = typeof window.KT?.format === 'function' ? window.KT.format(p.price_per_person) : `${p.currency || 'AED'} ${Number(p.price_per_person || 0).toLocaleString()}`;
           
+          let coverImageUrl = null;
+          try {
+            const images = typeof p.images === 'string' ? JSON.parse(p.images) : (p.images || []);
+            if (images.length > 0) {
+              const apiBaseUrl = (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) ? window.KEENAN_CONFIG.apiBaseUrl.replace('/v1', '') : 'http://localhost:3000';
+              coverImageUrl = apiBaseUrl + images[0];
+            }
+          } catch(e) {}
+          
+          const bgStyle = coverImageUrl ? `background:url('${coverImageUrl}') center/cover no-repeat` : `background:linear-gradient(160deg,#1a1a35,#2d2d60,#111128)`;
+
           return `
             <div class="dest-card" onclick="go('detail')">
-              <div class="dc-img" style="background:linear-gradient(160deg,#1a1a35,#2d2d60,#111128)">
+              <div class="dc-img" style="${bgStyle}">
                 <span class="dc-ribbon">Umrah</span>
               </div>
               <div class="dc-body">
