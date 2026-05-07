@@ -23,6 +23,7 @@
         <div data-module-slot="page-confirmation"></div>
         <div data-module-slot="page-track"></div>
         <div data-module-slot="page-admin"></div>
+        <div data-module-slot="page-results-umrah"></div>
       </main>
       <div data-module-slot="order-modals"></div>
       <div data-module-slot="auth-modal"></div>
@@ -45,6 +46,7 @@
     { name: 'page-confirmation', slot: '[data-module-slot="page-confirmation"]', html: './src/pages/confirmation/index.html',   css: './src/pages/confirmation/index.css',         js: './src/pages/confirmation/index.js' },
     { name: 'page-track',      slot: '[data-module-slot="page-track"]',      html: './src/pages/track/index.html',               css: './src/pages/track/index.css',                js: './src/pages/track/index.js' },
     { name: 'page-admin',      slot: '[data-module-slot="page-admin"]',      html: './src/pages/admin/index.html',               css: './src/pages/admin/index.css',                js: './src/pages/admin/index.js' },
+    { name: 'page-results-umrah', slot: '[data-module-slot="page-results-umrah"]', html: './src/pages/results-umrah/index.html', css: './src/pages/results-umrah/index.css', js: './src/pages/results-umrah/index.js' },
     { name: 'hero-slider',     slot: '[data-module-slot="hero-slider"]',     html: './src/components/hero-slider/index.html',    css: './src/components/hero-slider/index.css',     js: './src/components/hero-slider/index.js' },
     { name: 'home-showcase',   slot: '[data-module-slot="home-showcase"]',   html: './src/components/home-showcase/index.html',  css: './src/components/home-showcase/index.css',   js: './src/components/home-showcase/index.js' },
     { name: 'site-footer',     slot: '[data-module-slot="site-footer"]',     html: './src/components/site-footer/index.html',    css: './src/components/site-footer/index.css',     js: './src/components/site-footer/index.js' },

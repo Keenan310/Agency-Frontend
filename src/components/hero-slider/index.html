@@ -30,20 +30,56 @@
 
         <div class="sw-body act" id="sw-flights">
           <div class="trip-opts">
-            <label class="tt-opt sel"><input type="radio" name="ftype" value="r" checked> Return</label>
-            <label class="tt-opt"><input type="radio" name="ftype" value="o"> One Way</label>
-            <label class="tt-opt"><input type="radio" name="ftype" value="m"> Multi-City</label>
+            <label class="tt-opt sel" id="lbl-tt-return"><input type="radio" name="ftype" value="r" id="tt-return" checked onchange="handleTripTypeChange(this)"> Return</label>
+            <label class="tt-opt" id="lbl-tt-oneway"><input type="radio" name="ftype" value="o" id="tt-oneway" onchange="handleTripTypeChange(this)"> One Way</label>
+            <label class="tt-opt" id="lbl-tt-multicity"><input type="radio" name="ftype" value="m" id="tt-multicity" onchange="handleTripTypeChange(this)"> Multi-City</label>
           </div>
           <div class="sw-form">
             <div class="sw-row">
               <div class="field"><label>From</label><input type="text" value="Dubai (DXB)" data-role="dep-city"></div>
               <div class="field"><label>To</label><input type="text" placeholder="Destination"></div>
-              <div class="field"><label>Depart</label><input type="date" value="2026-06-10"></div>
-              <div class="field"><label>Return</label><input type="date" value="2026-06-20"></div>
+              <div class="field"><label>Depart</label><input type="date" value="2026-06-10" id="flight-dep-date" onchange="validateDates()"></div>
+              <div class="field"><label>Return</label><input type="date" value="2026-06-20" id="flight-ret-date" onchange="validateDates()"></div>
             </div>
             <div class="sw-btn-row">
               <div style="display:flex;gap:10px;flex:1">
-                <div class="field" style="flex:1"><label>Passengers</label><select><option>1 Adult</option><option>2 Adults</option><option>2 Adults, 1 Child</option></select></div>
+                <div class="field pax-dropdown-wrap" style="flex:1; position: relative;">
+                  <label>Passengers</label>
+                  <div class="pax-selector-btn" id="pax-btn" onclick="togglePaxPopup()" style="padding: 10px; border: 1.5px solid var(--surface3); border-radius: 8px; background: var(--surface2); cursor: pointer; font-size: 14px; color: var(--ink); display: flex; align-items: center; justify-content: space-between;">
+                    <span id="pax-summary" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">1 Passenger</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink: 0; margin-left: 5px;"><path d="M6 9l6 6 6-6"/></svg>
+                  </div>
+                  <div id="pax-popup" class="pax-popup" style="display: none; position: absolute; top: calc(100% + 4px); left: 0; width: 260px; background: var(--white); border-radius: 12px; box-shadow: var(--sh3); border: 1px solid var(--surface3); padding: 16px; z-index: 100;">
+                    <!-- Adults -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                      <div><div style="font-size: 14px; font-weight: 600; color: var(--ink);">Adults</div><div style="font-size: 11px; color: var(--slate);">12+ years</div></div>
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('adult', -1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--slate3); background: transparent; cursor: pointer;">-</button>
+                        <span id="pax-adult-count" style="font-size: 14px; font-weight: 600; width: 12px; text-align: center;">1</span>
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('adult', 1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--gold); background: var(--gold); color: white; cursor: pointer;">+</button>
+                      </div>
+                    </div>
+                    <!-- Children -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                      <div><div style="font-size: 14px; font-weight: 600; color: var(--ink);">Children</div><div style="font-size: 11px; color: var(--slate);">2-11 years</div></div>
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('child', -1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--slate3); background: transparent; cursor: pointer;">-</button>
+                        <span id="pax-child-count" style="font-size: 14px; font-weight: 600; width: 12px; text-align: center;">0</span>
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('child', 1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--slate3); background: transparent; cursor: pointer;">+</button>
+                      </div>
+                    </div>
+                    <!-- Infants -->
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                      <div><div style="font-size: 14px; font-weight: 600; color: var(--ink);">Infants</div><div style="font-size: 11px; color: var(--slate);">Under 2 years</div></div>
+                      <div style="display: flex; align-items: center; gap: 10px;">
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('infant', -1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--slate3); background: transparent; cursor: pointer;">-</button>
+                        <span id="pax-infant-count" style="font-size: 14px; font-weight: 600; width: 12px; text-align: center;">0</span>
+                        <button type="button" class="pax-btn-ctl" onclick="updatePax('infant', 1)" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--slate3); background: transparent; cursor: pointer;">+</button>
+                      </div>
+                    </div>
+                    <div style="margin-top: 12px; font-size: 11px; color: var(--red); display: none;" id="pax-error">Maximum 9 passengers allowed.</div>
+                  </div>
+                </div>
                 <div class="field" style="flex:1"><label>Class</label><select><option>Economy</option><option>Business</option><option>First Class</option></select></div>
               </div>
               <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-flights')">Search Flights</button>
@@ -59,57 +95,35 @@
               <div class="field"><label>Duration</label><select><option>7 Nights</option><option>10 Nights</option><option>14 Nights</option><option>21 Nights</option></select></div>
               <div class="field"><label>Travel Month</label><input type="month" value="2026-09"></div>
             </div>
-            <div class="sw-btn-row">
-              <div class="field" style="flex:1"><label>Pilgrims</label><select><option>1 Pilgrim</option><option>2 Pilgrims</option><option>Family (4)</option><option>Group (10+)</option></select></div>
+            <div style="text-align:right;margin-top:4px">
               <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-umrah')">Find Packages</button>
             </div>
           </div>
         </div>
 
         <div class="sw-body" id="sw-holiday">
-          <div class="sw-form">
-            <div class="sw-row">
-              <div class="field"><label>Destination</label><select><option>Maldives</option><option>Bali</option><option>Turkey</option><option>Switzerland</option><option>Japan</option><option>Greece</option></select></div>
-              <div class="field"><label>Check-in</label><input type="date" value="2026-07-15"></div>
-              <div class="field"><label>Duration</label><select><option>5 Nights</option><option>7 Nights</option><option>10 Nights</option><option>14 Nights</option></select></div>
-              <div class="field"><label>Guests</label><select><option>2 Adults</option><option>2 Adults, 1 Child</option><option>Solo</option></select></div>
-            </div>
-            <div class="sw-btn-row">
-              <div class="field" style="flex:1"><label>Budget (per person)</label><select><option>Any budget</option><option>Under AED 3,000</option><option>AED 3,000–6,000</option><option>Above AED 6,000</option></select></div>
-              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-holiday')">Search Holidays</button>
-            </div>
+          <div class="sw-form" style="flex-direction: row; align-items: flex-end; gap: 16px;">
+            <div class="field" style="flex: 1;"><label>Destination</label><select><option>Maldives</option><option>Bali</option><option>Turkey</option><option>Switzerland</option><option>Japan</option><option>Greece</option></select></div>
+            <button class="btn-gold" style="padding:11px 32px;font-size:15px; height: 42px;" onclick="go('results-holiday')">Search Holidays</button>
           </div>
         </div>
 
         <div class="sw-body" id="sw-cruise">
-          <div class="sw-form">
-            <div class="sw-row">
-              <div class="field"><label>Departure Port</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Rome</option><option>Barcelona</option></select></div>
-              <div class="field"><label>Destination</label><select><option>Mediterranean</option><option>Arabian Gulf</option><option>Caribbean</option><option>Norway</option></select></div>
-              <div class="field"><label>Departure</label><input type="date" value="2026-08-01"></div>
-              <div class="field"><label>Duration</label><select><option>3–5 Nights</option><option>6–9 Nights</option><option>10–14 Nights</option><option>15+ Nights</option></select></div>
-            </div>
-            <div class="sw-btn-row">
-              <div class="field" style="flex:1"><label>Guests</label><select><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option></select></div>
-              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-cruise')">Search Cruises</button>
-            </div>
+          <div class="sw-form" style="flex-direction: row; align-items: flex-end; gap: 16px;">
+            <div class="field" style="flex: 1;"><label>Departure Port</label><select><option>Dubai</option><option>Abu Dhabi</option><option>Rome</option><option>Barcelona</option></select></div>
+            <button class="btn-gold" style="padding:11px 32px;font-size:15px; height: 42px;" onclick="go('results-cruise')">Search Cruises</button>
           </div>
         </div>
 
         <div class="sw-body" id="sw-visa">
-          <div class="sw-form">
-            <div class="sw-row">
-              <div class="field"><label>Your Nationality</label><select><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option><option>Pakistan</option><option>UK</option></select></div>
-              <div class="field"><label>Visa Destination</label><select><option>United Kingdom</option><option>Schengen (Europe)</option><option>United States</option><option>Canada</option><option>Australia</option><option>Japan</option></select></div>
-              <div class="field"><label>Visa Type</label><select><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option></select></div>
-              <div class="field"><label>Travel Date</label><input type="date" value="2026-09-01"></div>
-            </div>
-            <div style="text-align:right;margin-top:4px">
-              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-visa')">Check Requirements</button>
-            </div>
+          <div class="sw-form" style="flex-direction: row; align-items: flex-end; gap: 16px;">
+            <div class="field" style="flex: 1;"><label>Your Nationality</label><select><option>UAE</option><option>Saudi Arabia</option><option>Egypt</option><option>India</option><option>Pakistan</option><option>UK</option></select></div>
+            <div class="field" style="flex: 1;"><label>Visa Destination</label><select><option>United Kingdom</option><option>Schengen (Europe)</option><option>United States</option><option>Canada</option><option>Australia</option><option>Japan</option></select></div>
+            <div class="field" style="flex: 1;"><label>Visa Type</label><select><option>Tourist</option><option>Business</option><option>Transit</option><option>Student</option></select></div>
+            <button class="btn-gold" style="padding:11px 32px;font-size:15px; height: 42px;" onclick="go('results-visa')">Check Requirements</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-
+  </div>

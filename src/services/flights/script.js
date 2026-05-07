@@ -50,11 +50,14 @@
     }
 
     try {
+      const counts = window.KT_PAX_COUNTS || { adult: 1, child: 0, infant: 0 };
       const data = await post('/flights/search', {
         from,
         to,
         date: date.includes('T') ? date : date + 'T00:00:00.000Z',
-        passengers: [{ passengerTypeCode: 'ADT', count: 1 }],
+        adult_count: counts.adult,
+        child_count: counts.child,
+        infant_count: counts.infant
       });
 
       const flights = data.flights || [];

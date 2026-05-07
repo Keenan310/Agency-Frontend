@@ -811,6 +811,7 @@ window.RESULTS_BY_COUNTRY = {
   }
 };
 window.buildResults = function(type){
+  if(type === 'umrah') return;
   const el=document.getElementById('view-results-'+type);
   const code = (window.KT && window.KT.get().code) || 'AE';
   const d=window.RESULTS_BY_COUNTRY[code] && window.RESULTS_BY_COUNTRY[code][type];

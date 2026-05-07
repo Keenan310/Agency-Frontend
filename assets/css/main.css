@@ -1,4 +1,4 @@
-﻿
+
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
   --ink:#0B1120;--ink2:#1C2B45;--ink3:#2E4270;
@@ -100,7 +100,10 @@ body{font-family:var(--sans);background:var(--surface);color:var(--ink);min-heig
 /* HERO SLIDER */
 .hero-wrap{
   position:relative;min-height:640px;height:100svh;max-height:800px;
-  overflow:hidden;background:var(--ink);
+  background:var(--ink);
+}
+#slides-container {
+  position:absolute;inset:0;overflow:hidden;
 }
 .slide{
   position:absolute;inset:0;opacity:0;z-index:1;
@@ -181,11 +184,11 @@ body{font-family:var(--sans);background:var(--surface);color:var(--ink);min-heig
 /* Search Widget */
 .search-widget-wrap{
   position:absolute;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:960px;padding:0 32px;z-index:30;
+  width:100%;max-width:1250px;padding:0 32px;z-index:30;
 }
 .search-widget{
   background:var(--white);border-radius:var(--r2) var(--r2) 0 0;
-  box-shadow:var(--sh3);overflow:hidden;
+  box-shadow:var(--sh3);overflow:visible;
 }
 .sw-tabs{display:flex;border-bottom:1.5px solid var(--surface3)}
 .sw-tab{
