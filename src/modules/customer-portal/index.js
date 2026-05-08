@@ -96,6 +96,7 @@
       tbody.innerHTML = bookings.map((b, i) => `
         <tr>
           <td>${i + 1}</td>
+          <td class="td-mono">${b.reference}</td>
           <td class="semi">${b.service_name || b.service_type}</td>
           <td>${b.currency || 'AED'} ${Number(b.amount).toLocaleString()}</td>
           <td>${new Date(b.created_at).toLocaleDateString()}</td>

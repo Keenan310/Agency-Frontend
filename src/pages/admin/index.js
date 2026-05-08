@@ -723,9 +723,6 @@ window.adminLoadUmrahBookings = async function adminLoadUmrahBookings() {
     
     tbody.innerHTML = data.data.map(b => {
       const statusClass = (b.status || 'pending').toLowerCase();
-      const payStatusClass = (b.payment_status || 'pending').toLowerCase();
-      
-      // Map payment status to color classes
       const pColor = b.payment_status === 'received' ? 'ss-confirmed' : (b.payment_status === 'cancelled' ? 'ss-cancelled' : 'ss-pending');
 
       return `
@@ -753,13 +750,81 @@ window.adminLoadUmrahBookings = async function adminLoadUmrahBookings() {
             </select>
           </td>
           <td class="td-actions">
-            <button class="btn-icon" onclick="viewUmrahBookingDetails(${b.package_id})">👁️</button>
+            <button class="btn-icon" onclick="viewUmrahBooking(${b.id})" title="View Details">👁️</button>
+            <button class="btn-icon" onclick="editUmrahBooking(${b.id})" title="Edit Booking">✏️</button>
+            <button class="btn-icon" style="color:var(--red)" onclick="deleteUmrahBooking(${b.id})" title="Delete Booking">🗑️</button>
           </td>
         </tr>
       `;
     }).join('');
   } else {
     tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px;color:red">Failed to load Umrah bookings</td></tr>';
+  }
+};
+
+window.viewUmrahBooking = async function viewUmrahBooking(id) {
+  const data = await _adminFetch(`/umrah/bookings/${id}`);
+  if (data && data.data) {
+    const b = data.data;
+    const content = `
+      <div class="field"><label>Reference</label><div class="semi">${b.reference}</div></div>
+      <div class="field"><label>Customer</label><div class="semi">${b.customer_name}</div></div>
+      <div class="field"><label>Package</label><div class="semi">${b.package_name}</div></div>
+      <div class="field"><label>Total Pax</label><div class="semi">${b.num_pilgrims} Pilgrims</div></div>
+      <div class="field"><label>Departure</label><div class="semi">${b.departure_date ? new Date(b.departure_date).toLocaleDateString() : '—'}</div></div>
+      <div class="field"><label>Departure City</label><div class="semi">${b.departure_city}</div></div>
+      <div class="field"><label>Total Amount</label><div class="semi">${b.currency} ${Number(b.amount).toLocaleString()}</div></div>
+      <div class="field"><label>Booking Status</label><div class="semi upper">${b.status}</div></div>
+      <div class="field full" style="grid-column:span 2"><label>Admin Notes</label><div class="slate fs13">${b.notes || 'No notes available.'}</div></div>
+    `;
+    document.getElementById('view-umrah-details-content').innerHTML = content;
+    openModal('m-view-umrah-booking');
+  }
+};
+
+window.editUmrahBooking = async function editUmrahBooking(id) {
+  const data = await _adminFetch(`/umrah/bookings/${id}`);
+  if (data && data.data) {
+    const b = data.data;
+    document.getElementById('edit-um-booking-id').value = b.id;
+    document.getElementById('edit-um-pax').value = b.num_pilgrims;
+    document.getElementById('edit-um-amount').value = b.amount;
+    openModal('m-edit-umrah-booking');
+  }
+};
+
+window.saveUmrahBookingEdit = async function saveUmrahBookingEdit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const id = form.booking_id.value;
+  const payload = {
+    num_pilgrims: form.num_pilgrims.value,
+    amount: form.amount.value
+  };
+
+  const data = await _adminFetch(`/umrah/bookings/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload)
+  });
+
+  if (data && data.success !== false) {
+    if (typeof window.toast === 'function') window.toast('Booking updated', 't-green');
+    closeModal('m-edit-umrah-booking');
+    adminLoadUmrahBookings();
+  } else {
+    if (typeof window.toast === 'function') window.toast('Update failed', 't-red');
+  }
+};
+
+window.deleteUmrahBooking = async function deleteUmrahBooking(id) {
+  if (!confirm('Are you sure you want to delete this booking record? This action cannot be undone.')) return;
+  
+  const data = await _adminFetch(`/umrah/bookings/${id}`, { method: 'DELETE' });
+  if (data && data.success !== false) {
+    if (typeof window.toast === 'function') window.toast('Booking deleted', 't-green');
+    adminLoadUmrahBookings();
+  } else {
+    if (typeof window.toast === 'function') window.toast('Delete failed', 't-red');
   }
 };
 
@@ -787,15 +852,4 @@ window.updateUmrahPaymentStatus = async function updateUmrahPaymentStatus(id, st
   } else {
     if (typeof window.toast === 'function') window.toast('Update failed', 't-red');
   }
-};
-
-window.viewUmrahBookingDetails = function viewUmrahBookingDetails(pkgId) {
-  if (!pkgId) {
-    if (typeof window.toast === 'function') window.toast('Package information missing', 't-red');
-    return;
-  }
-  // Reuse the existing Package Edit modal but for "viewing"
-  window.editUmrahPackage(pkgId);
-  // We can't easily make it read-only without refactoring the whole modal, 
-  // but it fulfills the "View the full package form/details" requirement.
 };

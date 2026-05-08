@@ -2170,3 +2170,44 @@
     </div>
   </div>
 </div>
+
+<!-- Umrah Booking View Modal -->
+<div class="modal-bg" id="m-view-umrah-booking" onclick="if(event.target===this)closeModal('m-view-umrah-booking')">
+  <div class="card" style="width:500px; max-width:90vw; padding:30px;">
+    <div class="flex jcb aic mb24">
+      <h3 class="serif fs24">Umrah Booking Details</h3>
+      <button class="btn-close" onclick="closeModal('m-view-umrah-booking')">×</button>
+    </div>
+    <div class="grid g2 gap20" id="view-umrah-details-content">
+      <!-- Populated by JS -->
+    </div>
+    <div class="mt24 flex justify-end">
+      <button class="btn-navy" onclick="closeModal('m-view-umrah-booking')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Umrah Booking Edit Modal -->
+<div class="modal-bg" id="m-edit-umrah-booking" onclick="if(event.target===this)closeModal('m-edit-umrah-booking')">
+  <div class="card" style="width:400px; max-width:90vw; padding:30px;">
+    <div class="flex jcb aic mb24">
+      <h3 class="serif fs24">Edit Umrah Booking</h3>
+      <button class="btn-close" onclick="closeModal('m-edit-umrah-booking')">×</button>
+    </div>
+    <form id="edit-umrah-booking-form" onsubmit="saveUmrahBookingEdit(event)">
+      <input type="hidden" name="booking_id" id="edit-um-booking-id">
+      <div class="field mb16">
+        <label>Total Persons (Pax)</label>
+        <input type="number" name="num_pilgrims" id="edit-um-pax" required min="1">
+      </div>
+      <div class="field mb24">
+        <label>Total Amount</label>
+        <input type="number" name="amount" id="edit-um-amount" required step="0.01">
+      </div>
+      <div class="flex gap12">
+        <button type="submit" class="btn-gold flex1">Save Updates</button>
+        <button type="button" class="btn-ghost" onclick="closeModal('m-edit-umrah-booking')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
