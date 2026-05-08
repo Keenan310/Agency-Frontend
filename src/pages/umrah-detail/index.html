@@ -1,0 +1,154 @@
+<div id="view-umrah-detail" class="view">
+  <div class="detail-hero">
+    <div class="results-inner">
+      <div class="breadcrumb">
+        <span onclick="go('home')">Home</span> / 
+        <span onclick="go('results-umrah')">Umrah Packages</span> / 
+        <span id="ud-breadcrumb-name" class="gold">Package Details</span>
+      </div>
+      <h1 id="ud-title" class="sec-title" style="color:white;margin-bottom:5px">Loading Package...</h1>
+      <div id="ud-subtitle" style="color:rgba(255,255,255,.6);font-size:15px">Please wait while we fetch the details.</div>
+    </div>
+  </div>
+
+  <div class="detail-body">
+    <div class="detail-content">
+      <!-- Image Slider -->
+      <div class="ud-slider-card">
+        <div id="ud-slider" class="ud-slider">
+          <div id="ud-slides" class="ud-slides">
+            <!-- Slides injected here -->
+          </div>
+          <button class="ud-nav prev" onclick="udPrevSlide()">❮</button>
+          <button class="ud-nav next" onclick="udNextSlide()">❯</button>
+          <div id="ud-dots" class="ud-dots"></div>
+        </div>
+      </div>
+
+      <!-- Package Info -->
+      <div class="d-section">
+        <h2 class="ds-title">Package Summary</h2>
+        <div class="ud-info-grid">
+          <div class="ud-info-item">
+            <div class="ud-info-label">Duration</div>
+            <div id="ud-nights" class="ud-info-val">—</div>
+          </div>
+          <div class="ud-info-item">
+            <div class="ud-info-label">Makkah Hotel</div>
+            <div id="ud-makkah" class="ud-info-val">—</div>
+          </div>
+          <div class="ud-info-item">
+            <div class="ud-info-label">Madinah Hotel</div>
+            <div id="ud-madinah" class="ud-info-val">—</div>
+          </div>
+          <div class="ud-info-item">
+            <div class="ud-info-label">Transport</div>
+            <div id="ud-transport" class="ud-info-val">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inclusions -->
+      <div class="d-section">
+        <h2 class="ds-title">What's Included</h2>
+        <div class="ud-inc-grid">
+          <div id="ud-inc-visa" class="ud-inc-item">
+            <span class="ud-inc-icon">🛂</span>
+            <div>
+              <div class="ud-inc-label">Visa Processing</div>
+              <div class="ud-inc-sub">Included in package</div>
+            </div>
+          </div>
+          <div id="ud-inc-flights" class="ud-inc-item">
+            <span class="ud-inc-icon">✈️</span>
+            <div>
+              <div class="ud-inc-label">Flight Tickets</div>
+              <div class="ud-inc-sub">Return economy class</div>
+            </div>
+          </div>
+          <div class="ud-inc-item">
+            <span class="ud-inc-icon">🏨</span>
+            <div>
+              <div class="ud-inc-label">Accommodation</div>
+              <div class="ud-inc-sub">Confirmed hotel bookings</div>
+            </div>
+          </div>
+          <div class="ud-inc-item">
+            <span class="ud-inc-icon">🚐</span>
+            <div>
+              <div class="ud-inc-label">Internal Transport</div>
+              <div class="ud-inc-sub">Ziyarat & transfers</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="d-section">
+        <h2 class="ds-title">Description</h2>
+        <div id="ud-description" class="ud-desc-text">
+          No description available.
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar / Booking Widget -->
+    <aside class="ud-sidebar">
+      <div class="book-widget">
+        <div class="ud-price-wrap">
+          <div id="ud-currency" class="ud-currency">AED</div>
+          <div id="ud-unit-price" class="bw-price">0</div>
+          <div class="bw-label">per person</div>
+        </div>
+
+        <div class="field mb20">
+          <label>Number of Persons</label>
+          <div class="ud-counter">
+            <button onclick="udChangePilgrims(-1)">−</button>
+            <input type="number" id="ud-pilgrims" value="1" min="1" readonly>
+            <button onclick="udChangePilgrims(1)">+</button>
+          </div>
+        </div>
+
+        <div class="price-table">
+          <div class="pt-row">
+            <span>Base Price (x <span id="ud-count-label">1</span>)</span>
+            <span id="ud-base-total">AED 0</span>
+          </div>
+          <div class="pt-row">
+            <span>Taxes & Fees</span>
+            <span class="green">Included</span>
+          </div>
+          <div class="pt-row total">
+            <span>Total Amount</span>
+            <span id="ud-grand-total">AED 0</span>
+          </div>
+        </div>
+
+        <div class="ud-booking-form-box">
+          <h3 class="ud-form-title">Submit Booking Request</h3>
+          <p class="fs12 slate2 mb16">Fill in your details and our team will contact you shortly.</p>
+          <form id="ud-booking-form" onsubmit="handleUdBooking(event)">
+            <div class="field mb12">
+              <label>Full Name</label>
+              <input type="text" id="ud-form-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="field mb12">
+              <label>Email Address</label>
+              <input type="email" id="ud-form-email" placeholder="email@example.com" required>
+            </div>
+            <div class="field mb12">
+              <label>Phone Number</label>
+              <input type="tel" id="ud-form-phone" placeholder="+971 -- --- ----" required>
+            </div>
+            <div class="field mb20">
+              <label>Special Requests (Optional)</label>
+              <textarea id="ud-form-notes" placeholder="Any specific requirements..."></textarea>
+            </div>
+            <button type="submit" id="ud-submit-btn" class="btn-gold w100">Book This Package</button>
+          </form>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

@@ -1,6 +1,5 @@
 // HERO SLIDER SYSTEM
 let slides=[
-  {id:1,label:'Sacred Journeys · Umrah 2026',title:'Experience the<br><em>Sacred Journey</em>',sub:'Premium Umrah packages with 5-star hotels and all-inclusive services — crafted for the spiritual traveller.',cta:'Explore Umrah',link:'umrah',bg:'linear-gradient(135deg,#0B1120 0%,#1C2B45 55%,#2a4070 100%)',img:'',active:true},
   {id:2,label:'Holiday Escapes · Maldives',title:'Paradise Found<br><em>in the Maldives</em>',sub:'Overwater villas, pristine turquoise lagoons, and world-class service — your dream escape awaits.',cta:'View Holiday Packages',link:'holiday',bg:'linear-gradient(135deg,#0d3d52 0%,#1a6b8a 55%,#0e5f82 100%)',img:'',active:true},
   {id:3,label:'Mediterranean Cruises · 2026',title:'Sail the World<br><em>in Luxury</em>',sub:'Explore 6 stunning countries in 10 magical nights aboard world-class Mediterranean cruise liners.',cta:'Discover Cruises',link:'cruise',bg:'linear-gradient(135deg,#1a3060 0%,#2858a8 55%,#12285e 100%)',img:'',active:true},
   {id:4,label:'Flights · 150+ Destinations',title:'Fly Anywhere,<br><em>Seamlessly</em>',sub:'Hundreds of routes, competitive fares, and effortless booking — your next adventure starts here.',cta:'Search Flights',link:'flights',bg:'linear-gradient(135deg,#1C2B45 0%,#0B1120 55%,#2E4270 100%)',img:'',active:true},
@@ -720,7 +719,7 @@ function downloadSql(){
   toast('MySQL schema downloaded as .sql','t-green');
 }
 // VIEW ROUTING
-const VIEWS=['home','results-flights','results-umrah','results-holiday','results-cruise','results-visa','detail','booking','confirmation','track','admin','admin-login'];
+const VIEWS=['home','results-flights','results-umrah','results-holiday','results-cruise','results-visa','detail','booking','confirmation','track','admin','admin-login','umrah-detail'];
 function go(name){
   VIEWS.forEach(v=>{const el=document.getElementById('view-'+v);if(el)el.classList.remove('on')});
   const el=document.getElementById('view-'+name);
@@ -757,12 +756,6 @@ window.RESULTS_BY_COUNTRY = {
         {name:'Etihad · EY021',tags:['1 Stop (AUH)','9h 10m','10:30 → 17:40','A380'],meta:['Economy · 23kg baggage · Meals included'],price:1890,currency:'AED',plabel:'per person · return',rating:'4.7',bg:'#2d1a5f'},
         {name:'British Airways · BA106',tags:['Non-stop','7h 40m','14:15 → 19:55','Boeing 787'],meta:['Economy · 23kg baggage'],price:2750,currency:'AED',plabel:'per person · return',rating:'4.6',bg:'#1a3d5f'},
       ]},
-    umrah:{title:'Umrah Packages',sub:'Departing Dubai · September 2026 · 12 packages found',
-      items:[
-        {name:'Premium Umrah · 14 Nights',tags:['VIP','Visa Included','Flights Included','5★ Hotels'],meta:['Towers Hotel — 200m from Haram · Private transport'],price:8500,currency:'AED',plabel:'per person',rating:'5.0',bg:'#1a1a35'},
-        {name:'Standard Umrah · 10 Nights',tags:['Standard','Visa Included','Flights Included','4★ Hotels'],meta:['Al Massa Hotel — 500m from Haram · Shared transport'],price:5200,currency:'AED',plabel:'per person',rating:'4.9',bg:'#1a2e20'},
-        {name:'Economy Umrah · 7 Nights',tags:['Economy','Visa Included','Flights Included','3★ Hotels'],meta:['Al Noor Hotel — 1km from Haram · Group transport'],price:3500,currency:'AED',plabel:'per person',rating:'4.8',bg:'#2e1a10'},
-      ]},
     holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 18 packages found',
       items:[
         {name:'Maldives Escape · 7 Nights',tags:['5★ Overwater Villa','All Inclusive','Flights Included'],meta:['Private beach & lagoon · Water sports · Complimentary spa'],price:6499,currency:'AED',plabel:'per person',rating:'4.9',bg:'#0d3d52'},
@@ -786,12 +779,6 @@ window.RESULTS_BY_COUNTRY = {
         {name:'Pakistan International · PK204',tags:['Non-stop','3h 10m','09:00 → 11:10','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:85000,currency:'PKR',plabel:'per person · return',rating:'4.2',bg:'#1a3a20'},
         {name:'Emirates · EK601',tags:['Non-stop','3h 25m','12:00 → 14:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:115000,currency:'PKR',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
         {name:'flydubai · FZ328',tags:['Non-stop','3h 30m','15:00 → 17:30','Boeing 737'],meta:['Economy · 20kg baggage'],price:75000,currency:'PKR',plabel:'per person · return',rating:'4.3',bg:'#ff6a00'},
-      ]},
-    umrah:{title:'Umrah Packages',sub:'Departing Karachi · September 2026 · 8 packages found',
-      items:[
-        {name:'Premium Umrah · 14 Nights',tags:['VIP','Visa Included','Flights Included','5★ Hotels'],meta:['Towers Hotel — 200m from Haram · Private transport'],price:450000,currency:'PKR',plabel:'per person',rating:'5.0',bg:'#1a1a35'},
-        {name:'Standard Umrah · 10 Nights',tags:['Standard','Visa Included','Flights Included','4★ Hotels'],meta:['Al Massa Hotel — 500m from Haram · Shared transport'],price:320000,currency:'PKR',plabel:'per person',rating:'4.9',bg:'#1a2e20'},
-        {name:'Economy Umrah · 7 Nights',tags:['Economy','Visa Included','Flights Included','3★ Hotels'],meta:['Al Noor Hotel — 1km from Haram · Group transport'],price:250000,currency:'PKR',plabel:'per person',rating:'4.8',bg:'#2e1a10'},
       ]},
     holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 10 packages found',
       items:[

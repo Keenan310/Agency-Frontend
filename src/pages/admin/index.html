@@ -980,20 +980,44 @@
                     <th>Madinah Hotel</th>
                     <th>Price</th>
                     <th>Visa</th>
+                    <th>Status</th>
                     <th>Bookings</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-um">
-                  <tr><td colspan="9" style="text-align:center;padding:20px;">Loading…</td></tr>
+                  <tr><td colspan="10" style="text-align:center;padding:20px;">Loading…</td></tr>
                 </tbody>
               </table>
             </div>
           </div>
         </div>
         <div class="a-tab-c" id="at-u2">
-          <div class="a-card" style="padding:24px">
-            <div class="slate fs14">284 active Umrah bookings with pilgrim details and visa tracking.</div>
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Umrah Booking Requests</div>
+              <button class="btn-ghost btn-sm" onclick="adminLoadUmrahBookings()">🔄 Refresh</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ref</th>
+                    <th>Customer</th>
+                    <th>Package</th>
+                    <th>Pilgrims</th>
+                    <th>Departure</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Payment Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-um-bookings">
+                  <tr><td colspan="9" style="text-align:center;padding:20px;">Click Refresh to load bookings</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
         <div class="a-tab-c" id="at-u3">

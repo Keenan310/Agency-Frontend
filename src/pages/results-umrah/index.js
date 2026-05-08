@@ -51,7 +51,7 @@ window.KeenanFrontend.modules['page-results-umrah'] = {
           const bgStyle = coverImageUrl ? `background:url('${coverImageUrl}') center/cover no-repeat` : `background:linear-gradient(160deg,#1a1a35,#2d2d60,#111128)`;
 
           return `
-            <div class="dest-card" onclick="go('detail')">
+            <div class="dest-card" onclick="goUmrahDetail(${p.id})">
               <div class="dc-img" style="${bgStyle}">
                 <span class="dc-ribbon">Umrah</span>
               </div>
@@ -63,7 +63,7 @@ window.KeenanFrontend.modules['page-results-umrah'] = {
                     <div class="dc-price"><span class="from">from</span><span class="amount">${formattedPrice}</span></div>
                     <div class="dc-stars">★★★★★ 5.0</div>
                   </div>
-                  <button class="btn-gold" style="padding: 8px 16px; font-size: 13px;" onclick="event.stopPropagation(); go('detail')">View Package</button>
+                  <button class="btn-gold" style="padding: 8px 16px; font-size: 13px;" onclick="event.stopPropagation(); goUmrahDetail(${p.id})">View Package</button>
                 </div>
               </div>
             </div>

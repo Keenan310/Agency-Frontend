@@ -5,10 +5,7 @@ window.KeenanFrontend.modules["site-nav"] = {
     if (!root) return;
     root.dataset.module = "site-nav";
     
-    // Set initial lang options based on current KT country
-    if (window.KT) {
-      window.updateLangOptions(window.KT.get().lang);
-    }
+    // Navbar initialized
   },
 };
 
@@ -18,50 +15,28 @@ window.switchCountry = function(code) {
   }
 };
 
-window.toggleCountryMenu = function() {
-  document.getElementById('country-menu').classList.toggle('open');
-};
-
-window.updateLangOptions = function(langs) {
-  const el = document.getElementById('cm-langs');
-  if (!el) return;
-  el.innerHTML = langs.map(l =>
-    `<button class="cm-lang-btn" onclick="setLang('${l}')">${l}</button>`
-  ).join('');
-};
-
-window.updateNavPortalUI = function() {
-  if (!window.KT) return;
-  const ctx = window.KT.get();
-  
-  const flagEl = document.getElementById('cs-flag');
-  const nameEl = document.getElementById('cs-name');
-  const currEl = document.getElementById('cs-currency');
-  
-  if (flagEl) flagEl.textContent = ctx.flag;
-  if (nameEl) nameEl.textContent = ctx.name;
-  if (currEl) currEl.textContent = ctx.currency;
-  
-  ['AE', 'PK'].forEach(c => {
-    const el = document.getElementById(`cm-check-${c}`);
-    if (el) el.style.display = c === ctx.code ? 'inline' : 'none';
-  });
-  
-  window.updateLangOptions(ctx.lang);
-  
-  const menu = document.getElementById('country-menu');
-  if (menu) menu.classList.remove('open');
-  
-  if (typeof window.toast === 'function') {
-    window.toast(`Portal switched to ${ctx.flag} ${ctx.name} — prices in ${ctx.currency}`, 't-gold');
+window.toggleUserDropdown = function() {
+  const trigger = document.getElementById('user-profile-trigger');
+  const dropdown = document.getElementById('user-dropdown');
+  if (trigger && dropdown) {
+    trigger.classList.toggle('open');
+    dropdown.classList.toggle('open');
   }
 };
 
-// Close menu when clicking outside
+// Close menus when clicking outside
 document.addEventListener('click', e => {
-  const selector = document.getElementById('country-selector');
-  const menu = document.getElementById('country-menu');
-  if (selector && menu && !selector.contains(e.target)) {
-    menu.classList.remove('open');
+  const countrySelector = document.getElementById('country-selector');
+  const countryMenu = document.getElementById('country-menu');
+  if (countrySelector && countryMenu && !countrySelector.contains(e.target)) {
+    countryMenu.classList.remove('open');
+  }
+
+  const userMenu = document.getElementById('user-menu-root');
+  const userDropdown = document.getElementById('user-dropdown');
+  const userTrigger = document.getElementById('user-profile-trigger');
+  if (userMenu && userDropdown && !userMenu.contains(e.target)) {
+    userDropdown.classList.remove('open');
+    if (userTrigger) userTrigger.classList.remove('open');
   }
 });

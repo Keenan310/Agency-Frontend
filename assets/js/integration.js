@@ -5,9 +5,6 @@
     authMode: "login",
     session: null,
     publicSlidesLoaded: false,
-    umrahPackages: [],
-    holidayPackages: [],
-    cruisePackages: [],
   };
 
   const STATUS_MAP = {
@@ -211,42 +208,91 @@
   }
 
   function updateSessionUi() {
-    const authBtn = document.getElementById("auth-trigger");
-    const accountBtn = document.getElementById("account-trigger");
-    const adminBtn = document.getElementById("admin-trigger");
+    const navAvatarInitials = document.getElementById("nav-avatar-initials");
+    const navAvatarImg = document.getElementById("nav-avatar-img");
+    const navBriefName = document.getElementById("nav-brief-name");
+    
+    const udUserSection = document.getElementById("ud-user-section");
+    const udGuestSection = document.getElementById("ud-guest-section");
+    const udLogoutSection = document.getElementById("ud-logout-section");
+    
+    const navUserName = document.getElementById("nav-user-name");
+    const navUserEmail = document.getElementById("nav-user-email");
+
+    if (state.session) {
+      if (udUserSection) udUserSection.style.display = "block";
+      if (udGuestSection) udGuestSection.style.display = "none";
+      if (udLogoutSection) udLogoutSection.style.display = "block";
+      
+      const user = state.session.user || {};
+      const name = sessionUserName();
+      
+      if (navBriefName) navBriefName.textContent = user.first_name || "Account";
+      if (navAvatarInitials) navAvatarInitials.textContent = initials(name);
+      if (navUserName) navUserName.textContent = name;
+      if (navUserEmail) navUserEmail.textContent = user.email || "";
+
+      if (navAvatarImg) {
+        if (user.profile_picture) {
+          const apiBase = getApiBaseUrl().replace("/v1", "");
+          navAvatarImg.src = user.profile_picture.startsWith("http") ? user.profile_picture : `${apiBase}${user.profile_picture}`;
+          navAvatarImg.style.display = "block";
+          if (navAvatarInitials) navAvatarInitials.style.display = "none";
+        } else {
+          navAvatarImg.style.display = "none";
+          if (navAvatarInitials) navAvatarInitials.style.display = "block";
+        }
+      }
+    } else {
+      if (udUserSection) udUserSection.style.display = "none";
+      if (udGuestSection) udGuestSection.style.display = "block";
+      if (udLogoutSection) udLogoutSection.style.display = "none";
+      
+      if (navBriefName) navBriefName.textContent = "Sign In";
+      if (navAvatarInitials) navAvatarInitials.textContent = "?";
+      if (navAvatarImg) navAvatarImg.style.display = "none";
+      if (navAvatarInitials) navAvatarInitials.style.display = "block";
+    }
+
+    // Admin Sidebar Sync
     const adminAvatar = document.getElementById("admin-avatar");
     const adminName = document.getElementById("admin-name");
     const adminRole = document.getElementById("admin-role");
-
-    if (authBtn) {
-      if (isAdminSession()) {
-        authBtn.textContent = "Return to Admin";
-        authBtn.onclick = () => { if (typeof window.go === "function") window.go("admin"); };
-      } else {
-        authBtn.textContent = state.session ? sessionUserName() : "Sign In";
-        authBtn.onclick = isCustomerSession() ? openCustomerPortal : () => openAuthModal("customer");
-      }
-    }
-
-    if (accountBtn) {
-      accountBtn.style.display = isCustomerSession() ? "inline-flex" : "none";
-    }
-
-    if (adminBtn) {
-      adminBtn.textContent = isAdminSession() ? "Open Admin" : "Admin Panel";
-    }
 
     if (isAdminSession()) {
       const name = sessionUserName();
       if (adminAvatar) adminAvatar.textContent = initials(name);
       if (adminName) adminName.textContent = name;
-      if (adminRole) adminRole.textContent = String(state.session.user.role || "Admin").replaceAll("_", " ");
+      if (adminRole) adminRole.textContent = titleCase(state.session.user.role || "Admin");
     } else {
       if (adminAvatar) adminAvatar.textContent = "KA";
       if (adminName) adminName.textContent = "Keenan Admin";
       if (adminRole) adminRole.textContent = "Super Admin";
     }
   }
+
+  window.updateNavPortalUI = function () {
+    if (!window.KT) return;
+    const ctx = window.KT.get();
+    
+    const briefCountry = document.getElementById("nav-brief-country");
+    if (briefCountry) briefCountry.textContent = `${ctx.flag} ${ctx.name}`;
+    
+    ["AE", "PK"].forEach((c) => {
+      const el = document.getElementById(`ud-c-${c}`);
+      if (el) {
+        if (c === ctx.code) el.classList.add("act");
+        else el.classList.remove("act");
+      }
+    });
+    
+    const dropdown = document.getElementById("user-dropdown");
+    if (dropdown) dropdown.classList.remove("open");
+    
+    if (typeof window.toast === "function") {
+      window.toast(`Portal switched to ${ctx.flag} ${ctx.name}`, "t-gold");
+    }
+  };
 
   function setAuthMode(mode) {
     state.authMode = mode;
@@ -425,50 +471,11 @@
     }
   }
 
-  async function openCustomerPortal() {
-    if (!isCustomerSession()) {
-      openAuthModal("customer");
-      return;
-    }
-
-    try {
-      const [me, bookings] = await Promise.all([
-        apiRequest("/auth/me"),
-        apiRequest("/customers/me/bookings"),
-      ]);
-      const profile = me.user || state.session.user;
-      const rows = bookings.data || [];
-      document.getElementById("portal-customer-name").textContent =
-        [profile.first_name, profile.last_name].filter(Boolean).join(" ") || profile.email;
-      document.getElementById("portal-customer-email").textContent = profile.email || "—";
-      document.getElementById("portal-booking-count").textContent = `${rows.length} booking${rows.length === 1 ? "" : "s"}`;
-      const total = rows.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-      document.getElementById("portal-booking-total").textContent = `${formatCurrency(total, "AED")} total spend`;
-      document.getElementById("portal-bookings-body").innerHTML =
-        rows.length > 0
-          ? rows
-              .map(
-                (item) => `<tr>
-                  <td class="td-mono">${escapeHtml(item.reference)}</td>
-                  <td>${escapeHtml(item.service_type)}</td>
-                  <td>${escapeHtml(statusValue(item.status).replace("_", " "))}</td>
-                  <td class="semi">${escapeHtml(formatCurrency(item.amount, item.currency))}</td>
-                  <td>${escapeHtml(formatDate(item.created_at))}</td>
-                </tr>`,
-              )
-              .join("")
-          : '<tr><td colspan="5" class="slate2 fs13" style="padding:18px">No bookings available.</td></tr>';
-      openModal("m-customer-portal");
-    } catch (error) {
-      toast(error.message || "Unable to load customer account", "t-red");
-    }
-  }
-
   function logoutSession() {
     persistSession(null);
     closeModal("m-customer-portal");
     if (document.getElementById("view-admin")?.classList.contains("on")) {
-      go("home");
+      window.go("home");
     }
     toast("Signed out", "t-gold");
   }
@@ -789,6 +796,13 @@
       await apiRequest(`/visa/applications/${row.dataset.visaId}/status`, {
         method: "PATCH",
         body: { status: value },
+      });
+      return;
+    }
+    if (row.dataset.packageId) {
+      await apiRequest(`/umrah/packages/${row.dataset.packageId}`, {
+        method: "PUT",
+        body: { is_active: value === "active" ? 1 : 0 },
       });
     }
   }
@@ -1479,11 +1493,13 @@
   window.submitAdminLogin = submitAdminLogin;
   window.togglePw = togglePw;
   window.signInWithGoogle = signInWithGoogle;
-  window.openCustomerPortal = openCustomerPortal;
   window.logoutSession = logoutSession;
   window.persistSession = persistSession;
   window.openAdminAccess = openAdminAccess;
   window.submitCustomerCreate = submitCustomerCreate;
+  window.isCustomerSession = isCustomerSession;
+  window.isAdminSession = isAdminSession;
+  window.getApiBaseUrl = getApiBaseUrl;
 
   window.submitHolidayPackage = submitHolidayPackage;
   window.submitCruisePackage = submitCruisePackage;

@@ -10,41 +10,74 @@
     <button class="nl" onclick="go('track')">Track Booking</button>
   </div>
   <div class="nav-right">
-    <!-- Country Selector Dropdown -->
-    <div class="country-selector" id="country-selector">
-      <button class="country-btn" onclick="toggleCountryMenu()">
-        <span id="cs-flag">🇦🇪</span>
-        <span id="cs-name">UAE</span>
-        <span id="cs-currency" class="cs-cur">AED</span>
-        <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
-      </button>
-      <div class="country-menu" id="country-menu">
-        <div class="cm-option" onclick="switchCountry('AE')">
-          <span class="cm-flag">🇦🇪</span>
-          <div class="cm-info">
-            <div class="cm-name">UAE</div>
-            <div class="cm-detail">Packages in AED · English / Arabic</div>
-          </div>
-          <span class="cm-check" id="cm-check-AE">✓</span>
+    <!-- Consolidated User Menu -->
+    <div class="user-menu" id="user-menu-root">
+      <!-- Trigger (Avatar for logged in, Person icon for guest) -->
+      <div class="user-profile-trigger" id="user-profile-trigger" onclick="toggleUserDropdown()">
+        <div class="user-avatar" id="nav-avatar">
+          <span id="nav-avatar-initials">?</span>
+          <img id="nav-avatar-img" src="" alt="Profile" style="display:none">
         </div>
-        <div class="cm-option" onclick="switchCountry('PK')">
-          <span class="cm-flag">🇵🇰</span>
-          <div class="cm-info">
-            <div class="cm-name">Pakistan</div>
-            <div class="cm-detail">Packages in PKR · English / Urdu</div>
-          </div>
-          <span class="cm-check" id="cm-check-PK" style="display:none">✓</span>
+        <div class="nav-user-meta-brief" id="nav-user-meta-brief">
+          <span id="nav-brief-name">Sign In</span>
+          <span id="nav-brief-country">🇦🇪 UAE</span>
         </div>
-        <div class="cm-divider"></div>
-        <!-- Language options (filtered per country) -->
-        <div class="cm-lang-row" id="cm-langs"></div>
+        <svg width="10" height="6" viewBox="0 0 10 6" class="dropdown-arrow"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <div class="user-dropdown" id="user-dropdown">
+        <!-- User Info Section (Visible when logged in) -->
+        <div id="ud-user-section" style="display:none">
+          <div class="ud-header">
+            <div class="ud-name" id="nav-user-name">Guest User</div>
+            <div class="ud-email" id="nav-user-email">guest@example.com</div>
+          </div>
+          <div class="ud-divider"></div>
+          <button class="ud-item" onclick="openCustomerPortal('profile')">
+            <span class="ud-icon">👤</span> My Profile
+          </button>
+          <button class="ud-item" onclick="openCustomerPortal('account')">
+            <span class="ud-icon">💼</span> My Account
+          </button>
+          <div class="ud-divider"></div>
+        </div>
+
+        <!-- Guest Section (Visible when logged out) -->
+        <div id="ud-guest-section">
+          <button class="ud-item" onclick="openAuthModal('customer')">
+            <span class="ud-icon">🔑</span> Sign In / Register
+          </button>
+          <div class="ud-divider"></div>
+        </div>
+
+        <!-- Shared Section: Country Selector -->
+        <div class="ud-label">Country & Currency</div>
+        <div class="ud-country-options">
+          <div class="ud-c-opt" id="ud-c-AE" onclick="switchCountry('AE')">
+            <span>🇦🇪 UAE (AED)</span>
+            <span class="check">✓</span>
+          </div>
+          <div class="ud-c-opt" id="ud-c-PK" onclick="switchCountry('PK')">
+            <span>🇵🇰 Pakistan (PKR)</span>
+            <span class="check" style="display:none">✓</span>
+          </div>
+        </div>
+
+        <div class="ud-divider"></div>
+        <button class="ud-item" onclick="go('track')">
+          <span class="ud-icon">🔍</span> Track Booking
+        </button>
+
+        <!-- Logout (Visible when logged in) -->
+        <div id="ud-logout-section" style="display:none">
+          <div class="ud-divider"></div>
+          <button class="ud-item logout" onclick="logoutSession()">
+            <span class="ud-icon">🚀</span> Sign Out
+          </button>
+        </div>
       </div>
     </div>
-    
-    <!-- Language toggle (updates when country changes) -->
-    <button class="nav-lang" id="nav-lang-btn" onclick="toggleLang()">EN</button>
-    <button class="nav-login" id="auth-trigger" onclick="openAuthModal('customer')">Sign In</button>
-    <button class="btn-outline btn-sm" id="account-trigger" onclick="openCustomerPortal()" style="display:none">My Account</button>
     
   </div>
 </nav>

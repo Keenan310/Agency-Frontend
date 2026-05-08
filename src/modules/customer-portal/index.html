@@ -1,0 +1,86 @@
+<div class="modal-bg" id="m-customer-portal" onclick="if(event.target===this)closeModal('m-customer-portal')">
+  <div class="portal-modal">
+    <aside class="portal-sidebar">
+      <div class="portal-user">
+        <div class="portal-avatar" id="portal-avatar-display">
+          <span id="portal-avatar-initials">JD</span>
+          <img id="portal-avatar-img" src="" alt="Profile" style="display:none">
+          <label class="avatar-edit-overlay" for="avatar-upload">
+            <span class="icon">📷</span>
+            <input type="file" id="avatar-upload" hidden accept="image/*" onchange="handleAvatarUpload(this)">
+          </label>
+        </div>
+        <div class="portal-user-info">
+          <div class="portal-user-name" id="portal-display-name">Loading...</div>
+          <div class="portal-user-role">Customer Member</div>
+        </div>
+      </div>
+      <nav class="portal-nav">
+        <button class="pn-item act" data-tab="profile" onclick="switchPortalTab('profile')">
+          <span class="icon">👤</span> My Profile
+        </button>
+        <button class="pn-item" data-tab="account" onclick="switchPortalTab('account')">
+          <span class="icon">💼</span> My Account
+        </button>
+        <div class="pn-divider"></div>
+        <button class="pn-item logout" onclick="logoutSession()">
+          <span class="icon">🚀</span> Sign Out
+        </button>
+      </nav>
+    </aside>
+    
+    <main class="portal-content">
+      <header class="portal-header">
+        <h2 id="portal-tab-title">My Profile</h2>
+        <button class="portal-close" onclick="closeModal('m-customer-portal')">×</button>
+      </header>
+      
+      <div class="portal-tab-view act" id="pt-profile">
+        <form class="portal-form" id="portal-profile-form" onsubmit="submitProfileUpdate(event)">
+          <div class="form-grid">
+            <div class="field"><label>First Name</label><input type="text" name="first_name" required></div>
+            <div class="field"><label>Last Name</label><input type="text" name="last_name" required></div>
+            <div class="field"><label>Email Address</label><input type="email" name="email" disabled></div>
+            <div class="field"><label>Phone Number</label><input type="text" name="phone"></div>
+            <div class="field full"><label>Complete Address</label><textarea name="address" rows="3" placeholder="Enter your full address here..."></textarea></div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-gold" id="profile-save-btn">Save Changes</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="portal-tab-view" id="pt-account">
+        <div class="history-stats">
+          <div class="stat-card">
+            <div class="stat-label">Total Bookings</div>
+            <div class="stat-value" id="portal-stat-count">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Spent</div>
+            <div class="stat-value" id="portal-stat-spend">AED 0</div>
+          </div>
+        </div>
+        <div class="a-card">
+          <div class="tbl-wrap">
+            <table class="portal-table">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Service Name</th>
+                  <th>Price</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                </tr>
+              </thead>
+              <tbody id="portal-history-body">
+                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--slate2)">No history found.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>

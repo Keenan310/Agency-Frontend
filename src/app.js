@@ -24,6 +24,7 @@
         <div data-module-slot="page-track"></div>
         <div data-module-slot="page-admin"></div>
         <div data-module-slot="page-results-umrah"></div>
+        <div data-module-slot="page-umrah-detail"></div>
       </main>
       <div data-module-slot="order-modals"></div>
       <div data-module-slot="auth-modal"></div>
@@ -47,12 +48,13 @@
     { name: 'page-track',      slot: '[data-module-slot="page-track"]',      html: './src/pages/track/index.html',               css: './src/pages/track/index.css',                js: './src/pages/track/index.js' },
     { name: 'page-admin',      slot: '[data-module-slot="page-admin"]',      html: './src/pages/admin/index.html',               css: './src/pages/admin/index.css',                js: './src/pages/admin/index.js' },
     { name: 'page-results-umrah', slot: '[data-module-slot="page-results-umrah"]', html: './src/pages/results-umrah/index.html', css: './src/pages/results-umrah/index.css', js: './src/pages/results-umrah/index.js' },
+    { name: 'page-umrah-detail', slot: '[data-module-slot="page-umrah-detail"]', html: './src/pages/umrah-detail/index.html', css: './src/pages/umrah-detail/index.css', js: './src/pages/umrah-detail/index.js' },
     { name: 'hero-slider',     slot: '[data-module-slot="hero-slider"]',     html: './src/components/hero-slider/index.html',    css: './src/components/hero-slider/index.css',     js: './src/components/hero-slider/index.js' },
     { name: 'home-showcase',   slot: '[data-module-slot="home-showcase"]',   html: './src/components/home-showcase/index.html',  css: './src/components/home-showcase/index.css',   js: './src/components/home-showcase/index.js' },
     { name: 'site-footer',     slot: '[data-module-slot="site-footer"]',     html: './src/components/site-footer/index.html',    css: './src/components/site-footer/index.css',     js: './src/components/site-footer/index.js' },
     { name: 'order-modals',    slot: '[data-module-slot="order-modals"]',    html: './src/components/order-modals/index.html',   css: './src/components/order-modals/index.css',    js: './src/components/order-modals/index.js' },
     { name: 'auth-modal',      slot: '[data-module-slot="auth-modal"]',      html: './src/components/auth-modal/index.html',     css: './src/components/auth-modal/index.css',      js: './src/components/auth-modal/index.js' },
-    { name: 'customer-portal', slot: '[data-module-slot="customer-portal"]', html: './src/components/customer-portal/index.html', css: './src/components/customer-portal/index.css', js: './src/components/customer-portal/index.js' },
+    { name: 'customer-portal', slot: '[data-module-slot="customer-portal"]', html: './src/modules/customer-portal/index.html', css: './src/modules/customer-portal/index.css', js: './src/modules/customer-portal/index.js' },
     { name: 'page-admin-login', slot: '[data-module-slot="page-admin-login"]', html: './src/pages/admin-login/index.html',         css: './src/pages/admin-login/index.css',             js: './src/pages/admin-login/index.js' },
     // ── Service modules (logic-only, no visible HTML) ──────────────────────────
     { name: 'service-flights',  slot: '[data-module-slot="service-flights"]',  html: './src/services/flights/index.html',          css: './src/services/flights/style.css',             js: './src/services/flights/script.js' },
@@ -159,6 +161,7 @@
       'results-holiday': '#/results/holiday',
       'results-cruise':  '#/results/cruise',
       'results-visa':    '#/results/visa',
+      'umrah-detail':    '#/umrah',
     };
     return viewMap[view] || '#/';
   }
@@ -173,18 +176,41 @@
     if (hash === '/admin-login')          return { type: 'view', value: 'admin-login' };
     if (hash === '/detail')               return { type: 'view', value: 'detail' };
     if (hash.startsWith('/results/'))     return { type: 'view', value: 'results-' + hash.split('/')[2] };
+    if (hash.startsWith('/umrah/'))       return { type: 'view', value: 'umrah-detail-' + hash.split('/')[2] };
     if (hash.startsWith('/search/'))      return { type: 'search', value: hash.split('/')[2] || 'flights' };
     return { type: 'view', value: 'home' };
   }
 
   function applyRouteFromHash() {
+    console.log('[Router] Applying route for hash:', window.location.hash);
     const route = parseHash(window.location.hash);
+    console.log('[Router] Parsed route:', route);
+
     if (route.type === 'search') {
       activateSearchTab(route.value);
       return;
     }
+    let viewValue = route.value;
+    if (viewValue.startsWith('umrah-detail-')) {
+      const id = viewValue.replace('umrah-detail-', '');
+      viewValue = 'page-umrah-detail';
+      console.log('[Router] Umrah Detail detected, ID:', id);
+      if (typeof window.loadUmrahDetail === 'function') {
+        window.loadUmrahDetail(id);
+      } else {
+        console.log('[Router] loadUmrahDetail not ready, waiting for event...');
+        window.addEventListener('umrah-detail-ready', () => {
+          console.log('[Router] umrah-detail-ready event received, loading ID:', id);
+          window.loadUmrahDetail(id);
+        }, { once: true });
+      }
+    }
+    const legacyName = viewValue.replace('page-', '');
+    console.log('[Router] Navigating to view:', legacyName);
     if (typeof window.__keenanLegacyGo === 'function') {
-      window.__keenanLegacyGo(route.value);
+      window.__keenanLegacyGo(legacyName);
+    } else {
+      console.warn('[Router] __keenanLegacyGo is not defined!');
     }
   }
 
@@ -201,6 +227,11 @@
     window.goSearch = function patchedGoSearch(tab) {
       activateSearchTab(tab);
       syncHash(`#/search/${tab}`);
+    };
+
+    window.goUmrahDetail = function(id) {
+      syncHash(`#/umrah/${id}`);
+      applyRouteFromHash();
     };
 
     window.addEventListener('hashchange', () => {
