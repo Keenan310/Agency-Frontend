@@ -5,6 +5,9 @@
     authMode: "login",
     session: null,
     publicSlidesLoaded: false,
+    umrahPackages: [],
+    holidayPackages: [],
+    cruisePackages: [],
   };
 
   const STATUS_MAP = {
@@ -672,7 +675,7 @@
     const umrahSelect = document.getElementById("no-umrah-package");
     const holidaySelect = document.getElementById("no-holiday-package");
     const cruiseSelect = document.getElementById("no-cruise-package");
-    if (umrahSelect && state.umrahPackages.length) {
+    if (umrahSelect && Array.isArray(state.umrahPackages) && state.umrahPackages.length) {
       umrahSelect.innerHTML = state.umrahPackages
         .map(
           (item) =>
@@ -680,7 +683,7 @@
         )
         .join("");
     }
-    if (holidaySelect && state.holidayPackages.length) {
+    if (holidaySelect && Array.isArray(state.holidayPackages) && state.holidayPackages.length) {
       holidaySelect.innerHTML = state.holidayPackages
         .map(
           (item) =>
@@ -688,7 +691,7 @@
         )
         .join("");
     }
-    if (cruiseSelect && state.cruisePackages.length) {
+    if (cruiseSelect && Array.isArray(state.cruisePackages) && state.cruisePackages.length) {
       cruiseSelect.innerHTML = state.cruisePackages
         .map(
           (item) =>
@@ -1467,7 +1470,7 @@
       });
       persistSession(data);
       toast("Welcome, " + (data.user?.name || "Admin"), "t-green");
-      originalGo("admin");
+      window.go("admin");
       syncAdminData();
     } catch (error) {
       showAdminAlert(error.message || "Authentication failed.", "error");

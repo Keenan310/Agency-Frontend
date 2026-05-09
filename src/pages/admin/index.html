@@ -7,7 +7,7 @@
     </div>
     <div class="an-sec">
       <div class="an-sec-label">Overview</div>
-      <div class="an-item act" onclick="aPanel('dashboard',this)"><svg viewBox="0 0 24 24" fill="none"
+      <div class="an-item act" onclick="aPanel('dashboard',this);if(typeof loadAdminDashboard==='function')loadAdminDashboard()"><svg viewBox="0 0 24 24" fill="none"
           stroke="currentColor">
           <rect x="3" y="3" width="7" height="7" rx="1" />
           <rect x="14" y="3" width="7" height="7" rx="1" />
@@ -131,7 +131,7 @@
           <option value="PK">🇵🇰 Pakistan (PKR)</option>
           <option value="">Global (All)</option>
         </select>
-        <div class="atb-btn">🔔<div class="notif-dot"></div>
+        <div class="atb-btn" id="notif-bell-wrap-placeholder">🔔<div class="notif-dot"></div>
         </div>
         <div class="atb-btn">⚙️</div>
         <div class="atb-av" id="admin-avatar">KA</div>
@@ -149,41 +149,41 @@
             <div class="kpi-top">
               <div>
                 <div class="kpi-label">Total Bookings</div>
-                <div class="kpi-num">1,284</div>
+                <div class="kpi-num" id="dash-total-bookings">–</div>
               </div>
               <div class="kpi-icon ki-gold">📋</div>
             </div>
-            <div class="kpi-change up">↑ 12.4% vs last month</div>
+            <div class="kpi-change up" id="dash-bookings-change">Loading…</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top">
               <div>
                 <div class="kpi-label">Total Revenue</div>
-                <div class="kpi-num">AED 4.2M</div>
+                <div class="kpi-num" id="dash-total-revenue">–</div>
               </div>
               <div class="kpi-icon ki-green">💰</div>
             </div>
-            <div class="kpi-change up">↑ 8.1% vs last month</div>
+            <div class="kpi-change up" id="dash-revenue-change">Loading…</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top">
               <div>
                 <div class="kpi-label">Active Customers</div>
-                <div class="kpi-num">3,891</div>
+                <div class="kpi-num" id="dash-active-customers">–</div>
               </div>
               <div class="kpi-icon ki-blue">👥</div>
             </div>
-            <div class="kpi-change up">↑ 201 this week</div>
+            <div class="kpi-change up" id="dash-customers-change">Loading…</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-top">
               <div>
                 <div class="kpi-label">Pending Actions</div>
-                <div class="kpi-num">47</div>
+                <div class="kpi-num" id="dash-pending-actions">–</div>
               </div>
               <div class="kpi-icon ki-amber">⏳</div>
             </div>
-            <div class="kpi-change dn">↑ 3 new today</div>
+            <div class="kpi-change dn" id="dash-pending-change">Loading…</div>
           </div>
         </div>
         <div class="grid g2 gap20 mb20">
@@ -247,40 +247,40 @@
                 <div
                   style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
                   Flights</div>
-                <div style="font-size:17px;font-weight:700;color:var(--ink)">1.8M</div>
-                <div style="font-size:11px;color:var(--slate3)">612 bkgs</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)" id="dash-rev-flights">–</div>
+                <div style="font-size:11px;color:var(--slate3)" id="dash-count-flights">– bkgs</div>
               </div>
               <div class="srev-card sr-um">
                 <div style="font-size:20px;margin-bottom:6px">🕌</div>
                 <div
                   style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
                   Umrah</div>
-                <div style="font-size:17px;font-weight:700;color:var(--ink)">980K</div>
-                <div style="font-size:11px;color:var(--slate3)">284 bkgs</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)" id="dash-rev-umrah">–</div>
+                <div style="font-size:11px;color:var(--slate3)" id="dash-count-umrah">– bkgs</div>
               </div>
               <div class="srev-card sr-ho">
                 <div style="font-size:20px;margin-bottom:6px">🌴</div>
                 <div
                   style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
                   Holiday</div>
-                <div style="font-size:17px;font-weight:700;color:var(--ink)">870K</div>
-                <div style="font-size:11px;color:var(--slate3)">198 bkgs</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)" id="dash-rev-holiday">–</div>
+                <div style="font-size:11px;color:var(--slate3)" id="dash-count-holiday">– bkgs</div>
               </div>
               <div class="srev-card sr-cr">
                 <div style="font-size:20px;margin-bottom:6px">🚢</div>
                 <div
                   style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
                   Cruise</div>
-                <div style="font-size:17px;font-weight:700;color:var(--ink)">340K</div>
-                <div style="font-size:11px;color:var(--slate3)">87 bkgs</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)" id="dash-rev-cruise">–</div>
+                <div style="font-size:11px;color:var(--slate3)" id="dash-count-cruise">– bkgs</div>
               </div>
               <div class="srev-card sr-vi">
                 <div style="font-size:20px;margin-bottom:6px">🛂</div>
                 <div
                   style="font-size:10px;font-weight:700;color:var(--slate2);text-transform:uppercase;letter-spacing:.5px">
                   Visa</div>
-                <div style="font-size:17px;font-weight:700;color:var(--ink)">210K</div>
-                <div style="font-size:11px;color:var(--slate3)">103 apps</div>
+                <div style="font-size:17px;font-weight:700;color:var(--ink)" id="dash-rev-visa">–</div>
+                <div style="font-size:11px;color:var(--slate3)" id="dash-count-visa">– apps</div>
               </div>
             </div>
           </div>
@@ -943,7 +943,8 @@
       <div id="ap-umrah" style="display:none">
         <div class="a-tabs"><button class="a-tab act" onclick="aTab(this,'at-u1')">Packages</button><button
             class="a-tab" onclick="aTab(this,'at-u2')">Bookings</button><button class="a-tab"
-            onclick="aTab(this,'at-u3')">Hotels</button></div>
+            onclick="aTab(this,'at-u3')">Hotels</button><button class="a-tab"
+            onclick="aTab(this,'at-u4');adminLoadUmrahAccounts()">Accounts</button></div>
         <div class="a-tab-c act" id="at-u1">
           <div class="a-card">
             <div class="a-card-head">
@@ -1023,6 +1024,71 @@
         <div class="a-tab-c" id="at-u3">
           <div class="a-card" style="padding:24px">
             <div class="slate fs14">Hotel room allocations for Makkah and Madinah properties.</div>
+          </div>
+        </div>
+
+        <!-- ── Accounts Tab ─────────────────────────────────────────── -->
+        <div class="a-tab-c" id="at-u4">
+          <!-- KPI Summary Strip -->
+          <div class="kpi-grid mb20" id="um-acc-kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <div>
+                  <div class="kpi-label">Total Profit</div>
+                  <div class="kpi-num" id="um-acc-total-profit" style="color:var(--green)">AED 0</div>
+                </div>
+                <div class="kpi-icon ki-green">📈</div>
+              </div>
+              <div class="kpi-change up" id="um-acc-profit-note">From confirmed bookings</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <div>
+                  <div class="kpi-label">Total Revenue (Sale)</div>
+                  <div class="kpi-num" id="um-acc-total-revenue">AED 0</div>
+                </div>
+                <div class="kpi-icon ki-gold">💰</div>
+              </div>
+              <div class="kpi-change nt" id="um-acc-count-note">0 account records</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-top">
+                <div>
+                  <div class="kpi-label">Avg. Profit/Booking</div>
+                  <div class="kpi-num" id="um-acc-avg-profit">AED 0</div>
+                </div>
+                <div class="kpi-icon ki-blue">🧮</div>
+              </div>
+              <div class="kpi-change nt">Auto-calculated</div>
+            </div>
+          </div>
+
+          <!-- Ledger Table -->
+          <div class="a-card">
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Umrah Accounts Ledger</div>
+                <div class="a-card-sub">Purchase cost vs. sale price — profit auto-calculated</div>
+              </div>
+              <button class="btn-ghost btn-sm" onclick="adminLoadUmrahAccounts()">🔄 Refresh</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Booking Ref</th>
+                    <th>Customer &amp; Package</th>
+                    <th>Purchase Price (Cost)</th>
+                    <th>Sale Price</th>
+                    <th>Profit</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-um-accounts">
+                  <tr><td colspan="6" style="text-align:center;padding:30px;color:var(--slate)">Click Refresh to load accounts</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -2211,3 +2277,43 @@
     </form>
   </div>
 </div>
+
+<!-- Umrah Account Edit Modal (Ledger) -->
+<div class="modal-bg" id="m-edit-umrah-account" onclick="if(event.target===this)closeModal('m-edit-umrah-account')">
+  <div class="card" style="width:420px; max-width:90vw; padding:32px;">
+    <div class="flex jcb aic mb20">
+      <div>
+        <h3 class="serif fs24 mb4">Edit Account Prices</h3>
+        <div id="edit-ua-ref-label" class="fs12 slate2 semi">BK/00000 · Loading...</div>
+      </div>
+      <button class="btn-close" onclick="closeModal('m-edit-umrah-account')">×</button>
+    </div>
+    
+    <form id="edit-umrah-account-form" onsubmit="saveUmrahAccountEdit(event)">
+      <input type="hidden" id="edit-ua-id">
+      
+      <div class="field mb16">
+        <label>Purchase Price (Cost to Agency) — AED</label>
+        <input type="number" id="edit-ua-cost" required step="0.01" placeholder="0.00" class="input-lg">
+      </div>
+      
+      <div class="field mb20">
+        <label>Sale Price (Price to Customer) — AED</label>
+        <input type="number" id="edit-ua-sale" required step="0.01" placeholder="0.00" class="input-lg">
+      </div>
+      
+      <div style="background:var(--surface2); border-radius:12px; padding:16px; margin-bottom:24px; border:1px solid var(--surface3)">
+        <div class="flex jcb aic">
+          <span class="fs13 slate2">Estimated Profit</span>
+          <span id="edit-ua-profit-preview" style="font-size:18px; font-weight:700; font-family:var(--mono)">AED 0.00</span>
+        </div>
+      </div>
+      
+      <div class="flex gap12">
+        <button type="submit" class="btn-gold flex1 py12">Save Changes</button>
+        <button type="button" class="btn-ghost py12" onclick="closeModal('m-edit-umrah-account')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="./src/pages/admin/notifications.js"></script>

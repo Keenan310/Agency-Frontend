@@ -4,6 +4,9 @@ window.KeenanFrontend.modules["page-admin"] = {
   mount(root) {
     if (!root) return;
     root.dataset.module = "page-admin";
+    if (typeof window.initAdminNotifications === 'function') {
+      window.initAdminNotifications();
+    }
   },
 };
 
@@ -852,4 +855,201 @@ window.updateUmrahPaymentStatus = async function updateUmrahPaymentStatus(id, st
   } else {
     if (typeof window.toast === 'function') window.toast('Update failed', 't-red');
   }
+};
+
+// ── Umrah Accounts Panel ──────────────────────────────────────────────────────
+
+// In-memory store keyed by account id — avoids JSON.stringify inside onclick attrs
+const _accountsStore = {};
+
+function _fmtCurrency(amount, currency) {
+  const n = Number(amount || 0);
+  const pfx = currency ? currency + ' ' : '';
+  if (n >= 1000000) return pfx + (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000)    return pfx + (n / 1000).toFixed(1) + 'K';
+  return pfx + n.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+window.adminLoadUmrahAccounts = async function adminLoadUmrahAccounts() {
+  const tbody = document.getElementById('tbody-um-accounts');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--slate)">Loading\u2026</td></tr>';
+
+  const data = await _adminFetch('/umrah/accounts');
+  if (data && data.aborted) return;
+
+  const rows = (data && data.data) || [];
+  const summary = (data && data.summary) || { total_profit: 0, total_revenue: 0, total_count: 0 };
+
+  const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setEl('um-acc-total-profit',  _fmtCurrency(summary.total_profit,  'AED'));
+  setEl('um-acc-total-revenue', _fmtCurrency(summary.total_revenue, 'AED'));
+  setEl('um-acc-avg-profit',    _fmtCurrency(summary.total_count > 0 ? summary.total_profit / summary.total_count : 0, 'AED'));
+  setEl('um-acc-count-note',    summary.total_count + ' account record' + (summary.total_count !== 1 ? 's' : ''));
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:30px;color:var(--slate)">No account records found. Confirm Umrah bookings to auto-populate.</td></tr>';
+    return;
+  }
+
+  // Cache all records in the store for safe onclick references
+  rows.forEach(r => { _accountsStore[r.id] = r; });
+
+  tbody.innerHTML = rows.map(r => {
+    const profit = Number(r.profit || 0);
+    const profitStyle = profit > 0 ? 'color:var(--green);font-weight:700' : profit < 0 ? 'color:var(--red);font-weight:700' : '';
+    return `
+      <tr>
+        <td class="td-mono">${r.reference}</td>
+        <td>
+          <div class="semi fs14">${r.customer_name}</div>
+          <div class="fs12 slate2">${r.package_details || '\u2014'}</div>
+        </td>
+        <td class="semi">AED ${Number(r.cost_price || 0).toLocaleString()}</td>
+        <td class="semi">AED ${Number(r.selling_price || 0).toLocaleString()}</td>
+        <td style="${profitStyle}">AED ${profit.toLocaleString()}</td>
+        <td class="td-actions">
+          <button class="btn-icon" title="Edit prices" onclick="editUmrahAccount(${r.id})">&#9999; Edit</button>
+          <button class="btn-icon" style="color:var(--red)" title="Remove from ledger" onclick="deleteUmrahAccount(${r.id})">&#128465; Delete</button>
+        </td>
+      </tr>`;
+  }).join('');
+};
+
+window.editUmrahAccount = function editUmrahAccount(idOrRecord) {
+  // onclick passes numeric id; legacy callers may pass a full record object
+  const record = (typeof idOrRecord === 'object' && idOrRecord !== null)
+    ? idOrRecord
+    : _accountsStore[idOrRecord];
+
+  if (!record) {
+    if (typeof window.toast === 'function') window.toast('Record not found — please refresh the Accounts tab', 't-red');
+    return;
+  }
+
+  const idEl   = document.getElementById('edit-ua-id');
+  const costEl = document.getElementById('edit-ua-cost');
+  const saleEl = document.getElementById('edit-ua-sale');
+  const refEl  = document.getElementById('edit-ua-ref-label');
+
+  if (!idEl || !costEl || !saleEl) {
+    if (typeof window.toast === 'function') window.toast('Edit modal not found. Try logging in again.', 't-red');
+    return;
+  }
+
+  idEl.value   = record.id;
+  costEl.value = record.cost_price;
+  saleEl.value = record.selling_price;
+  if (refEl) refEl.textContent = record.reference + ' · ' + record.customer_name;
+
+  // Wire live profit preview (idempotent hooks)
+  [costEl, saleEl].forEach(el => {
+    if (!el._profitHooked) {
+      el.addEventListener('input', _updateProfitPreview);
+      el._profitHooked = true;
+    }
+  });
+
+  _updateProfitPreview();
+  openModal('m-edit-umrah-account');
+};
+
+function _updateProfitPreview() {
+  const cost    = parseFloat(document.getElementById('edit-ua-cost')?.value || 0);
+  const sale    = parseFloat(document.getElementById('edit-ua-sale')?.value || 0);
+  const preview = document.getElementById('edit-ua-profit-preview');
+  if (!preview) return;
+  const profit = sale - cost;
+  preview.textContent = 'AED ' + profit.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  preview.style.color = profit >= 0 ? 'var(--green)' : 'var(--red)';
+}
+
+// (profit preview inputs are now hooked inside editUmrahAccount — no global listener needed)
+
+window.saveUmrahAccountEdit = async function saveUmrahAccountEdit(e) {
+  e.preventDefault();
+  const id      = document.getElementById('edit-ua-id').value;
+  const cost    = parseFloat(document.getElementById('edit-ua-cost').value);
+  const selling = parseFloat(document.getElementById('edit-ua-sale').value);
+
+  if (isNaN(cost) || isNaN(selling)) {
+    if (typeof window.toast === 'function') window.toast('Please enter valid prices', 't-red');
+    return;
+  }
+
+  const data = await _adminFetch('/umrah/accounts/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({ cost_price: cost, selling_price: selling }),
+  });
+
+  if (data && data.data) {
+    // Update local store so next edit gets fresh values
+    if (_accountsStore[id]) {
+      _accountsStore[id].cost_price    = cost;
+      _accountsStore[id].selling_price = selling;
+      _accountsStore[id].profit        = selling - cost;
+    }
+    if (typeof window.toast === 'function') window.toast('Account updated — profit recalculated', 't-green');
+    closeModal('m-edit-umrah-account');
+    // Refresh table + dashboard instantly
+    adminLoadUmrahAccounts();
+    if (typeof window.loadAdminDashboard === 'function') loadAdminDashboard();
+  } else {
+    const msg = (data && (data.message || data.error)) || 'Update failed';
+    if (typeof window.toast === 'function') window.toast(msg, 't-red');
+  }
+};
+
+window.deleteUmrahAccount = async function deleteUmrahAccount(id) {
+  if (!confirm('Remove this record from the Accounts ledger? The booking itself will NOT be deleted.')) return;
+  try {
+    const res = await fetch(_adminApiBase() + '/umrah/accounts/' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + _adminToken() },
+    });
+    if (res.ok || res.status === 204) {
+      if (typeof window.toast === 'function') window.toast('Account record removed', 't-green');
+      adminLoadUmrahAccounts();
+    } else {
+      if (typeof window.toast === 'function') window.toast('Delete failed', 't-red');
+    }
+  } catch { if (typeof window.toast === 'function') window.toast('Delete failed', 't-red'); }
+};
+
+// ── Dashboard Live Data ───────────────────────────────────────────────────────
+
+window.loadAdminDashboard = async function loadAdminDashboard() {
+  const portalEl = document.getElementById('admin-portal-selector');
+  const countryCode = portalEl ? portalEl.value : '';
+  const url = '/admin/dashboard' + (countryCode ? '?country_code=' + countryCode : '');
+
+  const data = await _adminFetch(url);
+  if (!data || data.aborted || data.error) return;
+
+  const setEl = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+
+  // KPI Cards
+  setEl('dash-total-bookings',   Number(data.total_bookings   || 0).toLocaleString());
+  setEl('dash-total-revenue',    _fmtCurrency(data.total_revenue, 'AED'));
+  setEl('dash-active-customers', Number(data.active_customers || 0).toLocaleString());
+  setEl('dash-pending-actions',  Number(data.pending_actions  || 0).toLocaleString());
+  setEl('dash-bookings-change',  Number(data.total_bookings   || 0).toLocaleString() + ' total bookings');
+  setEl('dash-revenue-change',   'Gross from all services');
+  setEl('dash-customers-change', 'Currently active accounts');
+  setEl('dash-pending-change',   'Require attention');
+
+  // Revenue by Service (live DB data)
+  const rev = data.revenue_by_service || {};
+  setEl('dash-rev-flights', _fmtCurrency(rev.flights || 0, ''));
+  setEl('dash-rev-holiday', _fmtCurrency(rev.holiday || 0, ''));
+  setEl('dash-rev-cruise',  _fmtCurrency(rev.cruise  || 0, ''));
+  setEl('dash-rev-visa',    _fmtCurrency(rev.visa    || 0, ''));
+  // Umrah uses the dedicated accounts ledger revenue
+  setEl('dash-rev-umrah',  _fmtCurrency(data.umrah_revenue || rev.umrah || 0, ''));
+
+  setEl('dash-count-umrah',   (data.umrah_count || 0) + ' bkgs');
+  setEl('dash-count-flights', rev.flights > 0 ? '\u2713 active' : '0 bkgs');
+  setEl('dash-count-holiday', rev.holiday > 0 ? '\u2713 active' : '0 bkgs');
+  setEl('dash-count-cruise',  rev.cruise  > 0 ? '\u2713 active' : '0 bkgs');
+  setEl('dash-count-visa',    rev.visa    > 0 ? '\u2713 active' : '0 apps');
 };
