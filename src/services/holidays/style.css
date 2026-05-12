@@ -1,1 +1,124 @@
-/* holidays service – no additional styles required */
+/* Holiday Package Cards — used in results view */
+
+.ho-card {
+  background: var(--white, #fff);
+  border: 1px solid var(--surface3, #e5e7eb);
+  border-radius: var(--r2, 12px);
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+}
+
+.ho-card:hover {
+  border-color: var(--gold, #c8a45a);
+  box-shadow: 0 8px 28px rgba(0,0,0,.13);
+  transform: translateY(-2px);
+}
+
+.ho-card-img {
+  height: 180px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.ho-card-icon { font-size: 48px; position: relative; z-index: 1; }
+
+.ho-card-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 8px 12px;
+  background: linear-gradient(transparent, rgba(0,0,0,.55));
+  display: flex;
+  align-items: flex-end;
+}
+
+.ho-card-type {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255,255,255,.9);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  background: rgba(0,0,0,.3);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.ho-card-body   { padding: 14px 16px; }
+
+.ho-card-dest {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--slate2, #9ca3af);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 3px;
+}
+
+.ho-card-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink, #111827);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.ho-card-stars {
+  color: var(--gold, #c8a45a);
+  font-size: 13px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.ho-card-meta {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.ho-tag {
+  font-size: 11px;
+  background: var(--surface2, #f3f4f6);
+  color: var(--ink2, #374151);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.ho-card-feats { display: flex; gap: 6px; margin-bottom: 10px; }
+.ho-feat-icon  { font-size: 16px; cursor: default; }
+
+.ho-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid var(--surface3, #e5e7eb);
+}
+
+.ho-card-price {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--gold, #c8a45a);
+  line-height: 1.1;
+}
+
+.ho-card-plabel { font-size: 11px; color: var(--slate2, #9ca3af); }
+
+.ho-btn {
+  padding: 8px 16px;
+  background: var(--gold, #c8a45a);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter .15s;
+  white-space: nowrap;
+}
+
+.ho-btn:hover { filter: brightness(1.1); }

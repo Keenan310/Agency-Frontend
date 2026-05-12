@@ -25,6 +25,7 @@
         <div data-module-slot="page-admin"></div>
         <div data-module-slot="page-results-umrah"></div>
         <div data-module-slot="page-umrah-detail"></div>
+        <div data-module-slot="page-holiday-detail"></div>
       </main>
       <div data-module-slot="order-modals"></div>
       <div data-module-slot="auth-modal"></div>
@@ -49,6 +50,7 @@
     { name: 'page-admin',      slot: '[data-module-slot="page-admin"]',      html: './src/pages/admin/index.html',               css: './src/pages/admin/index.css',                js: './src/pages/admin/index.js' },
     { name: 'page-results-umrah', slot: '[data-module-slot="page-results-umrah"]', html: './src/pages/results-umrah/index.html', css: './src/pages/results-umrah/index.css', js: './src/pages/results-umrah/index.js' },
     { name: 'page-umrah-detail', slot: '[data-module-slot="page-umrah-detail"]', html: './src/pages/umrah-detail/index.html', css: './src/pages/umrah-detail/index.css', js: './src/pages/umrah-detail/index.js' },
+    { name: 'page-holiday-detail', slot: '[data-module-slot="page-holiday-detail"]', html: './src/pages/holiday-detail/index.html', css: './src/pages/holiday-detail/index.css', js: './src/pages/holiday-detail/index.js' },
     { name: 'hero-slider',     slot: '[data-module-slot="hero-slider"]',     html: './src/components/hero-slider/index.html',    css: './src/components/hero-slider/index.css',     js: './src/components/hero-slider/index.js' },
     { name: 'home-showcase',   slot: '[data-module-slot="home-showcase"]',   html: './src/components/home-showcase/index.html',  css: './src/components/home-showcase/index.css',   js: './src/components/home-showcase/index.js' },
     { name: 'site-footer',     slot: '[data-module-slot="site-footer"]',     html: './src/components/site-footer/index.html',    css: './src/components/site-footer/index.css',     js: './src/components/site-footer/index.js' },
@@ -162,6 +164,7 @@
       'results-cruise':  '#/results/cruise',
       'results-visa':    '#/results/visa',
       'umrah-detail':    '#/umrah',
+      'holiday-detail':  '#/holiday',
     };
     return viewMap[view] || '#/';
   }
@@ -177,6 +180,7 @@
     if (hash === '/detail')               return { type: 'view', value: 'detail' };
     if (hash.startsWith('/results/'))     return { type: 'view', value: 'results-' + hash.split('/')[2] };
     if (hash.startsWith('/umrah/'))       return { type: 'view', value: 'umrah-detail-' + hash.split('/')[2] };
+    if (hash.startsWith('/holiday/'))     return { type: 'view', value: 'holiday-detail-' + hash.split('/')[2] };
     if (hash.startsWith('/search/'))      return { type: 'search', value: hash.split('/')[2] || 'flights' };
     return { type: 'view', value: 'home' };
   }
@@ -202,6 +206,18 @@
         window.addEventListener('umrah-detail-ready', () => {
           console.log('[Router] umrah-detail-ready event received, loading ID:', id);
           window.loadUmrahDetail(id);
+        }, { once: true });
+      }
+    }
+    if (viewValue.startsWith('holiday-detail-')) {
+      const id = viewValue.replace('holiday-detail-', '');
+      viewValue = 'page-holiday-detail';
+      console.log('[Router] Holiday Detail detected, ID:', id);
+      if (typeof window.holiday_loadDetail === 'function') {
+        window.holiday_loadDetail(id);
+      } else {
+        window.addEventListener('holiday-detail-ready', () => {
+          window.holiday_loadDetail(id);
         }, { once: true });
       }
     }
@@ -231,6 +247,11 @@
 
     window.goUmrahDetail = function(id) {
       syncHash(`#/umrah/${id}`);
+      applyRouteFromHash();
+    };
+
+    window.goHolidayDetail = function(id) {
+      syncHash(`#/holiday/${id}`);
       applyRouteFromHash();
     };
 

@@ -34,7 +34,7 @@
       <div class="an-item" onclick="aPanel('umrah',this); if(typeof adminLoadUmrahPackages==='function') adminLoadUmrahPackages();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         </svg>Umrah</div>
-      <div class="an-item" onclick="aPanel('holiday',this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <div class="an-item" onclick="aPanel('holiday',this);if(typeof holiday_adminLoadPackages==='function')holiday_adminLoadPackages()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
           <circle cx="12" cy="9" r="3" />
         </svg>Holiday Packages</div>
@@ -724,60 +724,155 @@
       </div>
 
       <div id="ap-holiday" style="display:none">
-        <div class="a-card">
-          <div class="a-card-head">
-            <div>
-              <div class="a-card-title">Holiday Packages</div>
-              <div class="a-card-sub">198 bookings this month</div>
-            </div><button class="btn-gold btn-sm" onclick="openModal('m-add-holiday')">+ Add Package</button>
-          </div>
-          <div class="tbl-controls">
-            <div class="tbl-search"><span style="color:var(--slate2)">🔍</span><input id="srch-ho"
-                placeholder="Search package name, destination…" oninput="applyFilter('holiday')"></div><select
-              class="tbl-select" id="flt-ho-dest" onchange="applyFilter('holiday')">
-              <option value="">All Destinations</option>
-              <option value="maldives">Maldives</option>
-              <option value="bali">Bali</option>
-              <option value="turkey">Turkey</option>
-              <option value="switzerland">Switzerland</option>
-              <option value="japan">Japan</option>
-            </select><select class="tbl-select" id="flt-ho-stars" onchange="applyFilter('holiday')">
-              <option value="">All Star Ratings</option>
-              <option value="5">5 Stars</option>
-              <option value="4">4 Stars</option>
-              <option value="3">3 Stars</option>
-            </select><select class="tbl-select" id="flt-ho-meal" onchange="applyFilter('holiday')">
-              <option value="">All Meal Plans</option>
-              <option value="all inclusive">All Inclusive</option>
-              <option value="half board">Half Board</option>
-              <option value="b&b">Bed & Breakfast</option>
-            </select><select class="tbl-select" id="flt-ho-st" onchange="applyFilter('holiday')">
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-          <div class="tbl-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Package</th>
-                  <th>Destination</th>
-                  <th>Nights</th>
-                  <th>Stars</th>
-                  <th>Price/Person</th>
-                  <th>Includes</th>
-                  <th>Bookings</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="tbody-ho">
-                  <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--slate2)">No holiday packages available.</td></tr>
-              </tbody>
-            </table>
+        <div class="a-tabs">
+          <button class="a-tab act"  onclick="aTab(this,'at-ho1')">Packages</button>
+          <button class="a-tab"      onclick="aTab(this,'at-ho2');holiday_adminLoadBookings()">Bookings</button>
+          <button class="a-tab"      onclick="aTab(this,'at-ho3');holiday_adminLoadSuppliers()">Suppliers</button>
+        </div>
+
+        <!-- ── Tab 1: Packages ──────────────────────────────────────────────── -->
+        <div class="a-tab-c act" id="at-ho1">
+          <div class="a-card">
+            <div class="a-card-head">
+              <div>
+                <div class="a-card-title">Holiday Packages</div>
+                <div class="a-card-sub" id="ho-pkg-sub">Loading…</div>
+              </div>
+              <button class="btn-gold btn-sm" onclick="holiday_openPackageModal()">+ Add Package</button>
+            </div>
+            <div class="tbl-controls">
+              <div class="tbl-search">
+                <span style="color:var(--slate2)">🔍</span>
+                <input id="ho-srch" placeholder="Search name, destination…" oninput="holiday_filterPackages()">
+              </div>
+              <select class="tbl-select" id="ho-flt-type" onchange="holiday_filterPackages()">
+                <option value="">All Types</option>
+                <option value="standard">Standard</option>
+                <option value="premium">Premium</option>
+                <option value="luxury">Luxury</option>
+              </select>
+              <select class="tbl-select" id="ho-flt-stars" onchange="holiday_filterPackages()">
+                <option value="">All Stars</option>
+                <option value="5">5 ★</option>
+                <option value="4">4 ★</option>
+                <option value="3">3 ★</option>
+              </select>
+              <select class="tbl-select" id="ho-flt-portal" onchange="holiday_filterPackages()">
+                <option value="">All Portals</option>
+                <option value="AE">🇦🇪 UAE</option>
+                <option value="PK">🇵🇰 Pakistan</option>
+              </select>
+              <select class="tbl-select" id="ho-flt-status" onchange="holiday_filterPackages()">
+                <option value="">All Status</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+              </select>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Package</th>
+                    <th>Destination</th>
+                    <th>Nights</th>
+                    <th>Stars</th>
+                    <th>Type</th>
+                    <th>Price / Person</th>
+                    <th>Hotels</th>
+                    <th>Images</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-ho">
+                  <tr><td colspan="10" style="text-align:center;padding:30px;color:var(--slate2)">Click Refresh or navigate here to load packages.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+
+        <!-- ── Tab 2: Bookings ──────────────────────────────────────────────── -->
+        <div class="a-tab-c" id="at-ho2">
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Holiday Bookings</div>
+              <button class="btn-ghost btn-sm" onclick="holiday_adminLoadBookings()">🔄 Refresh</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Ref</th>
+                    <th>Customer</th>
+                    <th>Package</th>
+                    <th>Check-in</th>
+                    <th>Guests</th>
+                    <th>Amount</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-ho-bookings">
+                  <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--slate2)">Click Refresh to load bookings</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Tab 3: Suppliers ─────────────────────────────────────────────── -->
+        <div class="a-tab-c" id="at-ho3">
+          <div class="a-card">
+            <div class="a-card-head">
+              <div class="a-card-title">Holiday Suppliers</div>
+              <button class="btn-gold btn-sm" onclick="holiday_openSupplierModal()">+ Add Supplier</button>
+            </div>
+            <div class="tbl-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Contact</th>
+                    <th>Country</th>
+                    <th>Commission %</th>
+                    <th>Contract Valid</th>
+                    <th>Packages</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody-ho-suppliers">
+                  <tr><td colspan="8" style="text-align:center;padding:30px;color:var(--slate2)">Click Refresh or open this tab to load suppliers</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Holiday Image Gallery Modal (inline, opened by JS) ─────────────────── -->
+        <div class="modal-bg" id="m-ho-images" onclick="if(event.target===this)closeModal('m-ho-images')" style="display:none">
+          <div class="modal" style="max-width:700px">
+            <div class="modal-head">
+              <div class="modal-title" id="ho-img-modal-title">Image Gallery</div>
+              <button class="modal-x" onclick="closeModal('m-ho-images')">×</button>
+            </div>
+            <div class="modal-body">
+              <div style="border:2px dashed var(--surface3);border-radius:var(--r2);padding:24px;text-align:center;margin-bottom:16px;cursor:pointer" onclick="document.getElementById('ho-img-file-input').click()">
+                <div style="font-size:24px;margin-bottom:8px">📸</div>
+                <div style="font-size:14px;font-weight:600;color:var(--ink)">Click to upload images</div>
+                <div style="font-size:12px;color:var(--slate2);margin-top:4px">JPG, PNG, WebP · Max 5 MB each · Up to 15 images</div>
+                <input type="file" id="ho-img-file-input" multiple accept="image/jpeg,image/png,image/webp" style="display:none" onchange="holiday_uploadImages(this)">
+              </div>
+              <div id="ho-img-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px"></div>
+            </div>
+            <div class="modal-foot">
+              <button class="btn-ghost" onclick="closeModal('m-ho-images')">Close</button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <div id="ap-cruise" style="display:none">

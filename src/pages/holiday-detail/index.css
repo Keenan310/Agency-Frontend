@@ -1,0 +1,607 @@
+/* ── Holiday Detail Page ──────────────────────────────────────────────────── */
+
+#view-holiday-detail {
+  padding: 0 0 60px;
+}
+
+/* Breadcrumb */
+.ho-breadcrumb {
+  padding: 14px 32px;
+  font-size: 13px;
+  color: var(--slate2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--surface3);
+  background: var(--surface2);
+}
+
+.ho-breadcrumb a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ho-breadcrumb a:hover { text-decoration: underline; }
+.ho-breadcrumb span { color: var(--slate2); }
+
+/* ── Layout ─────────────────────────────────────────────────────────────────── */
+
+.ho-detail-wrap {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  align-items: start;
+}
+
+.ho-detail-left { min-width: 0; }
+
+/* ── Gallery ─────────────────────────────────────────────────────────────────── */
+
+.ho-gallery {
+  border-radius: var(--r2, 12px);
+  overflow: hidden;
+  margin-bottom: 24px;
+  box-shadow: var(--sh, 0 2px 12px rgba(0,0,0,.1));
+}
+
+.ho-gallery-hero {
+  position: relative;
+  height: 420px;
+  background: var(--surface3);
+  overflow: hidden;
+}
+
+.ho-gallery-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.ho-gallery-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 72px;
+  background: linear-gradient(135deg, var(--surface2), var(--surface3));
+  color: var(--slate2);
+}
+
+.ho-gallery-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.4);
+  color: #fff;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ho-gallery-nav:hover { background: var(--gold); }
+.ho-gallery-prev { left: 14px; }
+.ho-gallery-next { right: 14px; }
+
+.ho-gallery-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.ho-gallery-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.ho-gallery-dot.active {
+  background: var(--gold);
+  width: 22px;
+  border-radius: 4px;
+}
+
+.ho-gallery-thumbs {
+  display: flex;
+  gap: 4px;
+  background: var(--ink);
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold) transparent;
+}
+
+.ho-gallery-thumb {
+  width: 72px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  border: 2px solid transparent;
+  flex-shrink: 0;
+}
+
+.ho-gallery-thumb:hover { opacity: 0.85; }
+.ho-gallery-thumb.active { opacity: 1; border-color: var(--gold); }
+
+/* ── Package Header ──────────────────────────────────────────────────────────── */
+
+.ho-pkg-header {
+  margin-bottom: 24px;
+}
+
+.ho-pkg-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.ho-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.ho-badge-type {
+  background: var(--navy, #1a2744);
+  color: #fff;
+}
+
+.ho-stars {
+  color: var(--gold);
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.ho-pkg-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.ho-pkg-meta {
+  font-size: 14px;
+  color: var(--slate2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ho-pkg-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ho-pkg-meta-item span:first-child { font-size: 16px; }
+
+/* ── Content Sections ────────────────────────────────────────────────────────── */
+
+.ho-section {
+  background: var(--white, #fff);
+  border: 1px solid var(--surface3);
+  border-radius: var(--r2, 12px);
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.ho-section-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--ink);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--gold);
+  display: inline-block;
+}
+
+/* Policies Grid */
+.ho-policies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.ho-policy-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--surface3);
+}
+
+.ho-policy-item.included { border-color: #d1fae5; background: #f0fdf4; }
+.ho-policy-item.excluded { opacity: 0.55; }
+
+.ho-policy-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ho-policy-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.3;
+}
+
+.ho-policy-detail {
+  font-size: 11px;
+  color: var(--slate2);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+/* Hotel Cards */
+.ho-hotel-card {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid var(--surface3);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: var(--surface2);
+}
+
+.ho-hotel-card:last-child { margin-bottom: 0; }
+
+.ho-hotel-img {
+  width: 96px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--surface3);
+  flex-shrink: 0;
+}
+
+.ho-hotel-img-placeholder {
+  width: 96px;
+  height: 72px;
+  border-radius: 8px;
+  background: var(--surface3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.ho-hotel-info { flex: 1; min-width: 0; }
+
+.ho-hotel-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.ho-hotel-location {
+  font-size: 12px;
+  color: var(--slate2);
+  margin-bottom: 6px;
+}
+
+.ho-hotel-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ho-hotel-tag {
+  font-size: 11px;
+  background: var(--surface3);
+  color: var(--ink2);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* Itinerary Accordion */
+.ho-itinerary-day {
+  border: 1px solid var(--surface3);
+  border-radius: 10px;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.ho-itinerary-day-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  background: var(--surface2);
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.ho-itinerary-day-header:hover { background: var(--surface3); }
+
+.ho-day-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--navy, #1a2744);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ho-day-title {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ho-day-chevron {
+  font-size: 18px;
+  color: var(--slate2);
+  transition: transform 0.2s;
+}
+
+.ho-itinerary-day.open .ho-day-chevron { transform: rotate(90deg); }
+
+.ho-itinerary-day-body {
+  display: none;
+  padding: 14px 16px 14px 62px;
+  font-size: 14px;
+  color: var(--slate);
+  line-height: 1.7;
+  border-top: 1px solid var(--surface3);
+  background: #fff;
+}
+
+.ho-itinerary-day.open .ho-itinerary-day-body { display: block; }
+
+/* Notes box */
+.ho-notes-box {
+  font-size: 14px;
+  color: var(--slate);
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+/* ── Booking Widget ───────────────────────────────────────────────────────────── */
+
+.ho-booking-widget {
+  position: sticky;
+  top: 24px;
+  background: var(--white, #fff);
+  border: 1px solid var(--surface3);
+  border-radius: var(--r2, 12px);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,.1);
+}
+
+.ho-widget-price {
+  background: var(--navy, #1a2744);
+  padding: 20px 24px 18px;
+  text-align: center;
+}
+
+.ho-widget-from {
+  font-size: 12px;
+  color: rgba(255,255,255,0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.ho-widget-amount {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--gold);
+  line-height: 1.1;
+}
+
+.ho-widget-per {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 2px;
+}
+
+.ho-widget-fields {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Counter group */
+.ho-counter-group {
+  border: 1px solid var(--surface3);
+  border-radius: var(--r, 8px);
+  overflow: hidden;
+}
+
+.ho-counter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--surface3);
+}
+
+.ho-counter-row:last-child { border-bottom: none; }
+
+.ho-counter-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ho-counter-sub {
+  font-size: 11px;
+  color: var(--slate2);
+}
+
+.ho-counter-btns {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--surface3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.ho-counter-btns button {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--surface2);
+  color: var(--ink);
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ho-counter-btns button:hover { background: var(--surface3); }
+.ho-counter-btns button:active { background: var(--gold); color: #fff; }
+
+.ho-counter-btns span {
+  min-width: 34px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+  padding: 0 4px;
+  border-left: 1px solid var(--surface3);
+  border-right: 1px solid var(--surface3);
+  line-height: 34px;
+}
+
+/* Price Breakdown */
+.ho-price-breakdown {
+  background: var(--surface2);
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 13px;
+}
+
+.ho-pb-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+
+.ho-pb-row:last-child {
+  margin-bottom: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--surface3);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Buttons */
+.ho-book-btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 20px 10px;
+  padding: 14px;
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.ho-book-btn:hover { filter: brightness(1.1); }
+.ho-book-btn:disabled { opacity: 0.6; cursor: default; }
+
+.ho-enquire-btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 20px 20px;
+  padding: 11px;
+  background: transparent;
+  color: var(--navy, #1a2744);
+  border: 1.5px solid var(--navy, #1a2744);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ho-enquire-btn:hover {
+  background: var(--navy, #1a2744);
+  color: #fff;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .ho-detail-wrap {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .ho-booking-widget {
+    position: static;
+  }
+
+  .ho-gallery-hero { height: 280px; }
+
+  .ho-policies-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .ho-breadcrumb { padding: 10px 16px; }
+  .ho-pkg-title { font-size: 20px; }
+  .ho-gallery-hero { height: 220px; }
+  .ho-policies-grid { grid-template-columns: 1fr 1fr; }
+  .ho-hotel-card { flex-direction: column; }
+  .ho-hotel-img, .ho-hotel-img-placeholder { width: 100%; height: 120px; }
+}

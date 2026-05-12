@@ -142,40 +142,142 @@
   </div>
 </div>
 
+<!-- ── Holiday Package Add/Edit Modal ───────────────────────────────────────── -->
 <div class="modal-bg" id="m-add-holiday" onclick="if(event.target===this)closeModal('m-add-holiday')">
-  <div class="modal">
-    <div class="modal-head"><div class="modal-title">Add Holiday Package</div><button class="modal-x" onclick="closeModal('m-add-holiday')">×</button></div>
+  <div class="modal" style="max-width:1000px;max-height:90vh;overflow-y:auto">
+    <div class="modal-head">
+      <div class="modal-title" id="ho-modal-title">Add Holiday Package</div>
+      <button class="modal-x" onclick="closeModal('m-add-holiday')">×</button>
+    </div>
     <div class="modal-body">
-        <div style="display:flex;flex-direction:column;gap:14px">
-          <div style="display:grid;grid-template-columns:2fr 1fr;gap:12px">
-            <div class="field"><label>Package Name</label><input type="text" id="hp-name" placeholder="e.g. Maldives Luxury Escape · 7 Nights"></div>
-            <div class="field"><label>Portal Country</label><select id="hp-portal"><option value="AE">UAE</option><option value="PK">Pakistan</option></select></div>
+      <form id="ho-pkg-form" style="display:flex;flex-direction:column;gap:20px">
+        <input type="hidden" id="ho-pkg-id">
+
+        <!-- Section A: Basic Information -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">A — Basic Information</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:grid;grid-template-columns:3fr 1fr 1fr;gap:12px">
+              <div class="field"><label>Package Name *</label><input type="text" id="ho-name" placeholder="e.g. Maldives Escape · 7 Nights" required></div>
+              <div class="field"><label>Portal *</label><select id="ho-portal"><option value="AE">🇦🇪 UAE (AED)</option><option value="PK">🇵🇰 Pakistan (PKR)</option></select></div>
+              <div class="field"><label>Type *</label><select id="ho-type"><option value="standard">Standard</option><option value="premium">Premium</option><option value="luxury">Luxury</option></select></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
+              <div class="field"><label>Destination *</label><input type="text" id="ho-destination" placeholder="e.g. Maldives"></div>
+              <div class="field"><label>Departure City</label><input type="text" id="ho-departure-city" placeholder="e.g. Dubai"></div>
+              <div class="field"><label>Nights *</label><input type="number" id="ho-nights" value="7" min="1" max="60"></div>
+              <div class="field"><label>Max Persons</label><input type="number" id="ho-max-persons" value="20" min="1"></div>
+            </div>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <div class="field"><label>Destination</label><input type="text" id="hp-destination" placeholder="e.g. Maldives"></div>
-            <div class="field"><label>Country Code</label><input type="text" id="hp-country" placeholder="e.g. MV" maxlength="3"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-            <div class="field"><label>Duration (Nights)</label><input type="number" id="hp-nights" placeholder="7" min="1" max="30"></div>
-            <div class="field"><label>Star Rating</label><select id="hp-stars"><option value="5">★★★★★ 5 Stars</option><option value="4">★★★★ 4 Stars</option><option value="3">★★★ 3 Stars</option></select></div>
-            <div class="field"><label>Price / Person (AED)</label><input type="number" id="hp-price" placeholder="0.00" min="0"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-            <div class="field"><label>Meal Plan</label><select id="hp-meal"><option value="all_inclusive">All Inclusive</option><option value="full_board">Full Board</option><option value="half_board">Half Board</option><option value="bed_breakfast">Bed & Breakfast</option><option value="room_only">Room Only</option></select></div>
-            <div class="field"><label>Max Guests</label><input type="number" id="hp-max-guests" placeholder="e.g. 20" min="1"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
-            <div class="field"><label>Flights Included</label><select id="hp-flights"><option value="1">Yes</option><option value="0">No</option></select></div>
-            <div class="field"><label>Visa Included</label><select id="hp-visa"><option value="0">No</option><option value="1">Yes</option></select></div>
-            <div class="field"><label>Status</label><select id="hp-status"><option value="active">Active</option><option value="inactive">Inactive</option></select></div>
-          </div>
-          <div class="field"><label>Short Description</label><textarea id="hp-description" placeholder="Brief description of this package shown to customers..." rows="3"></textarea></div>
-          <div class="field"><label>Hero Image URL (optional)</label><input type="url" id="hp-image" placeholder="https://images.unsplash.com/photo-..."></div>
         </div>
-      </div>
+
+        <!-- Section B: Pricing -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">B — Pricing</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px">
+            <div class="field"><label>Price / Person *</label><input type="number" id="ho-price" placeholder="0.00" min="0" step="0.01"></div>
+            <div class="field"><label>Stars *</label><select id="ho-stars"><option value="5">★★★★★</option><option value="4">★★★★</option><option value="3">★★★</option><option value="2">★★</option></select></div>
+            <div class="field"><label>Meal Plan</label><select id="ho-meal"><option value="all_inclusive">All Inclusive</option><option value="full_board">Full Board</option><option value="half_board">Half Board</option><option value="bed_breakfast">Bed &amp; Breakfast</option><option value="room_only">Room Only</option></select></div>
+            <div class="field"><label>Status</label><select id="ho-status"><option value="1">Active</option><option value="0">Inactive</option></select></div>
+          </div>
+        </div>
+
+        <!-- Section C: Images -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">C — Package Images</div>
+          <div id="ho-img-preview-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin-bottom:10px;min-height:0"></div>
+          <label style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;background:var(--surface2);border:1.5px dashed var(--surface3);border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:600;color:var(--ink);transition:border-color .2s" onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='var(--surface3)'">
+            <span style="font-size:18px">🖼</span> Select Images (up to 15)
+            <input type="file" id="ho-img-files" multiple accept="image/jpeg,image/png,image/webp" style="display:none" onchange="holiday_previewImages(this)">
+          </label>
+          <p style="font-size:12px;color:var(--slate2);margin:6px 0 0">JPG, PNG or WebP · max 5 MB each · first image becomes the cover photo.</p>
+        </div>
+
+        <!-- Section D: Hotels -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">D — Hotels</div>
+          <div id="ho-hotel-list" style="display:flex;flex-direction:column;gap:10px"></div>
+          <button type="button" class="btn-ghost btn-sm" style="margin-top:10px;width:fit-content" onclick="holiday_addHotelBlock()">+ Add Hotel</button>
+        </div>
+
+        <!-- Section E: Policies -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">E — Inclusions &amp; Policies</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="ho-policies-list">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Section F: Itinerary -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">F — Day-by-Day Itinerary</div>
+          <div id="ho-itinerary-list" style="display:flex;flex-direction:column;gap:10px"></div>
+          <button type="button" class="btn-ghost btn-sm" style="margin-top:10px;width:fit-content" onclick="holiday_addItineraryDay()">+ Add Day</button>
+        </div>
+
+        <!-- Section G: Description -->
+        <div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--surface3)">G — Description</div>
+          <div class="field"><label>Package Description</label><textarea id="ho-description" rows="4" placeholder="Brief overview shown to customers…"></textarea></div>
+        </div>
+      </form>
+    </div>
     <div class="modal-foot">
       <button class="btn-ghost" onclick="closeModal('m-add-holiday')">Cancel</button>
-      <button class="btn-navy" onclick="submitHolidayPackage()">Save Package</button>
+      <button class="btn-navy" id="ho-save-btn" onclick="holiday_submitPackage()">Save Package</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Holiday Booking View Modal ────────────────────────────────────────────── -->
+<div class="modal-bg" id="m-view-ho-booking" onclick="if(event.target===this)closeModal('m-view-ho-booking')">
+  <div class="modal" style="max-width:580px">
+    <div class="modal-head">
+      <div class="modal-title">Holiday Booking Detail</div>
+      <button class="modal-x" onclick="closeModal('m-view-ho-booking')">×</button>
+    </div>
+    <div class="modal-body" id="ho-booking-detail-body" style="padding:24px;display:flex;flex-direction:column;gap:12px">
+      <div style="text-align:center;color:var(--slate);padding:20px">Loading…</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-view-ho-booking')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Holiday Supplier Add/Edit Modal ──────────────────────────────────────── -->
+<div class="modal-bg" id="m-add-ho-supplier" onclick="if(event.target===this)closeModal('m-add-ho-supplier')">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-head">
+      <div class="modal-title" id="ho-supp-modal-title">Add Supplier</div>
+      <button class="modal-x" onclick="closeModal('m-add-ho-supplier')">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="ho-supp-form" style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" id="ho-supp-id">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Company Name *</label><input type="text" id="ho-supp-name" placeholder="e.g. Anantara Group" required></div>
+          <div class="field"><label>Contact Person</label><input type="text" id="ho-supp-contact" placeholder="Name"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Email</label><input type="email" id="ho-supp-email" placeholder="supplier@email.com"></div>
+          <div class="field"><label>Phone</label><input type="tel" id="ho-supp-phone" placeholder="+971 50 000 0000"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+          <div class="field"><label>Country</label><select id="ho-supp-country"><option value="AE">🇦🇪 UAE</option><option value="PK">🇵🇰 Pakistan</option></select></div>
+          <div class="field"><label>Commission %</label><input type="number" id="ho-supp-commission" value="0" min="0" max="100" step="0.01"></div>
+          <div class="field"><label>Status</label><select id="ho-supp-status"><option value="1">Active</option><option value="0">Inactive</option></select></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Contract Start</label><input type="date" id="ho-supp-start"></div>
+          <div class="field"><label>Contract End</label><input type="date" id="ho-supp-end"></div>
+        </div>
+        <div class="field"><label>Notes / Terms</label><textarea id="ho-supp-notes" rows="3" placeholder="Contract terms, special conditions…"></textarea></div>
+      </form>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-ghost" onclick="closeModal('m-add-ho-supplier')">Cancel</button>
+      <button class="btn-navy" onclick="holiday_submitSupplier()">Save Supplier</button>
     </div>
   </div>
 </div>

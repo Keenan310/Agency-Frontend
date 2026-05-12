@@ -60,7 +60,7 @@
         infant_count: counts.infant
       });
 
-      const flights = data.flights || [];
+      const flights = data.data || [];
       if (typeof window.RESULTS !== 'undefined') {
         window.RESULTS['flights'] = {
           title: `${from} → ${to}`,

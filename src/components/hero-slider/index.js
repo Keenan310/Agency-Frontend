@@ -4,8 +4,87 @@ window.KeenanFrontend.modules["hero-slider"] = {
   mount(root) {
     if (!root) return;
     root.dataset.module = "hero-slider";
+    initAutocomplete(root);
   },
 };
+
+function initAutocomplete(root) {
+  const depInput = root.querySelector('[data-role="dep-city"]');
+  const destInput = root.querySelector('input[placeholder="Destination"]');
+
+  if (depInput) setupInput(depInput);
+  if (destInput) setupInput(destInput);
+}
+
+function setupInput(input) {
+  const resultsDiv = document.createElement('div');
+  resultsDiv.className = 'ac-results';
+  input.parentElement.appendChild(resultsDiv);
+
+  let debounceTimer;
+
+  input.addEventListener('input', (e) => {
+    clearTimeout(debounceTimer);
+    const query = e.target.value.trim();
+    if (query.length < 2) {
+      resultsDiv.style.display = 'none';
+      return;
+    }
+
+    debounceTimer = setTimeout(async () => {
+      try {
+        const res = await fetch(`${window.KEENAN_CONFIG.apiBaseUrl}/airports/search?q=${encodeURIComponent(query)}`);
+        const data = await res.json();
+        renderResults(input, resultsDiv, data);
+      } catch (err) {
+        console.error('Airport search error:', err);
+      }
+    }, 300);
+  });
+
+  // Hide on blur, but delay to allow click on item
+  input.addEventListener('blur', () => {
+    setTimeout(() => {
+      resultsDiv.style.display = 'none';
+    }, 200);
+  });
+
+  input.addEventListener('focus', () => {
+    if (resultsDiv.innerHTML !== '') {
+      resultsDiv.style.display = 'block';
+    }
+  });
+}
+
+function renderResults(input, container, items) {
+  if (!items || items.length === 0) {
+    container.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = items.map(item => `
+    <div class="ac-item" data-code="${item.iata}" data-city="${item.city}">
+      <div class="ac-icon">✈</div>
+      <div class="ac-info">
+        <span class="ac-city">${item.city}, ${item.country}</span>
+        <span class="ac-name">${item.name}</span>
+      </div>
+      <span class="ac-code">${item.iata}</span>
+    </div>
+  `).join('');
+
+  container.style.display = 'block';
+
+  container.querySelectorAll('.ac-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const code = el.dataset.code;
+      const city = el.dataset.city;
+      input.value = `${city} (${code})`;
+      container.style.display = 'none';
+    });
+  });
+}
 
 // Global functions for inline event handlers in hero-slider/index.html
 window.KT_PAX_COUNTS = { adult: 1, child: 0, infant: 0 };

@@ -1,0 +1,194 @@
+<div id="view-holiday-detail" class="view">
+
+  <!-- Breadcrumb -->
+  <div class="ho-breadcrumb">
+    <a href="#" onclick="go('home');return false">Home</a>
+    <span>›</span>
+    <a href="#" onclick="go('results-holiday');return false">Holidays</a>
+    <span>›</span>
+    <span id="hd-breadcrumb-name">Package</span>
+  </div>
+
+  <div class="ho-detail-wrap">
+
+    <!-- Left: Content Column -->
+    <div class="ho-detail-left">
+
+      <!-- Image Gallery -->
+      <div class="ho-gallery" id="hd-gallery">
+        <div class="ho-gallery-hero">
+          <img id="hd-hero-img" src="" alt="" loading="eager" onerror="this.style.display='none'">
+          <div id="hd-hero-placeholder" class="ho-gallery-placeholder">✈</div>
+          <button class="ho-gallery-nav ho-gallery-prev" onclick="holiday_galleryNav(-1)">‹</button>
+          <button class="ho-gallery-nav ho-gallery-next" onclick="holiday_galleryNav(1)">›</button>
+          <div class="ho-gallery-dots" id="hd-gallery-dots"></div>
+        </div>
+        <div class="ho-gallery-thumbs" id="hd-gallery-thumbs"></div>
+      </div>
+
+      <!-- Package Header -->
+      <div class="ho-pkg-header">
+        <div>
+          <div class="ho-pkg-badges">
+            <span class="ho-badge ho-badge-type" id="hd-type-badge">Standard</span>
+            <span class="ho-stars" id="hd-stars">★★★★★</span>
+          </div>
+          <h1 class="ho-pkg-title" id="hd-pkg-title">Loading…</h1>
+          <div class="ho-pkg-meta" id="hd-pkg-meta"></div>
+        </div>
+      </div>
+
+      <!-- Inclusions / Exclusions -->
+      <div class="ho-section" id="hd-policies-section">
+        <div class="ho-section-title">What's Included</div>
+        <div class="ho-policies-grid" id="hd-policies-grid"></div>
+      </div>
+
+      <!-- Hotels Section -->
+      <div class="ho-section" id="hd-hotels-section">
+        <div class="ho-section-title">Your Hotels</div>
+        <div id="hd-hotels-list"></div>
+      </div>
+
+      <!-- Itinerary -->
+      <div class="ho-section" id="hd-itinerary-section">
+        <div class="ho-section-title">Day-by-Day Itinerary</div>
+        <div id="hd-itinerary-list"></div>
+      </div>
+
+      <!-- Important Notes -->
+      <div class="ho-section" id="hd-notes-section" style="display:none">
+        <div class="ho-section-title">Important Notes</div>
+        <div id="hd-cancellation-policy" class="ho-notes-box"></div>
+      </div>
+
+    </div>
+
+    <!-- Right: Booking Widget -->
+    <div class="ho-booking-widget" id="hd-booking-widget">
+      <div class="ho-widget-price">
+        <div class="ho-widget-from">from</div>
+        <div class="ho-widget-amount" id="hd-price-per-person">AED 0</div>
+        <div class="ho-widget-per">per person</div>
+      </div>
+
+      <div class="ho-widget-fields">
+        <div class="field">
+          <label>Check-in Date</label>
+          <input type="date" id="hd-checkin" min="" onchange="holiday_recalcTotal()">
+        </div>
+
+        <div class="ho-counter-group">
+          <div class="ho-counter-row">
+            <div>
+              <div class="ho-counter-label">Adults</div>
+              <div class="ho-counter-sub">Age 12+</div>
+            </div>
+            <div class="ho-counter-btns">
+              <button onclick="holiday_adjustCount('adults',-1)">−</button>
+              <span id="hd-adults">2</span>
+              <button onclick="holiday_adjustCount('adults',1)">+</button>
+            </div>
+          </div>
+          <div class="ho-counter-row">
+            <div>
+              <div class="ho-counter-label">Children</div>
+              <div class="ho-counter-sub">Age 2–11 · 75% price</div>
+            </div>
+            <div class="ho-counter-btns">
+              <button onclick="holiday_adjustCount('children',-1)">−</button>
+              <span id="hd-children">0</span>
+              <button onclick="holiday_adjustCount('children',1)">+</button>
+            </div>
+          </div>
+          <div class="ho-counter-row">
+            <div>
+              <div class="ho-counter-label">Infants</div>
+              <div class="ho-counter-sub">Under 2 · Free</div>
+            </div>
+            <div class="ho-counter-btns">
+              <button onclick="holiday_adjustCount('infants',-1)">−</button>
+              <span id="hd-infants">0</span>
+              <button onclick="holiday_adjustCount('infants',1)">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Room Preference</label>
+          <select id="hd-room-type">
+            <option>Standard Room</option>
+            <option>Deluxe Room</option>
+            <option>Suite</option>
+            <option>Villa / Overwater</option>
+          </select>
+        </div>
+
+        <div class="ho-price-breakdown" id="hd-price-breakdown"></div>
+      </div>
+
+      <button class="ho-book-btn" id="hd-book-btn" onclick="holiday_openBookingModal()">
+        Book Now
+      </button>
+      <button class="ho-enquire-btn" onclick="holiday_openEnquiryModal()">
+        ✉ Enquire About This Package
+      </button>
+    </div>
+
+  </div>
+
+  <!-- ── Booking Modal (step 1: review & confirm) ─────────────────────────── -->
+  <div class="modal-bg" id="m-ho-book" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal" style="max-width:560px">
+      <div class="modal-head">
+        <div class="modal-title">Review Your Holiday</div>
+        <button class="modal-x" onclick="document.getElementById('m-ho-book').style.display='none'">×</button>
+      </div>
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:16px">
+        <div id="ho-book-summary"></div>
+
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--slate2);border-top:1px solid var(--surface3);padding-top:14px">Your Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>First Name *</label><input type="text" id="ho-bk-fname"></div>
+          <div class="field"><label>Last Name *</label><input type="text" id="ho-bk-lname"></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Email *</label><input type="email" id="ho-bk-email"></div>
+          <div class="field"><label>Phone *</label><input type="tel" id="ho-bk-phone" placeholder="+971 50 000 0000"></div>
+        </div>
+        <div class="field"><label>Special Requests</label><textarea id="ho-bk-requests" rows="2" placeholder="Anniversary setup, dietary requirements, etc."></textarea></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-ghost" onclick="document.getElementById('m-ho-book').style.display='none'">Cancel</button>
+        <button class="btn-navy" onclick="holiday_submitBooking()" id="ho-bk-submit-btn">Confirm Booking</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Enquiry Modal ──────────────────────────────────────────────────────── -->
+  <div class="modal-bg" id="m-ho-enquiry" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal" style="max-width:480px">
+      <div class="modal-head">
+        <div class="modal-title">Enquire About This Package</div>
+        <button class="modal-x" onclick="document.getElementById('m-ho-enquiry').style.display='none'">×</button>
+      </div>
+      <div class="modal-body" style="display:flex;flex-direction:column;gap:14px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Full Name *</label><input type="text" id="ho-enq-name"></div>
+          <div class="field"><label>Phone *</label><input type="tel" id="ho-enq-phone"></div>
+        </div>
+        <div class="field"><label>Email *</label><input type="email" id="ho-enq-email"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="field"><label>Preferred Dates</label><input type="date" id="ho-enq-date"></div>
+          <div class="field"><label>No. of Travellers</label><input type="number" id="ho-enq-pax" min="1" value="2"></div>
+        </div>
+        <div class="field"><label>Message / Questions</label><textarea id="ho-enq-message" rows="3" placeholder="Tell us what you need…"></textarea></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn-ghost" onclick="document.getElementById('m-ho-enquiry').style.display='none'">Cancel</button>
+        <button class="btn-navy" onclick="holiday_submitEnquiry()">Send Enquiry</button>
+      </div>
+    </div>
+  </div>
+
+</div>

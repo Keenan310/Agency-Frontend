@@ -1508,6 +1508,123 @@
   window.submitCruisePackage = submitCruisePackage;
   window.deletePackage = deletePackage;
 
+  // Patch buildResults to fetch live flight data
+  const originalBuildResults = window.buildResults;
+  window.buildResults = async function (type) {
+    if (type !== 'flights') {
+      if (originalBuildResults) originalBuildResults(type);
+      return;
+    }
+
+    const container = document.getElementById('view-results-flights');
+    if (!container) return;
+
+    // Show skeleton/loader
+    renderFlightLoader(container);
+
+    try {
+      const searchParams = gatherFlightSearchParams();
+      const results = await apiRequest('/flights/search', {
+        method: 'POST',
+        body: searchParams
+      });
+
+      renderFlightResults(container, results.data || [], searchParams);
+    } catch (err) {
+      console.error('Flight search error:', err);
+      container.innerHTML = `<div class="p40 t-center"><div class="fs18 semi mb10">Search Failed</div><div class="slate2">${err.message}</div><button class="btn-gold mt20" onclick="go('home')">Back to Search</button></div>`;
+    }
+  };
+
+  function gatherFlightSearchParams() {
+    const fromVal = document.getElementById('flight-from')?.value || '';
+    const toVal = document.getElementById('flight-to')?.value || '';
+    
+    const extractCode = (str) => {
+      const match = str.match(/\(([A-Z]{3})\)/);
+      return match ? match[1] : str.trim().toUpperCase();
+    };
+
+    const pax = window.KT_PAX_COUNTS || { adult: 1, child: 0, infant: 0 };
+    const tripType = document.querySelector('input[name="ftype"]:checked')?.value || 'r';
+
+    return {
+      origin: extractCode(fromVal),
+      destination: extractCode(toVal),
+      departureDate: document.getElementById('flight-dep-date')?.value,
+      returnDate: tripType === 'r' ? document.getElementById('flight-ret-date')?.value : null,
+      adults: pax.adult,
+      children: pax.child,
+      infants: pax.infant,
+      cabin: document.getElementById('flight-class')?.value?.toLowerCase() || 'economy'
+    };
+  }
+
+  function renderFlightLoader(container) {
+    container.innerHTML = `
+      <div class="results-hero"><div class="results-inner"><div class="fs24 semi t-white">Searching for flights...</div></div></div>
+      <div class="results-layout" style="display:flex; justify-content:center; padding: 100px 0;">
+        <div class="loader-gold"></div>
+      </div>
+    `;
+  }
+
+  function renderFlightResults(container, items, params) {
+    const title = `${params.origin} → ${params.destination}`;
+    const sub = `${params.departureDate} ${params.returnDate ? '· ' + params.returnDate : ''} · ${params.adults + params.children + params.infants} Traveler(s) · ${titleCase(params.cabin)}`;
+
+    const cards = items.map(it => `
+      <div class="result-card" onclick="selectFlight('${it.offerId}')">
+        <div class="rc-img" style="background: var(--surface3); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--gold3);">${it.airline}</div>
+        <div class="rc-body">
+          <div class="rc-name">${it.airline} · ${it.flightNumber}</div>
+          <div class="rc-tags">
+            <span class="rc-tag gold">${it.stops === 0 ? 'Non-stop' : it.stops + ' Stop(s)'}</span>
+            <span class="rc-tag">${Math.floor(it.flightMinutes / 60)}h ${it.flightMinutes % 60}m</span>
+            <span class="rc-tag">${it.origin} → ${it.destination}</span>
+          </div>
+          <div class="rc-meta">
+            <span>· ${titleCase(it.cabin)}</span>
+            <span>· ${it.checkIn || 'No'} check-in baggage</span>
+            <span>· ${it.departureTime?.split('T')[1]?.slice(0,5)} → ${it.arrivalTime?.split('T')[1]?.slice(0,5)}</span>
+          </div>
+        </div>
+        <div class="rc-price-col">
+          <div><div class="rc-price">${formatCurrency(it.totalAmount, it.currency)}</div><div class="rc-price-label">total per person</div></div>
+          <button class="btn-gold btn-sm" onclick="event.stopPropagation();selectFlight('${it.offerId}')">Select</button>
+        </div>
+      </div>
+    `).join('');
+
+    container.innerHTML = `
+      <div class="results-hero">
+        <div class="results-inner">
+          <div class="breadcrumb"><span onclick="go('home')">Home</span><span>›</span><span>Flights</span><span>›</span><span style="color:rgba(255,255,255,.7)">${title}</span></div>
+          <div style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--white);margin-bottom:6px">${title}</div>
+          <div style="color:rgba(255,255,255,.5);font-size:14px">${sub}</div>
+        </div>
+      </div>
+      <div class="results-layout">
+        <div class="filter-panel">
+          <div class="fp-head"><div style="font-size:14px;font-weight:700;color:var(--ink)">Filters</div></div>
+          <div class="fp-section"><div class="fp-label">Stops</div><label class="fp-check"><input type="checkbox" checked> Non-stop</label><label class="fp-check"><input type="checkbox" checked> 1+ Stops</label></div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+            <div style="font-size:14px;color:var(--slate)">${items.length} offers found</div>
+          </div>
+          ${items.length ? cards : '<div class="p40 t-center slate2">No flights found for this route/date.</div>'}
+        </div>
+      </div>
+    `;
+  }
+
+  window.selectFlight = function(offerId) {
+    // Navigate to booking page with offerId
+    localStorage.setItem('selectedOfferId', offerId);
+    go('booking');
+  };
+
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", bootstrap);
   } else {

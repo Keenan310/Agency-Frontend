@@ -1053,3 +1053,718 @@ window.loadAdminDashboard = async function loadAdminDashboard() {
   setEl('dash-count-cruise',  rev.cruise  > 0 ? '\u2713 active' : '0 bkgs');
   setEl('dash-count-visa',    rev.visa    > 0 ? '\u2713 active' : '0 apps');
 };
+
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+// HOLIDAY MODULE \u2014 Admin Functions (isolated, all prefixed holiday_)
+// \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550
+
+let _holidayPackages   = [];
+let _holidaySuppliers  = [];
+let _hoCurrentPkgId    = null;
+
+const HOLIDAY_POLICIES = [
+  { key: 'flight_included',    icon: '\u2708', label: 'Flights',           detail: 'flight_details' },
+  { key: 'visa_included',      icon: '\ud83d\udec2', label: 'Visa Service',      detail: 'visa_details' },
+  { key: 'hotel_included',     icon: '\ud83c\udfe8', label: 'Accommodation',     detail: 'hotel_details' },
+  { key: 'transfer_included',  icon: '\ud83d\ude8c', label: 'Airport Transfers',  detail: 'transfer_details' },
+  { key: 'travel_insurance',   icon: '\ud83e\udc61', label: 'Travel Insurance',   detail: 'insurance_details' },
+  { key: 'meals_included',     icon: '\ud83c\udf7d', label: 'Meals',             detail: 'meals_details' },
+  { key: 'guide_included',     icon: '\ud83e\udd1d', label: 'Tour Guide',        detail: 'guide_details' },
+];
+
+// \u2500\u2500 Package Table \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_adminLoadPackages = async function holiday_adminLoadPackages() {
+  const tbody = document.getElementById('tbody-ho');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px">Loading\u2026</td></tr>';
+
+  const data = await _adminFetch('/holiday/packages?limit=100');
+  if (data && data.aborted) return;
+
+  _holidayPackages = (data && data.data) || [];
+
+  const sub = document.getElementById('ho-pkg-sub');
+  if (sub) sub.textContent = _holidayPackages.length + ' package' + (_holidayPackages.length !== 1 ? 's' : '');
+
+  if (!_holidayPackages.length) {
+    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--slate2)">No holiday packages yet. Click + Add Package to create one.</td></tr>';
+    return;
+  }
+  holiday_renderPackageTable(_holidayPackages);
+};
+
+function holiday_renderPackageTable(pkgs) {
+  const tbody = document.getElementById('tbody-ho');
+  if (!tbody) return;
+
+  const typeBadge = t => {
+    const map = { luxury: 'b-gold', premium: 'b-blue', standard: 'b-slate' };
+    return `<span class="badge ${map[t] || 'b-slate'}">${(t||'standard').charAt(0).toUpperCase()+(t||'standard').slice(1)}</span>`;
+  };
+  const stars = n => '\u2605'.repeat(Number(n || 0));
+
+  tbody.innerHTML = pkgs.map(p => {
+    let hotels = [];
+    try { hotels = typeof p.hotels === 'string' ? JSON.parse(p.hotels) : (p.hotels || []); } catch {}
+    let images = [];
+    try { images = typeof p.gallery_images === 'string' ? JSON.parse(p.gallery_images) : (p.gallery_images || []); } catch {}
+
+    return `
+      <tr data-id="${p.id}" data-type="${p.package_type||''}" data-stars="${p.star_rating||0}" data-portal="${p.country_code}" data-status="${p.is_active}">
+        <td class="semi">${p.name}</td>
+        <td>${p.destination}</td>
+        <td>${p.nights}N</td>
+        <td style="color:var(--gold3)">${stars(p.star_rating)}</td>
+        <td>${typeBadge(p.package_type)}</td>
+        <td class="semi">${p.currency || 'AED'} ${Number(p.price_per_person).toLocaleString()}</td>
+        <td style="text-align:center">${hotels.length || 0}</td>
+        <td style="text-align:center">${images.length || 0}</td>
+        <td>
+          <select class="ss ${p.is_active ? 'ss-active' : 'ss-inactive'}" onchange="holiday_changeStatus(${p.id},this.value)">
+            <option value="1" ${p.is_active ? 'selected' : ''}>Active</option>
+            <option value="0" ${!p.is_active ? 'selected' : ''}>Inactive</option>
+          </select>
+        </td>
+        <td class="td-actions">
+          <button class="btn-icon" title="Edit" onclick="holiday_editPackage(${p.id})">\u270f</button>
+          <button class="btn-icon" title="Images" onclick="holiday_openImageManager(${p.id})">\ud83d\uddbc</button>
+          <button class="btn-icon" title="Delete" style="color:var(--red)" onclick="holiday_deletePackage(${p.id})">\ud83d\uddd1</button>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+window.holiday_filterPackages = function holiday_filterPackages() {
+  const srch   = (document.getElementById('ho-srch')?.value || '').toLowerCase();
+  const type   = document.getElementById('ho-flt-type')?.value || '';
+  const stars  = document.getElementById('ho-flt-stars')?.value || '';
+  const portal = document.getElementById('ho-flt-portal')?.value || '';
+  const status = document.getElementById('ho-flt-status')?.value;
+
+  const filtered = _holidayPackages.filter(p => {
+    if (srch   && !p.name?.toLowerCase().includes(srch) && !p.destination?.toLowerCase().includes(srch)) return false;
+    if (type   && p.package_type !== type)    return false;
+    if (stars  && Number(p.star_rating) < Number(stars)) return false;
+    if (portal && p.country_code !== portal)  return false;
+    if (status !== undefined && status !== '' && String(p.is_active) !== status) return false;
+    return true;
+  });
+
+  holiday_renderPackageTable(filtered);
+};
+
+window.holiday_changeStatus = async function holiday_changeStatus(id, val) {
+  await _adminFetch('/holiday/packages/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({ is_active: Number(val) }),
+  });
+  if (typeof window.toast === 'function') window.toast('Status updated', 't-green');
+};
+
+window.holiday_deletePackage = async function holiday_deletePackage(id) {
+  if (!confirm('Delete this holiday package? This cannot be undone.')) return;
+  const res = await _adminFetch('/holiday/packages/' + id, { method: 'DELETE' });
+  if (res && res.success !== false) {
+    if (typeof window.toast === 'function') window.toast('Package deleted', 't-green');
+    holiday_adminLoadPackages();
+  } else {
+    if (typeof window.toast === 'function') window.toast('Delete failed', 't-red');
+  }
+};
+
+// \u2500\u2500 Package Form \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_openPackageModal = function holiday_openPackageModal() {
+  document.getElementById('ho-modal-title').textContent = 'Add Holiday Package';
+  document.getElementById('ho-pkg-id').value = '';
+  document.getElementById('ho-pkg-form').reset();
+  _hoCurrentPkgId = null;
+  holiday_clearImagePreview();
+
+  holiday_renderPoliciesUI({});
+  holiday_renderHotelList([]);
+  holiday_renderItineraryList([]);
+  openModal('m-add-holiday');
+};
+
+window.holiday_editPackage = function holiday_editPackage(id) {
+  const pkg = _holidayPackages.find(p => p.id === id);
+  if (!pkg) return;
+  _hoCurrentPkgId = id;
+
+  document.getElementById('ho-modal-title').textContent = 'Edit Holiday Package';
+  document.getElementById('ho-pkg-id').value        = id;
+  document.getElementById('ho-name').value          = pkg.name || '';
+  document.getElementById('ho-portal').value        = pkg.country_code || 'AE';
+  document.getElementById('ho-type').value          = pkg.package_type || 'standard';
+  document.getElementById('ho-destination').value   = pkg.destination || '';
+  document.getElementById('ho-departure-city').value= pkg.departure_city || '';
+  document.getElementById('ho-nights').value        = pkg.nights || 7;
+  document.getElementById('ho-stars').value         = pkg.star_rating || 4;
+  document.getElementById('ho-max-persons').value   = pkg.max_persons || 20;
+  document.getElementById('ho-price').value         = pkg.price_per_person || '';
+  document.getElementById('ho-meal').value          = pkg.meal_plan || 'bed_breakfast';
+  document.getElementById('ho-status').value        = pkg.is_active ? '1' : '0';
+  document.getElementById('ho-description').value   = pkg.description || '';
+
+  holiday_clearImagePreview();
+
+  let hotels = [];
+  try { hotels = typeof pkg.hotels === 'string' ? JSON.parse(pkg.hotels) : (pkg.hotels || []); } catch {}
+  let policies = {};
+  try { policies = typeof pkg.policies === 'string' ? JSON.parse(pkg.policies) : (pkg.policies || {}); } catch {}
+  let itinerary = [];
+  try { itinerary = typeof pkg.itinerary === 'string' ? JSON.parse(pkg.itinerary) : (pkg.itinerary || []); } catch {}
+
+  holiday_renderPoliciesUI(policies);
+  holiday_renderHotelList(hotels);
+  holiday_renderItineraryList(itinerary);
+  openModal('m-add-holiday');
+};
+
+async function holiday_loadSuppliersIntoSelect(selectedId) {
+  const sel = document.getElementById('ho-supplier');
+  if (!sel) return;
+  const data = await _adminFetch('/holiday/suppliers');
+  _holidaySuppliers = (data && data.data) || [];
+  sel.innerHTML = '<option value="">\u2014 No Supplier \u2014</option>' +
+    _holidaySuppliers.map(s =>
+      `<option value="${s.id}" ${s.id === selectedId ? 'selected' : ''}>${s.name}</option>`
+    ).join('');
+}
+
+// \u2500\u2500 Hotel Blocks \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+function holiday_renderHotelList(hotels) {
+  const container = document.getElementById('ho-hotel-list');
+  if (!container) return;
+  container.innerHTML = '';
+  if (!hotels.length) { holiday_addHotelBlock(); return; }
+  hotels.forEach((h, i) => holiday_addHotelBlock(h, i));
+}
+
+window.holiday_addHotelBlock = function holiday_addHotelBlock(data = {}, idx = null) {
+  const container = document.getElementById('ho-hotel-list');
+  if (!container) return;
+  const i = idx !== null ? idx : container.children.length;
+  const div = document.createElement('div');
+  div.className = 'ho-hotel-block';
+  div.dataset.idx = i;
+  div.style.cssText = 'background:var(--surface2);border:1px solid var(--surface3);border-radius:var(--r);padding:14px;position:relative';
+  div.innerHTML = `
+    <div style="font-size:12px;font-weight:700;color:var(--gold3);margin-bottom:10px">Hotel ${i + 1}
+      <button type="button" onclick="this.closest('.ho-hotel-block').remove();holiday_renumberHotels()" style="float:right;background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">\u2715</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Hotel Name</label><input type="text" class="ho-h-name" value="${data.name||''}"></div>
+      <div class="field"><label>Destination/City</label><input type="text" class="ho-h-dest" value="${data.destination||''}"></div>
+      <div class="field"><label>Nights</label><input type="number" class="ho-h-nights" value="${data.nights||0}" min="0"></div>
+      <div class="field"><label>Room Type</label><input type="text" class="ho-h-room" value="${data.room_type||''}"></div>
+      <div class="field"><label>Meal Plan</label><select class="ho-h-meal">
+        <option value="all_inclusive" ${data.meal_plan==='all_inclusive'?'selected':''}>All Inclusive</option>
+        <option value="full_board" ${data.meal_plan==='full_board'?'selected':''}>Full Board</option>
+        <option value="half_board" ${data.meal_plan==='half_board'?'selected':''}>Half Board</option>
+        <option value="bed_breakfast" ${data.meal_plan==='bed_breakfast'?'selected':''}>B&amp;B</option>
+        <option value="room_only" ${data.meal_plan==='room_only'?'selected':''}>Room Only</option>
+      </select></div>
+      <div class="field"><label>Stars</label><select class="ho-h-stars">
+        ${[5,4,3,2].map(n=>`<option value="${n}" ${Number(data.stars||4)===n?'selected':''}>${'\u2605'.repeat(n)}</option>`).join('')}
+      </select></div>
+    </div>
+    <div class="field" style="margin-top:8px"><label>Description</label><textarea class="ho-h-desc" rows="2">${data.description||''}</textarea></div>
+  `;
+  container.appendChild(div);
+};
+
+window.holiday_renumberHotels = function holiday_renumberHotels() {
+  const blocks = document.querySelectorAll('.ho-hotel-block');
+  blocks.forEach((b, i) => {
+    const title = b.querySelector('div');
+    if (title) title.childNodes[0].textContent = `Hotel ${i + 1}\n`;
+  });
+};
+
+function holiday_collectHotels() {
+  const blocks = document.querySelectorAll('.ho-hotel-block');
+  return Array.from(blocks).map((b, i) => ({
+    order:       i + 1,
+    name:        b.querySelector('.ho-h-name')?.value || '',
+    destination: b.querySelector('.ho-h-dest')?.value || '',
+    nights:      Number(b.querySelector('.ho-h-nights')?.value || 0),
+    room_type:   b.querySelector('.ho-h-room')?.value || '',
+    meal_plan:   b.querySelector('.ho-h-meal')?.value || '',
+    stars:       Number(b.querySelector('.ho-h-stars')?.value || 4),
+    description: b.querySelector('.ho-h-desc')?.value || '',
+  }));
+}
+
+// \u2500\u2500 Policies UI \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+function holiday_renderPoliciesUI(policies) {
+  const container = document.getElementById('ho-policies-list');
+  if (!container) return;
+  container.innerHTML = HOLIDAY_POLICIES.map(pol => {
+    const enabled = policies[pol.key] === true || policies[pol.key] === 1;
+    const detail  = policies[pol.detail] || '';
+    return `
+      <div style="border:1px solid var(--surface3);border-radius:var(--r);padding:12px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:${enabled?'8px':'0'}">
+          <span style="font-size:18px">${pol.icon}</span>
+          <span style="flex:1;font-size:14px;font-weight:600">${pol.label}</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="pol-${pol.key}" ${enabled?'checked':''} onchange="holiday_togglePolicyDetail('${pol.key}','${pol.detail}')">
+            <span class="toggle-thumb"></span>
+          </label>
+        </div>
+        <div id="pol-detail-${pol.key}" style="display:${enabled?'block':'none'}">
+          <textarea id="pol-text-${pol.detail}" rows="2" placeholder="Details (optional)\u2026" style="width:100%;box-sizing:border-box;padding:8px;border:1px solid var(--surface3);border-radius:6px;font-size:13px;background:var(--surface2);color:var(--ink)">${detail}</textarea>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Cancellation policy
+  const canc = policies.cancellation_policy || '';
+  container.insertAdjacentHTML('beforeend', `
+    <div style="grid-column:1/-1">
+      <div class="field"><label>Cancellation Policy</label><textarea id="pol-cancellation" rows="2" placeholder="e.g. Free cancellation up to 30 days before departure\u2026">${canc}</textarea></div>
+    </div>
+  `);
+}
+
+window.holiday_togglePolicyDetail = function holiday_togglePolicyDetail(key, detailKey) {
+  const checked = document.getElementById('pol-' + key)?.checked;
+  const detail  = document.getElementById('pol-detail-' + key);
+  if (detail) detail.style.display = checked ? 'block' : 'none';
+};
+
+function holiday_collectPolicies() {
+  const pol = {};
+  HOLIDAY_POLICIES.forEach(p => {
+    pol[p.key]    = document.getElementById('pol-' + p.key)?.checked || false;
+    pol[p.detail] = document.getElementById('pol-text-' + p.detail)?.value || '';
+  });
+  pol.cancellation_policy = document.getElementById('pol-cancellation')?.value || '';
+  return pol;
+}
+
+// \u2500\u2500 Itinerary Builder \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+function holiday_renderItineraryList(days) {
+  const container = document.getElementById('ho-itinerary-list');
+  if (!container) return;
+  container.innerHTML = '';
+  days.forEach((d, i) => holiday_addItineraryDay(d, i));
+}
+
+window.holiday_addItineraryDay = function holiday_addItineraryDay(data = {}, idx = null) {
+  const container = document.getElementById('ho-itinerary-list');
+  if (!container) return;
+  const i = idx !== null ? idx : container.children.length;
+  const acts = Array.isArray(data.activities) ? data.activities.join(', ') : (data.activities || '');
+  const meals = data.meals || [];
+  const div = document.createElement('div');
+  div.className = 'ho-itin-day';
+  div.style.cssText = 'background:var(--surface2);border:1px solid var(--surface3);border-radius:var(--r);padding:14px';
+  div.innerHTML = `
+    <div style="font-size:12px;font-weight:700;color:var(--slate2);margin-bottom:10px">Day ${i + 1}
+      <button type="button" onclick="this.closest('.ho-itin-day').remove();holiday_renumberDays()" style="float:right;background:none;border:none;color:var(--red);cursor:pointer;font-size:16px">\u2715</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field"><label>Title</label><input type="text" class="ho-d-title" value="${data.title||''}"></div>
+      <div class="field"><label>Accommodation</label><input type="text" class="ho-d-accom" value="${data.accommodation||''}"></div>
+    </div>
+    <div class="field" style="margin-top:8px"><label>Description</label><textarea class="ho-d-desc" rows="2">${data.description||''}</textarea></div>
+    <div class="field" style="margin-top:8px"><label>Activities (comma-separated)</label><input type="text" class="ho-d-acts" value="${acts}"></div>
+    <div style="margin-top:8px;display:flex;gap:16px;align-items:center">
+      <span style="font-size:13px;color:var(--slate2)">Meals:</span>
+      ${['Breakfast','Lunch','Dinner'].map(m=>`<label style="display:flex;gap:6px;align-items:center;font-size:13px"><input type="checkbox" class="ho-d-meal" value="${m}" ${meals.includes(m)?'checked':''}> ${m}</label>`).join('')}
+    </div>
+  `;
+  container.appendChild(div);
+};
+
+window.holiday_renumberDays = function holiday_renumberDays() {
+  document.querySelectorAll('.ho-itin-day').forEach((d, i) => {
+    const title = d.querySelector('div');
+    if (title) title.childNodes[0].textContent = `Day ${i + 1}\n`;
+  });
+};
+
+function holiday_collectItinerary() {
+  return Array.from(document.querySelectorAll('.ho-itin-day')).map((d, i) => ({
+    day:           i + 1,
+    title:         d.querySelector('.ho-d-title')?.value || '',
+    description:   d.querySelector('.ho-d-desc')?.value  || '',
+    activities:    (d.querySelector('.ho-d-acts')?.value || '').split(',').map(s=>s.trim()).filter(Boolean),
+    accommodation: d.querySelector('.ho-d-accom')?.value || '',
+    meals:         Array.from(d.querySelectorAll('.ho-d-meal:checked')).map(c => c.value),
+  }));
+}
+
+// \u2500\u2500 Submit Package \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_submitPackage = async function holiday_submitPackage() {
+  const id     = document.getElementById('ho-pkg-id').value;
+  const portal = document.getElementById('ho-portal').value;
+
+  const nameVal = document.getElementById('ho-name').value.trim();
+  const priceVal = document.getElementById('ho-price').value;
+  if (!nameVal) { if (typeof window.toast === 'function') window.toast('Package name is required', 't-red'); return; }
+  if (!priceVal) { if (typeof window.toast === 'function') window.toast('Price per person is required', 't-red'); return; }
+
+  const btn = document.getElementById('ho-save-btn');
+  if (btn) { btn.textContent = 'Saving…'; btn.disabled = true; }
+
+  const payload = {
+    name:             nameVal,
+    portal_country:   portal,
+    currency:         portal === 'PK' ? 'PKR' : 'AED',
+    package_type:     document.getElementById('ho-type').value,
+    destination:      document.getElementById('ho-destination').value,
+    departure_city:   document.getElementById('ho-departure-city').value,
+    nights:           Number(document.getElementById('ho-nights').value),
+    star_rating:      Number(document.getElementById('ho-stars').value),
+    max_persons:      Number(document.getElementById('ho-max-persons').value),
+    price_per_person: Number(priceVal),
+    meal_plan:        document.getElementById('ho-meal').value,
+    is_active:        document.getElementById('ho-status').value === '1',
+    description:      document.getElementById('ho-description').value,
+    hotels:           JSON.stringify(holiday_collectHotels()),
+    policies:         JSON.stringify(holiday_collectPolicies()),
+    itinerary:        JSON.stringify(holiday_collectItinerary()),
+  };
+
+  try {
+    const url    = id ? '/holiday/packages/' + id : '/holiday/packages';
+    const method = id ? 'PUT' : 'POST';
+    const data   = await _adminFetch(url, { method, body: JSON.stringify(payload) });
+
+    if (!data || !data.data) {
+      throw new Error(data?.message || data?.error || 'Save failed');
+    }
+
+    const pkgId = data.data.id || id;
+
+    // Upload images if any were selected
+    const imgInput = document.getElementById('ho-img-files');
+    if (imgInput?.files?.length) {
+      await holiday_uploadImagesToPackage(pkgId, imgInput.files);
+    }
+
+    if (typeof window.toast === 'function') window.toast(id ? 'Package updated' : 'Package created', 't-green');
+    closeModal('m-add-holiday');
+    holiday_adminLoadPackages();
+  } catch (err) {
+    if (typeof window.toast === 'function') window.toast(err.message || 'Save failed', 't-red');
+  } finally {
+    if (btn) { btn.textContent = 'Save Package'; btn.disabled = false; }
+  }
+};
+
+// ── Image preview in Add/Edit form ───────────────────────────────────────────
+
+window.holiday_previewImages = function holiday_previewImages(input) {
+  const grid = document.getElementById('ho-img-preview-grid');
+  if (!grid) return;
+  const files = Array.from(input.files).slice(0, 15);
+  grid.innerHTML = '';
+  files.forEach((file, i) => {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'position:relative;border-radius:8px;overflow:hidden;border:2px solid var(--surface3)';
+      if (i === 0) {
+        wrap.style.borderColor = 'var(--gold)';
+        wrap.title = 'Cover photo';
+      }
+      wrap.innerHTML = `
+        <img src="${e.target.result}" style="width:100%;height:80px;object-fit:cover;display:block">
+        ${i === 0 ? '<div style="position:absolute;top:3px;left:3px;background:var(--gold);color:#fff;font-size:9px;font-weight:700;padding:2px 5px;border-radius:3px">COVER</div>' : ''}
+      `;
+      grid.appendChild(wrap);
+    };
+    reader.readAsDataURL(file);
+  });
+};
+
+window.holiday_clearImagePreview = function holiday_clearImagePreview() {
+  const grid  = document.getElementById('ho-img-preview-grid');
+  const input = document.getElementById('ho-img-files');
+  if (grid)  grid.innerHTML = '';
+  if (input) input.value   = '';
+};
+
+async function holiday_uploadImagesToPackage(pkgId, files) {
+  const formData = new FormData();
+  Array.from(files).forEach(f => formData.append('images', f));
+  try {
+    const res = await fetch(_adminApiBase() + '/holiday/packages/' + pkgId + '/images', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + _adminToken() },
+      body: formData,
+    });
+    const json = await res.json();
+    if (!res.ok) console.warn('[holiday] image upload failed:', json.message);
+  } catch (err) {
+    console.warn('[holiday] image upload error:', err.message);
+  }
+}
+
+// \u2500\u2500 Image Manager \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_openImageManager = async function holiday_openImageManager(pkgId) {
+  _hoCurrentPkgId = pkgId;
+  const pkg = _holidayPackages.find(p => p.id === pkgId);
+  const titleEl = document.getElementById('ho-img-modal-title');
+  if (titleEl) titleEl.textContent = 'Image Gallery \u2014 ' + (pkg?.name || 'Package');
+
+  await holiday_refreshImageGrid(pkgId);
+  openModal('m-ho-images');
+};
+
+async function holiday_refreshImageGrid(pkgId) {
+  const data = await _adminFetch('/holiday/packages/' + pkgId);
+  const pkg  = data?.data;
+  const grid = document.getElementById('ho-img-grid');
+  if (!grid) return;
+
+  let images = [];
+  try { images = typeof pkg?.gallery_images === 'string' ? JSON.parse(pkg.gallery_images) : (pkg?.gallery_images || []); } catch {}
+
+  if (!images.length) {
+    grid.innerHTML = '<div style="color:var(--slate2);font-size:13px;text-align:center;padding:20px;grid-column:1/-1">No images yet. Upload some above.</div>';
+    return;
+  }
+
+  const base = _adminApiBase().replace('/v1', '');
+  grid.innerHTML = images.map((img, i) => `
+    <div style="position:relative;border-radius:var(--r);overflow:hidden;border:2px solid ${img.is_featured?'var(--gold)':'var(--surface3)'}">
+      <img src="${img.url?.startsWith('http') ? img.url : base + img.url}" style="width:100%;height:110px;object-fit:cover;display:block" onerror="this.style.background='var(--surface2)'">
+      ${img.is_featured ? '<div style="position:absolute;top:4px;left:4px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px">PRIMARY</div>' : ''}
+      <div style="display:flex;gap:4px;padding:6px;background:var(--surface)">
+        ${!img.is_featured ? `<button class="btn-icon" title="Set as primary" onclick="holiday_setImagePrimary(${pkgId},${i})" style="flex:1;font-size:10px">\u2b50 Primary</button>` : ''}
+        <button class="btn-icon" title="Delete" onclick="holiday_deleteImage(${pkgId},${i})" style="color:var(--red);font-size:12px">\ud83d\uddd1</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+window.holiday_uploadImages = async function holiday_uploadImages(input) {
+  const pkgId = _hoCurrentPkgId;
+  if (!pkgId || !input.files?.length) return;
+
+  const formData = new FormData();
+  Array.from(input.files).forEach(f => formData.append('images', f));
+
+  try {
+    const res = await fetch(_adminApiBase() + '/holiday/packages/' + pkgId + '/images', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + _adminToken() },
+      body: formData,
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      if (typeof window.toast === 'function') window.toast('Images uploaded', 't-green');
+      await holiday_refreshImageGrid(pkgId);
+      holiday_adminLoadPackages();
+    } else {
+      if (typeof window.toast === 'function') window.toast(data.message || 'Upload failed', 't-red');
+    }
+  } catch {
+    if (typeof window.toast === 'function') window.toast('Upload failed', 't-red');
+  }
+  input.value = '';
+};
+
+window.holiday_setImagePrimary = async function holiday_setImagePrimary(pkgId, idx) {
+  const data = await _adminFetch('/holiday/packages/' + pkgId + '/images/' + idx + '/primary', { method: 'PATCH', body: '{}' });
+  if (data && data.success) {
+    await holiday_refreshImageGrid(pkgId);
+  }
+};
+
+window.holiday_deleteImage = async function holiday_deleteImage(pkgId, idx) {
+  if (!confirm('Remove this image?')) return;
+  const res = await fetch(_adminApiBase() + '/holiday/packages/' + pkgId + '/images/' + idx, {
+    method: 'DELETE',
+    headers: { 'Authorization': 'Bearer ' + _adminToken() },
+  });
+  if (res.ok || res.status === 200) {
+    await holiday_refreshImageGrid(pkgId);
+    holiday_adminLoadPackages();
+    if (typeof window.toast === 'function') window.toast('Image removed', 't-green');
+  } else {
+    if (typeof window.toast === 'function') window.toast('Remove failed', 't-red');
+  }
+};
+
+// \u2500\u2500 Bookings Tab \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_adminLoadBookings = async function holiday_adminLoadBookings() {
+  const tbody = document.getElementById('tbody-ho-bookings');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:20px">Loading\u2026</td></tr>';
+
+  const data = await _adminFetch('/holiday/bookings');
+  if (data && data.aborted) return;
+  const rows = (data && data.data) || [];
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--slate2)">No holiday bookings found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(b => {
+    const statusMap = { confirmed:'ss-confirmed', pending:'ss-pending', on_hold:'ss-hold', cancelled:'ss-cancelled', rejected:'ss-cancelled' };
+    const sc = statusMap[b.status] || 'ss-pending';
+    const guests = `${b.num_adults}A${b.num_children?', '+b.num_children+'C':''}${b.num_infants?', '+b.num_infants+'I':''}`;
+    return `
+      <tr>
+        <td class="td-mono">${b.reference}</td>
+        <td>${b.customer_name}<br><span class="fs12 slate2">${b.customer_email||''}</span></td>
+        <td class="semi">${b.package_name}</td>
+        <td>${b.check_in_date ? new Date(b.check_in_date).toLocaleDateString() : '\u2014'}</td>
+        <td>${guests}</td>
+        <td class="semi">${b.currency||'AED'} ${Number(b.amount).toLocaleString()}</td>
+        <td>${b.created_at ? new Date(b.created_at).toLocaleDateString() : '\u2014'}</td>
+        <td>
+          <select class="ss ${sc}" onchange="holiday_updateBookingStatus(${b.id},this.value)">
+            ${['pending','confirmed','on_hold','cancelled'].map(s=>`<option value="${s}" ${b.status===s?'selected':''}>${s.replace('_',' ')}</option>`).join('')}
+          </select>
+        </td>
+        <td class="td-actions">
+          <button class="btn-icon" onclick="holiday_viewBooking(${b.id})">\ud83d\udc41\ufe0f</button>
+        </td>
+      </tr>`;
+  }).join('');
+};
+
+window.holiday_viewBooking = async function holiday_viewBooking(id) {
+  const data = await _adminFetch('/holiday/bookings/' + id);
+  const b    = data?.data;
+  if (!b) return;
+
+  const body = document.getElementById('ho-booking-detail-body');
+  if (!body) return;
+
+  body.innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+      <div class="field"><label>Reference</label><div class="semi td-mono">${b.reference}</div></div>
+      <div class="field"><label>Status</label><div class="semi upper">${b.status}</div></div>
+      <div class="field"><label>Customer</label><div class="semi">${b.customer_name}</div></div>
+      <div class="field"><label>Email</label><div>${b.customer_email||'\u2014'}</div></div>
+      <div class="field"><label>Phone</label><div>${b.customer_phone||'\u2014'}</div></div>
+      <div class="field"><label>Package</label><div class="semi">${b.package_name}</div></div>
+      <div class="field"><label>Destination</label><div>${b.destination||'\u2014'}</div></div>
+      <div class="field"><label>Nights</label><div>${b.nights||'\u2014'}</div></div>
+      <div class="field"><label>Check-in</label><div>${b.check_in_date ? new Date(b.check_in_date).toLocaleDateString() : '\u2014'}</div></div>
+      <div class="field"><label>Check-out</label><div>${b.check_out_date ? new Date(b.check_out_date).toLocaleDateString() : '\u2014'}</div></div>
+      <div class="field"><label>Adults</label><div>${b.num_adults}</div></div>
+      <div class="field"><label>Children / Infants</label><div>${b.num_children} / ${b.num_infants}</div></div>
+      <div class="field"><label>Room Type</label><div>${b.room_type||'\u2014'}</div></div>
+      <div class="field"><label>Total Amount</label><div class="semi">${b.currency||'AED'} ${Number(b.amount).toLocaleString()}</div></div>
+      <div class="field" style="grid-column:span 2"><label>Special Requests</label><div style="color:var(--slate)">${b.special_requests||'None'}</div></div>
+      ${b.stripe_payment_intent_id ? `<div class="field" style="grid-column:span 2"><label>Payment Ref</label><div class="td-mono fs13">${b.stripe_payment_intent_id}</div></div>` : ''}
+    </div>
+  `;
+  openModal('m-view-ho-booking');
+};
+
+window.holiday_updateBookingStatus = async function holiday_updateBookingStatus(id, status) {
+  const data = await _adminFetch('/holiday/bookings/' + id + '/status', {
+    method: 'PATCH',
+    body: JSON.stringify({ status }),
+  });
+  if (data && data.success !== false) {
+    if (typeof window.toast === 'function') window.toast('Status updated', 't-green');
+  } else {
+    if (typeof window.toast === 'function') window.toast('Update failed', 't-red');
+    holiday_adminLoadBookings();
+  }
+};
+
+// \u2500\u2500 Suppliers Tab \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500
+
+window.holiday_adminLoadSuppliers = async function holiday_adminLoadSuppliers() {
+  const tbody = document.getElementById('tbody-ho-suppliers');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px">Loading\u2026</td></tr>';
+
+  const data = await _adminFetch('/holiday/suppliers');
+  if (data && data.aborted) return;
+  _holidaySuppliers = (data && data.data) || [];
+
+  if (!_holidaySuppliers.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:30px;color:var(--slate2)">No suppliers yet. Click + Add Supplier to add one.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = _holidaySuppliers.map(s => `
+    <tr>
+      <td class="semi">${s.name}</td>
+      <td>${s.contact_name||'\u2014'}<br><span class="fs12 slate2">${s.email||''}</span></td>
+      <td>${s.country_code === 'AE' ? '\ud83c\udde6\ud83c\uddea UAE' : '\ud83c\uddf5\ud83c\uddf0 Pakistan'}</td>
+      <td>${Number(s.commission_pct||0)}%</td>
+      <td>${s.contract_start ? new Date(s.contract_start).toLocaleDateString() : '\u2014'} \u2192 ${s.contract_end ? new Date(s.contract_end).toLocaleDateString() : '\u2014'}</td>
+      <td style="text-align:center">${s.packages_count||0}</td>
+      <td><span class="badge ${s.is_active?'b-green':'b-slate'}">${s.is_active?'Active':'Inactive'}</span></td>
+      <td class="td-actions">
+        <button class="btn-icon" onclick="holiday_editSupplier(${s.id})">\u270f</button>
+      </td>
+    </tr>
+  `).join('');
+};
+
+window.holiday_openSupplierModal = function holiday_openSupplierModal() {
+  document.getElementById('ho-supp-modal-title').textContent = 'Add Supplier';
+  document.getElementById('ho-supp-form').reset();
+  document.getElementById('ho-supp-id').value = '';
+  openModal('m-add-ho-supplier');
+};
+
+window.holiday_editSupplier = function holiday_editSupplier(id) {
+  const s = _holidaySuppliers.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('ho-supp-modal-title').textContent = 'Edit Supplier';
+  document.getElementById('ho-supp-id').value        = s.id;
+  document.getElementById('ho-supp-name').value      = s.name || '';
+  document.getElementById('ho-supp-contact').value   = s.contact_name || '';
+  document.getElementById('ho-supp-email').value     = s.email || '';
+  document.getElementById('ho-supp-phone').value     = s.phone || '';
+  document.getElementById('ho-supp-country').value   = s.country_code || 'AE';
+  document.getElementById('ho-supp-commission').value= s.commission_pct || 0;
+  document.getElementById('ho-supp-status').value    = s.is_active ? '1' : '0';
+  document.getElementById('ho-supp-start').value     = s.contract_start ? s.contract_start.split('T')[0] : '';
+  document.getElementById('ho-supp-end').value       = s.contract_end   ? s.contract_end.split('T')[0]   : '';
+  document.getElementById('ho-supp-notes').value     = s.notes || '';
+  openModal('m-add-ho-supplier');
+};
+
+window.holiday_submitSupplier = async function holiday_submitSupplier() {
+  const id = document.getElementById('ho-supp-id').value;
+  const payload = {
+    name:           document.getElementById('ho-supp-name').value,
+    contact_name:   document.getElementById('ho-supp-contact').value,
+    email:          document.getElementById('ho-supp-email').value,
+    phone:          document.getElementById('ho-supp-phone').value,
+    country_code:   document.getElementById('ho-supp-country').value,
+    commission_pct: Number(document.getElementById('ho-supp-commission').value || 0),
+    is_active:      document.getElementById('ho-supp-status').value === '1',
+    contract_start: document.getElementById('ho-supp-start').value || null,
+    contract_end:   document.getElementById('ho-supp-end').value   || null,
+    notes:          document.getElementById('ho-supp-notes').value,
+  };
+
+  const url    = id ? '/holiday/suppliers/' + id : '/holiday/suppliers';
+  const method = id ? 'PUT' : 'POST';
+
+  const data = await _adminFetch(url, { method, body: JSON.stringify(payload) });
+  if (data && data.data) {
+    if (typeof window.toast === 'function') window.toast(id ? 'Supplier updated' : 'Supplier added', 't-green');
+    closeModal('m-add-ho-supplier');
+    holiday_adminLoadSuppliers();
+  } else {
+    if (typeof window.toast === 'function') window.toast(data?.message || 'Save failed', 't-red');
+  }
+};

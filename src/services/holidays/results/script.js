@@ -1,34 +1,82 @@
 (function () {
-  const DEST_ICONS = { AE: '🏙️', TR: '🕌', MY: '🌴', GB: '🎡', SG: '🦁', EG: '🏺', JO: '🏺', FR: '🗼' };
+  'use strict';
 
-  function buildCard(pkg, index) {
-    const price = Number(pkg.price_per_person || 0);
+  const DEST_ICONS = {
+    AE: '🏙️', TR: '🕌', MY: '🌴', GB: '🎡', SG: '🦁',
+    EG: '🏺', JO: '🏺', FR: '🗼', TH: '🌺', ID: '🌊',
+    IT: '🍕', GR: '⛵', US: '🗽', JP: '🌸', AU: '🦘',
+  };
+
+  const POLICY_ICONS = [
+    { key: 'flight_included',    icon: '✈️', label: 'Flights' },
+    { key: 'visa_included',      icon: '🛂', label: 'Visa' },
+    { key: 'hotel_included',     icon: '🏨', label: 'Hotel' },
+    { key: 'transfer_included',  icon: '🚌', label: 'Transfers' },
+    { key: 'meals_included',     icon: '🍽️', label: 'Meals' },
+    { key: 'insurance_included', icon: '🛡️', label: 'Insurance' },
+  ];
+
+  function imgBase() {
+    const cfg = (window.KEENAN_CONFIG || {}).apiBaseUrl || 'http://localhost:3000/v1';
+    return cfg.replace('/v1', '');
+  }
+
+  function featuredImg(pkg) {
+    if (pkg.featured_image) {
+      const url = pkg.featured_image;
+      return url.startsWith('http') ? url : imgBase() + url;
+    }
+    const gallery = Array.isArray(pkg.gallery_images) ? pkg.gallery_images : [];
+    if (gallery.length) {
+      const first = gallery[0];
+      const url   = typeof first === 'object' ? (first.url || '') : first;
+      return url.startsWith('http') ? url : imgBase() + url;
+    }
+    return '';
+  }
+
+  function buildCard(pkg) {
+    const price    = Number(pkg.price_per_person || 0);
     const currency = pkg.currency || 'AED';
-    const icon = DEST_ICONS[pkg.destination_code] || '✈️';
-    const tags = [
-      pkg.nights ? `${pkg.nights} nights` : null,
-      pkg.star_rating ? `${pkg.star_rating}⭐ hotel` : null,
-      pkg.flights_included ? 'Flights incl.' : null,
-      pkg.meal_plan ? pkg.meal_plan.replace(/_/g, ' ') : null,
-    ].filter(Boolean);
+    const icon     = DEST_ICONS[pkg.destination_code] || '✈️';
+    const imgUrl   = featuredImg(pkg);
+    const policies = (typeof pkg.policies === 'object' && pkg.policies !== null) ? pkg.policies : {};
+    const stars    = '★'.repeat(Number(pkg.star_rating || 0));
+
+    const incIcons = POLICY_ICONS.filter(p => policies[p.key])
+      .map(p => `<span class="ho-feat-icon" title="${p.label}">${p.icon}</span>`)
+      .join('');
+
+    const bgStyle = imgUrl
+      ? `background-image: url('${imgUrl}'); background-size: cover; background-position: center;`
+      : `background: linear-gradient(135deg, #1a2744, #2a3f6b);`;
 
     return `
-      <div class="hol-card" onclick="window.holidayResultsStep.selectPackage(${index})">
-        <div class="hol-card-img">${icon}</div>
-        <div class="hol-card-body">
-          <div class="hol-dest">${pkg.destination || ''}</div>
-          <div class="hol-name">${pkg.name || 'Holiday Package'}</div>
-          <div class="hol-meta">${tags.map((t) => `<span class="hol-tag">${t}</span>`).join('')}</div>
-          <div class="hol-footer">
-            <div>
-              <div class="hol-price">${price.toLocaleString()} ${currency}</div>
-              <div class="hol-price-label">per person</div>
-            </div>
-            <button class="hol-btn">View Details</button>
+      <div class="ho-card" onclick="holiday_goDetail(${pkg.id})">
+        <div class="ho-card-img" style="${bgStyle}">
+          ${!imgUrl ? `<span class="ho-card-icon">${icon}</span>` : ''}
+          <div class="ho-card-overlay">
+            <span class="ho-card-type">${_cap(pkg.package_type || 'standard')}</span>
           </div>
         </div>
-      </div>
-    `;
+        <div class="ho-card-body">
+          <div class="ho-card-dest">${pkg.destination || ''}</div>
+          <div class="ho-card-name">${pkg.name || 'Holiday Package'}</div>
+          ${stars ? `<div class="ho-card-stars">${stars}</div>` : ''}
+          <div class="ho-card-meta">
+            ${pkg.nights ? `<span class="ho-tag">🌙 ${pkg.nights}N</span>` : ''}
+            ${pkg.meal_plan ? `<span class="ho-tag">${_cap(pkg.meal_plan)}</span>` : ''}
+          </div>
+          ${incIcons ? `<div class="ho-card-feats">${incIcons}</div>` : ''}
+          <div class="ho-card-footer">
+            <div>
+              <div class="ho-card-price">${currency} ${price.toLocaleString()}</div>
+              <div class="ho-card-plabel">per person</div>
+            </div>
+            <button class="ho-btn">View Details</button>
+          </div>
+        </div>
+      </div>`;
   }
 
   function render(container, packages) {
@@ -37,16 +85,12 @@
       container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate)">No holiday packages available</div>';
       return;
     }
-    container.innerHTML = packages.map((p, i) => buildCard(p, i)).join('');
+    container.innerHTML = packages.map(p => buildCard(p)).join('');
   }
 
-  function selectPackage(index) {
-    const packages = window.RESULTS?.holiday || [];
-    const pkg = packages[index];
-    if (!pkg) return;
-    window.__selectedHolidayPackage = pkg;
-    if (typeof window.go === 'function') window.go('booking');
+  function _cap(str) {
+    return String(str || '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   }
 
-  window.holidayResultsStep = { render, selectPackage };
+  window.holidayResultsStep = { render };
 })();

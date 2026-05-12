@@ -252,13 +252,19 @@ function testImageUrl(url){
 // API INTEGRATION SYSTEM
 let apiConfig={baseUrl:'https://api.keenantravel.com/v1',apiKey:'sk_live_kt_a1b2c3d4e5f6',env:'',timeout:5000};
 const API_ENDPOINTS=[
-  {method:'GET',path:'/flights/search',desc:'Search available flights',group:'flights'},
-  {method:'GET',path:'/flights/bookings',desc:'List all flight bookings',group:'flights'},
-  {method:'POST',path:'/flights/bookings',desc:'Create a flight booking',group:'flights'},
+  {method:'POST',path:'/flights/search',desc:'Search live NDC flights',group:'flights'},
+  {method:'POST',path:'/flights/fare-confirm',desc:'Confirm price and check bundles',group:'flights'},
+  {method:'POST',path:'/flights/add-passengers',desc:'Add traveler details to offer',group:'flights'},
+  {method:'POST',path:'/flights/book',desc:'Issue flight ticket (Stripe)',group:'flights'},
+  {method:'POST',path:'/flights/hold',desc:'Place flight offer on hold',group:'flights'},
+  {method:'POST',path:'/flights/book-after-hold',desc:'Issue ticket for held booking',group:'flights'},
+  {method:'POST',path:'/flights/retrieve',desc:'Retrieve PNR details from NDC',group:'flights'},
+  {method:'GET',path:'/flights/bookings',desc:'List all flight bookings (Admin)',group:'flights'},
   {method:'GET',path:'/flights/bookings/{id}',desc:'Get booking details',group:'flights'},
-  {method:'PUT',path:'/flights/bookings/{id}',desc:'Update a booking',group:'flights'},
+  {method:'PUT',path:'/flights/bookings/{id}',desc:'Update a booking (Admin)',group:'flights'},
   {method:'PATCH',path:'/flights/bookings/{id}/status',desc:'Update booking status',group:'flights'},
   {method:'DELETE',path:'/flights/bookings/{id}',desc:'Cancel a booking',group:'flights'},
+
   {method:'GET',path:'/umrah/packages',desc:'List Umrah packages',group:'umrah'},
   {method:'POST',path:'/umrah/packages',desc:'Create Umrah package',group:'umrah'},
   {method:'GET',path:'/umrah/packages/{id}',desc:'Get package details',group:'umrah'},
@@ -398,17 +404,13 @@ const openApiSpec={
   },
   security:[{BearerAuth:[]}],
   paths:{
-    '/flights/search':{get:{tags:['Flights'],summary:'Search available flights',description:'Search for available flights with filters',parameters:[{name:'from',in:'query',required:true,schema:{type:'string'},example:'DXB'},{name:'to',in:'query',required:true,schema:{type:'string'},example:'LHR'},{name:'date',in:'query',required:true,schema:{type:'string',format:'date'}},{name:'class',in:'query',schema:{type:'string',enum:['economy','business','first']}},{name:'passengers',in:'query',schema:{type:'integer',default:1}}],responses:{'200':{description:'List of available flights'},'400':{description:'Invalid parameters'}}}},
-    '/flights/bookings':{
-      get:{tags:['Flights'],summary:'List all flight bookings',parameters:[{name:'status',in:'query',schema:{type:'string',enum:['pending','confirmed','on_hold','cancelled']}},{name:'page',in:'query',schema:{type:'integer',default:1}},{name:'limit',in:'query',schema:{type:'integer',default:20}}],responses:{'200':{description:'Paginated list of bookings',content:{'application/json':{schema:{type:'object',properties:{data:{type:'array',items:{$ref:'#/components/schemas/Booking'}},total:{type:'integer'},page:{type:'integer'},limit:{type:'integer'}}}}}}}},
-      post:{tags:['Flights'],summary:'Create a flight booking',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['customer_id','flight_id','passengers'],properties:{customer_id:{type:'integer'},flight_id:{type:'string'},passengers:{type:'array',items:{type:'object',properties:{name:{type:'string'},passport:{type:'string'}}}},cabin_class:{type:'string'}}}}}},responses:{'201':{description:'Booking created',content:{'application/json':{schema:{$ref:'#/components/schemas/Booking'}}}},'422':{description:'Validation error'}}}
-    },
-    '/flights/bookings/{id}':{
-      get:{tags:['Flights'],summary:'Get flight booking by ID',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],responses:{'200':{description:'Booking details'},'404':{description:'Booking not found'}}},
-      put:{tags:['Flights'],summary:'Update a flight booking',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],requestBody:{required:true,content:{'application/json':{schema:{type:'object',properties:{status:{type:'string'}}}}}},responses:{'200':{description:'Updated booking'}}},
-      delete:{tags:['Flights'],summary:'Cancel a flight booking',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],responses:{'204':{description:'Booking cancelled'}}}
-    },
-    '/flights/bookings/{id}/status':{patch:{tags:['Flights'],summary:'Update booking status only',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['status'],properties:{status:{type:'string',enum:['confirmed','on_hold','cancelled']}}}}}},responses:{'200':{description:'Status updated'}}}},
+    '/flights/search':{post:{tags:['Flights'],summary:'Search live NDC flights',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['from','to','date'],properties:{from:{type:'string',example:'DXB'},to:{type:'string',example:'LHR'},date:{type:'string',format:'date-time'},adult_count:{type:'integer',default:1},child_count:{type:'integer',default:0},infant_count:{type:'integer',default:0}}}}}},responses:{'200':{description:'List of available flight offers'}}}},
+    '/flights/fare-confirm':{post:{tags:['Flights'],summary:'Confirm fare and bundles',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['offerId'],properties:{offerId:{type:'string'}}}}}},responses:{'200':{description:'Confirmed offer details and available bundles'}}}},
+    '/flights/add-passengers':{post:{tags:['Flights'],summary:'Add passengers to offer',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['OfferId','Passengers'],properties:{OfferId:{type:'string'},Passengers:{type:'object'}}}}}},responses:{'200':{description:'Offer updated with passenger details'}}}},
+    '/flights/book':{post:{tags:['Flights'],summary:'Book and Pay (Issue Ticket)',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['offerId','stripePaymentIntentId'],properties:{offerId:{type:'string'},stripePaymentIntentId:{type:'string'},selectedBundles:{type:'array',items:{type:'string'}}}}}}},responses:{'200':{description:'Booking successful with PNR and ticket number'}}}},
+    '/flights/hold':{post:{tags:['Flights'],summary:'Place booking on hold',requestBody:{required:true,content:{'application/json':{schema:{type:'object',required:['offerId'],properties:{offerId:{type:'string'},selectedBundles:{type:'array',items:{type:'string'}}}}}}},responses:{'200':{description:'Booking held successfully'}}}},
+    '/flights/bookings':{get:{tags:['Flights'],summary:'List all flight bookings',parameters:[{name:'status',in:'query',schema:{type:'string',enum:['pending','confirmed','on_hold','cancelled']}},{name:'page',in:'query',schema:{type:'integer',default:1}},{name:'limit',in:'query',schema:{type:'integer',default:20}}],responses:{'200':{description:'Paginated list of bookings'}}}},
+    '/flights/bookings/{id}':{get:{tags:['Flights'],summary:'Get booking details',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],responses:{'200':{description:'Booking details'}}},put:{tags:['Flights'],summary:'Update booking (Admin)',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],responses:{'200':{description:'Updated'}}},delete:{tags:['Flights'],summary:'Cancel booking',parameters:[{name:'id',in:'path',required:true,schema:{type:'integer'}}],responses:{'200':{description:'Cancelled'}}}},
     '/umrah/packages':{
       get:{tags:['Umrah'],summary:'List Umrah packages',responses:{'200':{description:'Array of Umrah packages',content:{'application/json':{schema:{type:'array',items:{$ref:'#/components/schemas/UmrahPackage'}}}}}}},
       post:{tags:['Umrah'],summary:'Create a new Umrah package',requestBody:{required:true,content:{'application/json':{schema:{$ref:'#/components/schemas/UmrahPackage'}}}},responses:{'201':{description:'Package created'}}}
@@ -719,7 +721,7 @@ function downloadSql(){
   toast('MySQL schema downloaded as .sql','t-green');
 }
 // VIEW ROUTING
-const VIEWS=['home','results-flights','results-umrah','results-holiday','results-cruise','results-visa','detail','booking','confirmation','track','admin','admin-login','umrah-detail'];
+const VIEWS=['home','results-flights','results-umrah','results-holiday','results-cruise','results-visa','detail','booking','confirmation','track','admin','admin-login','umrah-detail','holiday-detail'];
 function go(name){
   VIEWS.forEach(v=>{const el=document.getElementById('view-'+v);if(el)el.classList.remove('on')});
   const el=document.getElementById('view-'+name);
@@ -750,12 +752,7 @@ function swTab(tab,el){
 // RESULTS BUILDER
 window.RESULTS_BY_COUNTRY = {
   AE: {
-    flights:{title:'Dubai (DXB) → London (LHR)',sub:'10–20 Jun 2026 · 1 Adult · Economy · 18 results found',
-      items:[
-        {name:'Emirates · EK001',tags:['Non-stop','7h 25m','08:00 → 12:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:2450,currency:'AED',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
-        {name:'Etihad · EY021',tags:['1 Stop (AUH)','9h 10m','10:30 → 17:40','A380'],meta:['Economy · 23kg baggage · Meals included'],price:1890,currency:'AED',plabel:'per person · return',rating:'4.7',bg:'#2d1a5f'},
-        {name:'British Airways · BA106',tags:['Non-stop','7h 40m','14:15 → 19:55','Boeing 787'],meta:['Economy · 23kg baggage'],price:2750,currency:'AED',plabel:'per person · return',rating:'4.6',bg:'#1a3d5f'},
-      ]},
+    flights:{title:'Flight Results',sub:'Searching...',items:[]},
     holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 18 packages found',
       items:[
         {name:'Maldives Escape · 7 Nights',tags:['5★ Overwater Villa','All Inclusive','Flights Included'],meta:['Private beach & lagoon · Water sports · Complimentary spa'],price:6499,currency:'AED',plabel:'per person',rating:'4.9',bg:'#0d3d52'},
@@ -774,12 +771,7 @@ window.RESULTS_BY_COUNTRY = {
       ]},
   },
   PK: {
-    flights:{title:'Karachi (KHI) → Dubai (DXB)',sub:'10–20 Jun 2026 · 1 Adult · Economy · 15 results found',
-      items:[
-        {name:'Pakistan International · PK204',tags:['Non-stop','3h 10m','09:00 → 11:10','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:85000,currency:'PKR',plabel:'per person · return',rating:'4.2',bg:'#1a3a20'},
-        {name:'Emirates · EK601',tags:['Non-stop','3h 25m','12:00 → 14:25','Boeing 777'],meta:['Economy · 30kg baggage · Meals included'],price:115000,currency:'PKR',plabel:'per person · return',rating:'4.9',bg:'#1e3a5f'},
-        {name:'flydubai · FZ328',tags:['Non-stop','3h 30m','15:00 → 17:30','Boeing 737'],meta:['Economy · 20kg baggage'],price:75000,currency:'PKR',plabel:'per person · return',rating:'4.3',bg:'#ff6a00'},
-      ]},
+    flights:{title:'Flight Results',sub:'Searching...',items:[]},
     holiday:{title:'Holiday Packages',sub:'July 2026 · 2 Adults · 10 packages found',
       items:[
         {name:'Turkey Explorer · 7 Nights',tags:['4★ Hotel','Breakfast','Flights Included'],meta:['Istanbul & Cappadocia · Guided Tours'],price:280000,currency:'PKR',plabel:'per person',rating:'4.7',bg:'#1a2d3d'},
