@@ -8,6 +8,9 @@ window.KEENAN_CONFIG = {
   // 3. Add your domain to "Authorized JavaScript origins"
   // 4. Paste the Client ID below
   googleClientId: "",
+  // Cloudflare R2 Storage Config
+  storageBaseUrl: "https://pub-6ef341e2a42b464fbaa5a56df21e6ec5.r2.dev",
+  r2Bucket: "keenan-b2b"
 };
 
 window.COUNTRY_CONTEXTS = {

@@ -1,16 +1,23 @@
-<!-- Results Page (Module Slot) -->
-<div id="view-results-flights" class="view">
-  <div class="results-page">
-    <div class="results-container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keenan Travel Flight Results</title>
+  <link rel="stylesheet" href="./flight-results.css" />
+</head>
+<body>
+  <div class="page">
+    <div class="flight-results-container">
 
       <!-- TOP SEARCH SUMMARY BAR -->
       <section id="searchSummary" class="search-summary"></section>
 
       <!-- AIRLINE PRICE STRIP -->
       <section class="airline-strip">
-        <button class="strip-arrow" type="button" onclick="scrollAirlineStrip(-1)">‹</button>
+        <button class="strip-arrow" type="button">‹</button>
         <div id="airlineStrip" class="airline-strip-list"></div>
-        <button class="strip-arrow" type="button" onclick="scrollAirlineStrip(1)">›</button>
+        <button class="strip-arrow" type="button">›</button>
       </section>
 
       <!-- SORT BAR -->
@@ -26,7 +33,9 @@
           <div id="flightResults" class="flight-results"></div>
         </main>
       </div>
-
     </div>
   </div>
-</div>
+
+  <script src="./flight-results.js"></script>
+</body>
+</html>

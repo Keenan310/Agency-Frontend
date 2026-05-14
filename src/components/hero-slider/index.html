@@ -37,7 +37,7 @@
           <div class="sw-form">
             <div class="sw-row">
               <div class="field"><label>From</label><input type="text" value="Dubai (DXB)" data-role="dep-city" id="flight-from"></div>
-              <div class="field"><label>To</label><input type="text" placeholder="Destination" id="flight-to"></div>
+              <div class="field"><label>To</label><input type="text" value="Riyadh (RUH)" id="flight-to"></div>
               <div class="field"><label>Depart</label><input type="date" value="2026-06-10" id="flight-dep-date" onchange="validateDates()"></div>
               <div class="field"><label>Return</label><input type="date" value="2026-06-20" id="flight-ret-date" onchange="validateDates()"></div>
             </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="field" style="flex:1"><label>Class</label><select id="flight-class"><option>Economy</option><option>Business</option><option>First Class</option></select></div>
               </div>
-              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="go('results-flights')">Search Flights</button>
+              <button class="btn-gold" style="padding:11px 32px;font-size:15px" onclick="performFlightSearch()">Search Flights</button>
             </div>
           </div>
         </div>

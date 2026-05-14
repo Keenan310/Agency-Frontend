@@ -9,83 +9,12 @@ window.KeenanFrontend.modules["hero-slider"] = {
 };
 
 function initAutocomplete(root) {
-  const depInput = root.querySelector('[data-role="dep-city"]');
-  const destInput = root.querySelector('input[placeholder="Destination"]');
-
-  if (depInput) setupInput(depInput);
-  if (destInput) setupInput(destInput);
-}
-
-function setupInput(input) {
-  const resultsDiv = document.createElement('div');
-  resultsDiv.className = 'ac-results';
-  input.parentElement.appendChild(resultsDiv);
-
-  let debounceTimer;
-
-  input.addEventListener('input', (e) => {
-    clearTimeout(debounceTimer);
-    const query = e.target.value.trim();
-    if (query.length < 2) {
-      resultsDiv.style.display = 'none';
-      return;
-    }
-
-    debounceTimer = setTimeout(async () => {
-      try {
-        const res = await fetch(`${window.KEENAN_CONFIG.apiBaseUrl}/airports/search?q=${encodeURIComponent(query)}`);
-        const data = await res.json();
-        renderResults(input, resultsDiv, data);
-      } catch (err) {
-        console.error('Airport search error:', err);
-      }
-    }, 300);
-  });
-
-  // Hide on blur, but delay to allow click on item
-  input.addEventListener('blur', () => {
-    setTimeout(() => {
-      resultsDiv.style.display = 'none';
-    }, 200);
-  });
-
-  input.addEventListener('focus', () => {
-    if (resultsDiv.innerHTML !== '') {
-      resultsDiv.style.display = 'block';
-    }
-  });
+  // Legacy autocomplete removed in favor of centralized flight service autocomplete
 }
 
 function renderResults(input, container, items) {
-  if (!items || items.length === 0) {
-    container.style.display = 'none';
-    container.innerHTML = '';
-    return;
-  }
-
-  container.innerHTML = items.map(item => `
-    <div class="ac-item" data-code="${item.iata}" data-city="${item.city}">
-      <div class="ac-icon">✈</div>
-      <div class="ac-info">
-        <span class="ac-city">${item.city}, ${item.country}</span>
-        <span class="ac-name">${item.name}</span>
-      </div>
-      <span class="ac-code">${item.iata}</span>
-    </div>
-  `).join('');
-
-  container.style.display = 'block';
-
-  container.querySelectorAll('.ac-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const code = el.dataset.code;
-      const city = el.dataset.city;
-      input.value = `${city} (${code})`;
-      container.style.display = 'none';
-    });
-  });
+  // Legacy autocomplete removed
 }
-
 // Global functions for inline event handlers in hero-slider/index.html
 window.KT_PAX_COUNTS = { adult: 1, child: 0, infant: 0 };
 
@@ -178,3 +107,44 @@ document.addEventListener('click', function(e) {
     popup.style.display = 'none';
   }
 });
+
+window.performFlightSearch = function() {
+  const fromVal = document.getElementById('flight-from')?.value || '';
+  const toVal = document.getElementById('flight-to')?.value || '';
+  const depDate = document.getElementById('flight-dep-date')?.value || '';
+  const retDate = document.getElementById('flight-ret-date')?.value || '';
+  const cabin = document.getElementById('flight-class')?.value || 'Economy';
+  
+  // Extract airport codes from "City (CODE)" format
+  const extractCode = (str) => {
+    const match = str.match(/\(([^)]+)\)/);
+    return match ? match[1] : str.trim();
+  };
+
+  const origin = extractCode(fromVal);
+  const destination = extractCode(toVal);
+  const adults = window.KT_PAX_COUNTS?.adult || 1;
+  const children = window.KT_PAX_COUNTS?.child || 0;
+  const infants = window.KT_PAX_COUNTS?.infant || 0;
+
+  const query = new URLSearchParams({
+    origin,
+    destination,
+    departureDate: depDate,
+    returnDate: retDate,
+    adults,
+    children,
+    infants,
+    cabinClass: cabin
+  }).toString();
+
+  // Redirect to results page with query params
+  // Since we use hash routing, we put query before hash or use window.location.search
+  // To keep it simple for flight-results.js which uses window.location.search:
+  window.location.search = query;
+  // Note: Changing search will reload the page, which is fine for result loading
+  // The app.js bootstrap will then handle the hash or default to home, 
+  // but flight-results.js is loaded specifically when #/results/flights is active.
+  // Wait! If I change search, the hash might be lost. 
+  window.location.href = `?${query}#/results/flights`;
+};

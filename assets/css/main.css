@@ -259,31 +259,7 @@ body{font-family:var(--sans);background:var(--surface);color:var(--ink);min-heig
 .f-link:hover{color:var(--gold)}
 .footer-bottom{max-width:1200px;margin:0 auto;border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:rgba(255,255,255,.22);flex-wrap:wrap;gap:12px}
 
-/* Results */
-.results-hero{background:linear-gradient(135deg,var(--ink),var(--ink2));padding:40px 32px 70px}
-.results-inner{max-width:1200px;margin:0 auto}
-.breadcrumb{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.38);margin-bottom:16px}
-.breadcrumb span{cursor:pointer}.breadcrumb span:hover{color:var(--gold)}
-.results-layout{max-width:1200px;margin:-44px auto 0;padding:0 32px 80px;display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
-.filter-panel{background:var(--white);border-radius:var(--r2);box-shadow:var(--sh);position:sticky;top:82px}
-.fp-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--surface3)}
-.fp-section{padding:16px 20px;border-bottom:1px solid var(--surface3)}
-.fp-section:last-child{border-bottom:none}
-.fp-label{font-size:11px;font-weight:700;color:var(--slate2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px}
-.fp-check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink);cursor:pointer;padding:3px 0}
-.fp-check input{accent-color:var(--gold);width:14px;height:14px}
-.result-card{background:var(--white);border-radius:var(--r2);box-shadow:var(--sh);border:1.5px solid transparent;display:grid;grid-template-columns:190px 1fr auto;overflow:hidden;cursor:pointer;transition:all .25s;margin-bottom:16px}
-.result-card:hover{border-color:rgba(200,169,110,.4);box-shadow:var(--sh2);transform:translateY(-2px)}
-.rc-img{background:linear-gradient(135deg,var(--ink2),var(--ink3));min-height:140px}
-.rc-body{padding:20px 24px}
-.rc-name{font-family:var(--serif);font-size:21px;font-weight:700;color:var(--ink);margin-bottom:8px}
-.rc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
-.rc-tag{background:var(--surface2);color:var(--slate);font-size:12px;padding:3px 10px;border-radius:6px}
-.rc-tag.gold{background:rgba(200,169,110,.12);color:var(--gold3)}
-.rc-meta{display:flex;gap:16px;font-size:13px;color:var(--slate2)}
-.rc-price-col{display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:10px;padding:20px 22px;border-left:1px solid var(--surface3);min-width:155px}
-.rc-price{font-size:26px;font-weight:700;color:var(--ink);line-height:1}
-.rc-price-label{font-size:11px;color:var(--slate3)}
+/* Results styles removed per user request - now using flight-results.css exclusively */
 
 /* Detail */
 .detail-hero{background:linear-gradient(135deg,var(--ink),var(--ink2));padding:36px 32px}
@@ -570,13 +546,8 @@ tr:hover td{background:#FAFBFE}
 .settings-section{background:var(--white);border-radius:var(--r2);padding:24px;box-shadow:var(--sh);border:1px solid #E4E8F0;margin-bottom:18px}
 .settings-section-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--surface3)}
 
-/* Filter check labels (used in buildResults) */
-.fp-check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink);cursor:pointer;padding:3px 0;user-select:none}
-.fp-check input{accent-color:var(--gold);width:14px;height:14px;flex-shrink:0;cursor:pointer}
-.fp-check:hover{color:var(--gold3)}
-
-/* Responsive */
-@media(max-width:1100px){.kpi-grid{grid-template-columns:1fr 1fr}.srev-grid{grid-template-columns:1fr 1fr 1fr}.results-layout{grid-template-columns:1fr}.filter-panel{position:static}.detail-body{grid-template-columns:1fr}}
-@media(max-width:768px){.admin-nav{display:none}.kpi-grid{grid-template-columns:1fr}.result-card{grid-template-columns:1fr}.flow-grid,.flow-grid.g3{grid-template-columns:1fr}.stats-inner{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}}
+/* Results media queries removed per user request */
+@media(max-width:1100px){.kpi-grid{grid-template-columns:1fr 1fr}.srev-grid{grid-template-columns:1fr 1fr 1fr}.detail-body{grid-template-columns:1fr}}
+@media(max-width:768px){.admin-nav{display:none}.kpi-grid{grid-template-columns:1fr}.flow-grid,.flow-grid.g3{grid-template-columns:1fr}.stats-inner{grid-template-columns:1fr 1fr}.footer-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:600px){.nav-links{display:none}.section{padding:60px 20px}}
 

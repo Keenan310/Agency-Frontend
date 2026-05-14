@@ -275,15 +275,15 @@
     if (!root) throw new Error('Missing #app-root container');
     root.innerHTML = shellMarkup;
 
-    for (const moduleConfig of modules) {
-      await mountModule(moduleConfig);
-    }
-
     await ensureScript('./assets/js/config.js');
     await ensureScript('https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js');
     await ensureScript('https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js');
     await ensureScript('./assets/js/app.js');
     await ensureScript('./assets/js/integration.js');
+
+    for (const moduleConfig of modules) {
+      await mountModule(moduleConfig);
+    }
 
     wireRoutes();
     document.body.dataset.appReady = 'true';
