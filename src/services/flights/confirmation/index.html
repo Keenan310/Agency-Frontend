@@ -1,1 +1,31 @@
-<!-- Confirmation Step — post-booking success UI -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./style.css">
+
+  <title>Booking Confirmation</title>
+</head>
+<body>
+
+  <div id="confirmationContainer"></div>
+
+  <script src="./script.js"></script>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const booking = {
+      reference: params.get('ref') || 'N/A'
+    };
+
+    window.flightConfirmationStep.render(
+      '#confirmationContainer',
+      booking
+    );
+  </script>
+
+</body>
+</html>

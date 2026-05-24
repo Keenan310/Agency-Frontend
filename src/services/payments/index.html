@@ -1,1 +1,123 @@
-<!-- payments service module – Stripe Elements injected into booking page -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Secure Payment</title>
+
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+  <section class="payment-page">
+
+    <div class="payment-head">
+      <div>
+        <p class="payment-step">STEP 4 OF 4</p>
+        <h1>Secure Payment</h1>
+        <p>Complete payment to issue ticket and generate PNR.</p>
+      </div>
+
+      <div class="payment-badge">
+        🔒 SSL Secure Checkout
+      </div>
+    </div>
+
+    <div class="payment-layout">
+
+      <div class="payment-card">
+
+        <div class="stripe-amount-confirmed">
+          <div>
+            <strong>Total Amount</strong>
+          </div>
+
+          <div id="stripe-confirmed-amount">
+            AED 0.00
+          </div>
+        </div>
+
+        <div class="payment-form">
+
+          <div class="payment-field">
+            <label>Cardholder Name</label>
+            <input
+              type="text"
+              id="stripe-cardholder"
+              placeholder="Name on card"
+            />
+          </div>
+
+          <div class="payment-field">
+            <label>Email Address</label>
+            <input
+              type="email"
+              id="bk-email"
+              placeholder="you@example.com"
+            />
+          </div>
+
+         <div class="payment-field">
+         
+          <label>Card Details</label>
+
+        <div
+          id="stripe-card-element"
+          class="stripe-card-element">
+        </div>
+
+        <div
+         id="stripe-card-errors"
+         class="stripe-card-errors">
+      </div>
+  
+          <button
+            class="payment-submit-btn"
+            data-stripe-pay
+            onclick="submitStripePayment()">
+            Pay Now
+          </button>
+
+          <div class="stripe-secure-note">
+            Your payment is securely encrypted using Stripe SSL security.
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <script src="./script.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const review = JSON.parse(localStorage.getItem("keenan_booking_review") || "{}");
+
+      const amount =
+        review.total ||
+        review.flight?.totalAmount ||
+        0;
+
+      const currency =
+        review.currency ||
+        review.flight?.currency ||
+        "AED";
+
+      window.__confirmedAmount = {
+        amount,
+        currency
+      };
+
+      if (typeof renderPaymentStep === "function") {
+        renderPaymentStep(window.__confirmedAmount);
+      }
+    });
+  </script>
+
+</body>
+</html>

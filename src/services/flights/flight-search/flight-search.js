@@ -30,7 +30,7 @@ const state = {
   }
 };
 
-const tabs = ["Fare Categories", "Fare Rules", "Add-ons", "Flight Details"];
+const tabs = ["Itinerary", "Fare Info", "Baggages", "Category", "Fare Rules"];
 
 const AVAILABLE_BUNDLES = [
   { id: "bag-23", category: "Baggage", name: "Extra Bag (23KG)", price: 150, description: "Add one extra piece of checked baggage." },
@@ -81,112 +81,290 @@ window.fetchFlightResults = async function() {
 
   showLoading(true);
 
-  try {
-    const apiBase = (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) || "http://localhost:3000/v1";
-    const response = await fetch(`${apiBase}/flights/search`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(searchBody)
-    });
+try {
+  const apiBase =
+    (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) ||
+    "http://localhost:3000/v1/ndc";
 
-    if (!response.ok) throw new Error("Failed to fetch flight results");
+  // LOGIN SESSION
+  const session = JSON.parse(
+    localStorage.getItem("keenanTravelSession") || "null"
+  );
 
-    const resJson = await response.json();
-    if (resJson && resJson.data) {
-      flights = mapBackendData(resJson.data);
-    } else {
-      flights = [];
-    }
-  } catch (error) {
-    console.error("Flight Search Error:", error);
-    flights = [];
-    const resultsEl = document.getElementById("flightResults");
-    if (resultsEl) {
-      resultsEl.innerHTML = `
-        <div class="empty-state">
-          <p>Something went wrong: ${error.message}</p>
-          <button onclick="window.buildResults('flights')" class="search-btn" style="margin-top: 15px;">Retry Search</button>
-        </div>
-      `;
-    }
-  } finally {
-    showLoading(false);
-    renderAll();
+  // HEADERS
+  const headers = {
+    "Content-Type": "application/json"
+  };
+
+  // ADD TOKEN IF LOGIN EXISTS
+  if (session && session.token) {
+    headers.Authorization = `Bearer ${session.token}`;
   }
+
+  console.log("[Flight Search] URL:", `${apiBase}/flights/search`);
+  console.log("[Flight Search] Body:", searchBody);
+  console.log("[Flight Search] Session:", session);
+
+  const response = await fetch(`${apiBase}/flights/search`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(searchBody)
+  });
+
+  const resJson = await response.json();
+
+  console.log("[Flight Search] Response:", resJson);
+
+  if (!response.ok) {
+    throw new Error(
+      resJson.message ||
+      resJson.error ||
+      "Failed to fetch flight results"
+    );
+  }
+
+  if (resJson && resJson.data) {
+    flights = groupDuplicateFlightCards(mapBackendData(resJson.data));
+  } else {
+    flights = [];
+  }
+
+} catch (error) {
+  console.error("Flight Search Error:", error);
+
+  flights = [];
+
+  const resultsEl = document.getElementById("flightResults");
+
+  if (resultsEl) {
+    resultsEl.innerHTML = `
+      <div class="empty-state">
+        <p>Something went wrong: ${error.message}</p>
+
+        <button
+          onclick="window.buildResults('flights')"
+          class="search-btn"
+          style="margin-top:15px;"
+        >
+          Retry Search
+        </button>
+      </div>
+    `;
+  }
+
+} finally {
+  showLoading(false);
+  renderAll();
+}
 }
 
 function mapBackendData(backendFlights) {
-  return backendFlights.map(f => {
-    // Map backend itinerary segments to frontend segment format
-    const segments = (f.itinerary || []).map(s => ({
-      airline: s.airlineName,
-      airlineCode: s.airline,
-      flightNo: s.flightNumber,
-      aircraft: s.aircraft || "Aircraft",
-      cabin: s.cabin || "Economy",
-      from: s.origin,
-      fromCity: s.originCity || s.origin,
-      fromAirport: s.departureTerminal ? `Terminal ${s.departureTerminal}` : "Main",
-      fromTerminal: s.departureTerminal || "",
-      to: s.destination,
-      toCity: s.destinationCity || s.destination,
-      toAirport: s.arrivalTerminal ? `Terminal ${s.arrivalTerminal}` : "Main",
-      toTerminal: s.arrivalTerminal || "",
-      departureDateTime: s.departureTime,
-      arrivalDateTime: s.arrivalTime,
-      durationMinutes: s.durationMinutes,
-      duration: formatDuration(s.durationMinutes),
-      baggage: s.baggage?.checkIn || "Check Rules"
+  return (backendFlights || []).map((f, originalIndex) => {
+    const itinerary = f.itinerary || f.segments || [];
+
+    const segments = itinerary.map((s) => ({
+      airline: s.airlineName || s.airline || f.airlineName || f.airline || "Airline",
+      airlineCode: s.airline || s.airlineCode || f.airline || f.airlineCode || "XY",
+      flightNo: s.flightNumber || s.flightNo || f.flightNumber || "-",
+      aircraft: s.aircraft || s.equipment || "Aircraft",
+      cabin: s.cabin || s.cabinClass || f.cabin || f.cabinClass || "Economy",
+      from: s.origin || s.from || f.origin || "-",
+      fromCity: s.originCity || s.fromCity || s.origin || f.origin || "-",
+      fromAirport: s.departureTerminal ? `Terminal ${s.departureTerminal}` : (s.fromAirport || "Main"),
+      fromTerminal: s.departureTerminal || s.fromTerminal || "",
+      to: s.destination || s.to || f.destination || "-",
+      toCity: s.destinationCity || s.toCity || s.destination || f.destination || "-",
+      toAirport: s.arrivalTerminal ? `Terminal ${s.arrivalTerminal}` : (s.toAirport || "Main"),
+      toTerminal: s.arrivalTerminal || s.toTerminal || "",
+      departureDateTime: s.departureTime || s.departureDateTime || null,
+      arrivalDateTime: s.arrivalTime || s.arrivalDateTime || null,
+      durationMinutes: Number(s.durationMinutes || s.elapsedTime || f.flightMinutes || 0),
+      duration: formatDuration(Number(s.durationMinutes || s.elapsedTime || f.flightMinutes || 0)),
+      baggage: s.baggage?.checkIn || s.baggage || f.baggage?.checkIn || "Check Rules"
     }));
 
     const firstSeg = segments[0] || {};
-    const lastSeg = segments[segments.length - 1] || {};
+    const lastSeg = segments[segments.length - 1] || firstSeg;
+    const currency = f.currency || f.price?.currency || "AED";
+    const totalAmount = Number(f.totalAmount || f.amount || f.price?.total || f.price?.amount || 0);
+    const baseFare = Number(f.baseFare || f.baseAmount || f.price?.base || 0);
+    const taxes = Number(f.taxes || f.taxAmount || f.price?.taxes || Math.max(totalAmount - baseFare, 0));
+
+    const rawFareOptions = Array.isArray(f.fareOptions) && f.fareOptions.length
+      ? f.fareOptions
+      : Array.isArray(f.brands) && f.brands.length
+        ? f.brands
+        : Array.isArray(f.bundles) && f.bundles.length
+          ? f.bundles
+          : [];
+
+    const fareOptions = rawFareOptions.length
+      ? rawFareOptions.map((opt, idx) => normalizeFareOption(opt, f, currency, idx))
+      : [normalizeFareOption(f, f, currency, 0)];
 
     return {
-      id: f.offerId,
-      airline: f.airlineName,
-      airlineCode: f.airline,
-      supplier: "Keenan API",
+      id: f.offerId || f.id || `flight-${originalIndex}`,
+      cardKey: buildFlightGroupKey(f, segments),
+      airline: f.airlineName || firstSeg.airline || f.airline || "Airline",
+      airlineCode: f.airline || firstSeg.airlineCode || f.airlineCode || "XY",
+      supplier: f.supplier || f.source || "Keenan API",
       refundable: f.fareType !== "NotRefundable",
-      connectionType: f.stops === 0 ? "Non stop" : `${f.stops} Stop${f.stops > 1 ? "s" : ""}`,
-      flightNo: f.flightNumber,
-      from: f.origin,
-      to: f.destination,
-      depart: formatTime(f.departureTime),
-      arrive: formatTime(f.arrivalTime),
-      durationMinutes: f.flightMinutes,
-      duration: formatDuration(f.flightMinutes),
-      departureTime: f.departureTime,
-      arrivalTime: f.arrivalTime,
+      connectionType: Number(f.stops || 0) === 0 ? "Non stop" : `${f.stops} Stop${Number(f.stops) > 1 ? "s" : ""}`,
+      flightNo: f.flightNumber || firstSeg.flightNo || "-",
+      from: f.origin || firstSeg.from || "-",
+      to: f.destination || lastSeg.to || "-",
+      depart: formatTime(f.departureTime || firstSeg.departureDateTime),
+      arrive: formatTime(f.arrivalTime || lastSeg.arrivalDateTime),
+      durationMinutes: Number(f.flightMinutes || segments.reduce((sum, s) => sum + Number(s.durationMinutes || 0), 0)),
+      duration: formatDuration(Number(f.flightMinutes || segments.reduce((sum, s) => sum + Number(s.durationMinutes || 0), 0))),
+      departureTime: f.departureTime || firstSeg.departureDateTime,
+      arrivalTime: f.arrivalTime || lastSeg.arrivalDateTime,
       cabin: firstSeg.cabin || "Economy",
-      stops: f.stops === 0 ? "Non Stop" : `${f.stops} Stop${f.stops > 1 ? "s" : ""} via ${segments.slice(0, -1).map(s => s.to).join(", ")}`,
-      priceAmount: f.totalAmount,
-      currency: f.currency,
-      logo: f.logo,
-      segments: segments,
+      stops: Number(f.stops || 0) === 0 ? "Non Stop" : `${f.stops || segments.length - 1} Stop${Number(f.stops || segments.length - 1) > 1 ? "s" : ""} via ${segments.slice(0, -1).map(s => s.to).join(", ")}`,
+      priceAmount: totalAmount,
+      baseFare,
+      taxes,
+      currency,
+      logo: f.logo || "",
+      segments,
+      fareOptions,
       baggage: {
-        cabin: "7KG cabin baggage included",
-        checked: firstSeg.baggage || "Check Rules",
+        cabin: fareOptions[0]?.cabinBaggage || "7KG cabin baggage included",
+        checked: fareOptions[0]?.checkedBaggage || firstSeg.baggage || "Check Rules",
         infant: "Check airline rules",
-        note: "Baggage details provided by API."
+        note: "Baggage changes when the selected category/class changes."
       },
-      rules: [
-        f.fareType === "NotRefundable" ? "This fare is non-refundable." : "Refundable as per airline policy.",
-        "Date change is subject to airline penalties.",
-        "Supplier rules must be verified before final ticketing."
-      ],
-      fareOptions: (f.fareOptions || []).map(opt => ({
-        offerId: opt.offerId,
-        name: opt.fareName || "Standard",
-        baggage: opt.baggage?.checkIn || "Check Rules",
-        refund: f.fareType === "NotRefundable" ? "Non Refundable" : "Refundable",
-        seat: "Standard Seat",
-        meal: "Meal Included",
-        priceAmount: opt.totalAmount,
-        currency: f.currency
-      }))
+      rules: Array.isArray(f.rules) && f.rules.length
+        ? f.rules
+        : [
+            f.fareType === "NotRefundable" ? "This fare is non-refundable." : "Refundable as per airline policy.",
+            "Date change is subject to airline penalties.",
+            "Supplier rules must be verified before final ticketing."
+          ],
+      raw: f
     };
   });
+}
+
+function normalizeFareOption(opt, parentFlight, currency, index) {
+  const total = Number(opt.totalAmount || opt.amount || opt.priceAmount || opt.price?.total || parentFlight.totalAmount || 0);
+  const base = Number(opt.baseFare || opt.baseAmount || opt.price?.base || parentFlight.baseFare || 0);
+  const taxes = Number(opt.taxes || opt.taxAmount || opt.price?.taxes || parentFlight.taxes || Math.max(total - base, 0));
+  const name = opt.fareName || opt.brandName || opt.bundleName || opt.name || opt.cabinClass || opt.cabin || parentFlight.cabinClass || "Standard";
+
+  return {
+    offerId: opt.offerId || parentFlight.offerId || parentFlight.id,
+    name: formatFareName(name),
+    rawName: name,
+    cabin: opt.cabin || opt.cabinClass || parentFlight.cabin || parentFlight.cabinClass || "Economy",
+    checkedBaggage: opt.baggage?.checkIn || opt.checkedBaggage || opt.checkinBaggage || parentFlight.baggage?.checkIn || "Check Rules",
+    cabinBaggage: opt.baggage?.cabin || opt.cabinBaggage || opt.handCarry || "7KG / 1 PC",
+    refund: opt.refund || opt.refundableText || (parentFlight.fareType === "NotRefundable" ? "Non Refundable" : "As per fare rules"),
+    change: opt.change || opt.changeFee || "As per fare rules",
+    meal: opt.meal || opt.meals || "Check Airline Rules",
+    seat: opt.seat || opt.seatSelection || "Check Airline Rules",
+    baseFare: base,
+    taxes,
+    priceAmount: total,
+    currency: opt.currency || currency,
+    sourceIndex: index
+  };
+}
+
+function formatFareName(name) {
+  const text = String(name || "Standard").trim();
+  const parts = text.split(/\s+/);
+  if (parts.length > 1 && ["ECONOMY", "BUSINESS", "FIRST", "PREMIUM"].includes(parts[0].toUpperCase())) {
+    return parts.slice(1).join(" ") || text;
+  }
+  return text;
+}
+
+
+function buildFlightGroupKey(f, segments) {
+
+  if (!segments.length) {
+    return [
+      f.airline || "",
+      f.flightNumber || "",
+      f.origin || "",
+      f.destination || ""
+    ].join("|");
+  }
+
+  return segments.map((s) => {
+
+    const dep = String(s.departureDateTime || "")
+      .replace("Z", "")
+      .split(":")
+      .slice(0, 2)
+      .join(":");
+
+    return [
+      s.airlineCode || s.airline || "",
+      s.flightNo || "",
+      s.from || "",
+      s.to || "",
+      dep
+    ].join("~");
+
+  }).join("|");
+}
+
+
+function groupDuplicateFlightCards(mappedFlights) {
+
+  const groups = new Map();
+
+  (mappedFlights || []).forEach((flight) => {
+
+    const key = flight.cardKey || flight.id;
+
+    if (!groups.has(key)) {
+
+      groups.set(key, {
+        ...flight,
+        fareOptions: [...(flight.fareOptions || [])]
+      });
+
+      return;
+    }
+
+    const existing = groups.get(key);
+
+    // Merge fare options only
+    existing.fareOptions.push(...(flight.fareOptions || []));
+
+    // Remove duplicate fare options
+    existing.fareOptions = existing.fareOptions.filter((fare, index, arr) => {
+
+      return arr.findIndex((x) => {
+
+        return (
+          String(x.name || "").trim() === String(fare.name || "").trim() &&
+          Number(x.priceAmount || 0) === Number(fare.priceAmount || 0)
+        );
+
+      }) === index;
+
+    });
+
+    // Sort cheapest first
+    existing.fareOptions.sort(
+      (a, b) => Number(a.priceAmount || 0) - Number(b.priceAmount || 0)
+    );
+
+    // Main card price = cheapest fare
+    const cheapest = existing.fareOptions[0];
+
+    existing.priceAmount = cheapest?.priceAmount || existing.priceAmount;
+    existing.baseFare = cheapest?.baseFare || existing.baseFare;
+    existing.taxes = cheapest?.taxes || existing.taxes;
+    existing.currency = cheapest?.currency || existing.currency;
+
+  });
+
+  return Array.from(groups.values());
 }
 
 // =======================
@@ -202,11 +380,16 @@ function money(amount, currency = "AED") {
 
 function formatTime(dateTime) {
   if (!dateTime) return "--:--";
-  return new Date(dateTime).toLocaleTimeString("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  });
+
+  const text = String(dateTime);
+
+  // Keep API time exactly as received, no timezone conversion
+  const match = text.match(/T(\d{2}):(\d{2})/);
+  if (match) {
+    return `${match[1]}:${match[2]}`;
+  }
+
+  return "--:--";
 }
 
 function formatDate(dateTime) {
@@ -697,10 +880,27 @@ function renderFlights() {
     });
   });
 
-  resultsEl.querySelectorAll(".select-btn-mini").forEach((btn) => {
+  resultsEl.querySelectorAll(".select-btn-mini, .category-continue-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const offerId = btn.dataset.offerId;
-      alert(`Selected Offer ID: ${offerId}`);
+      const flightId = btn.dataset.flightId || btn.dataset.offerId;
+      const flight = flights.find(f => f.id === flightId || f.cardKey === flightId);
+      if (!flight) return;
+
+      const fare = getSelectedFare(flight);
+      const bookingData = {
+        flight: { ...flight, selectedOfferId: fare.offerId, selectedTotal: calculateTotalPrice(flight) },
+        fare,
+        params: {
+          adults: state.searchParams.adults,
+          children: state.searchParams.children,
+          infants: state.searchParams.infants,
+          cabinClass: state.searchParams.cabinClass
+        }
+      };
+
+      console.log("[Booking] Saving data to localStorage:", bookingData);
+      localStorage.setItem('keenan_selected_flight', JSON.stringify(bookingData));
+      window.location.href = '/src/services/flights/passenger-details/index.html';
     });
   });
 }
@@ -783,83 +983,229 @@ function renderFlightCard(flight) {
 }
 
 function renderTabContent(flight, activeTab) {
+  if (activeTab === "Itinerary") return renderFlightDetails(flight);
+  if (activeTab === "Fare Info") return renderFareInfo(flight);
+  if (activeTab === "Baggages") return renderBaggageTab(flight);
   if (activeTab === "Fare Rules") return renderFareRules(flight);
-  if (activeTab === "Add-ons") return renderAddons(flight);
-  if (activeTab === "Flight Details") return renderFlightDetails(flight);
   return renderFareCategories(flight);
 }
 
-function calculateTotalPrice(flight) {
+function getSelectedFare(flight) {
   const fareIndex = state.selectedFareIndices[flight.id] || 0;
   const fareOptions = flight.fareOptions || [];
-  const fare = fareOptions.length > fareIndex ? fareOptions[fareIndex] : flight;
-  const basePrice = fare.priceAmount || flight.priceAmount;
-  
+  return fareOptions.length > fareIndex ? fareOptions[fareIndex] : flight;
+}
+
+function calculateTotalPrice(flight) {
+  const fare = getSelectedFare(flight);
+  const basePrice = Number(fare.priceAmount || flight.priceAmount || 0);
   const bundleIds = state.selectedBundles[flight.id] || [];
   const bundlesPrice = bundleIds.reduce((sum, id) => {
     const bundle = AVAILABLE_BUNDLES.find(b => b.id === id);
-    return sum + (bundle ? bundle.price : 0);
+    return sum + (bundle ? Number(bundle.price || 0) : 0);
   }, 0);
-
   return basePrice + bundlesPrice;
 }
 
 function renderSelectedSummary(flight) {
-  const fareIndex = state.selectedFareIndices[flight.id] || 0;
-  const fareOptions = flight.fareOptions || [];
-  const fareName = fareOptions.length > fareIndex ? fareOptions[fareIndex].name : "Standard";
+  const fare = getSelectedFare(flight);
   const bundleIds = state.selectedBundles[flight.id] || [];
-  
   return `
     <div class="selected-summary-mini">
-      ${fareName} ${bundleIds.length ? `+ ${bundleIds.length} Add-ons` : ""}
+      ${fare.name || "Standard"}${bundleIds.length ? ` + ${bundleIds.length} Add-ons` : ""}
     </div>
   `;
 }
 
 function renderFareCategories(flight) {
   const selectedIndex = state.selectedFareIndices[flight.id] || 0;
+  const fareOptions = flight.fareOptions || [];
+  const hasBundles = fareOptions.length > 1;
+  const title = hasBundles ? "Categories / Bundles" : "Available Class";
+  const subtitle = hasBundles
+    ? "Select one fare category. Price and baggage will update instantly."
+    : "No branded fares received from the API. Showing the available standard class.";
+
   return `
-    <div class="table-wrap">
-      <table class="fare-table">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Baggage</th>
-            <th>Refund</th>
-            <th>Meal</th>
-            <th>Seat</th>
-            <th>Price</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          ${(flight.fareOptions || []).map((fare, index) => `
-            <tr class="${selectedIndex === index ? "selected-row" : ""}" style="${selectedIndex === index ? "background:rgba(245,158,11,0.05)" : ""}">
-              <td>
-                <label style="cursor:pointer; display:block">
-                  <input 
-                    type="radio" 
-                    name="fare-${flight.id}" 
-                    class="fare-radio" 
-                    data-flight-id="${flight.id}" 
-                    data-index="${index}" 
-                    ${selectedIndex === index ? "checked" : ""} 
-                  />
-                  <strong>${fare.name}</strong>
-                </label>
-                <div class="flight-supplier">Supplier Fare Family</div>
-              </td>
-              <td>${fare.baggage || "Check Airline Rules"}</td>
-              <td>${fare.refund || "Check Airline Rules"}</td>
-              <td>${fare.meal || "Check Airline Rules"}</td>
-              <td>${fare.seat || "Check Airline Rules"}</td>
-              <td><strong>${money(fare.priceAmount, fare.currency)}</strong></td>
-              <td><button class="select-btn" type="button" data-offer-id="${fare.offerId || flight.id}">Select</button></td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
+    <div class="panel fare-category-panel">
+      <div class="segment-header">
+        <div>
+          <h3>${title}</h3>
+          <div class="flight-supplier">${subtitle}</div>
+        </div>
+        <span class="segment-badge">${hasBundles ? "API Bundles" : "Standard Class"}</span>
+      </div>
+
+      <div class="category-grid">
+        ${fareOptions.map((fare, index) => `
+          <label class="category-card ${selectedIndex === index ? "selected" : ""}">
+            <input
+              type="radio"
+              name="fare-${flight.id}"
+              class="fare-radio"
+              data-flight-id="${flight.id}"
+              data-index="${index}"
+              ${selectedIndex === index ? "checked" : ""}
+            />
+            <div class="category-card-head">
+              <div>
+                <div class="category-name">${fare.name || "Standard"}</div>
+                <div class="category-cabin">${fare.cabin || flight.cabin || "Economy"}</div>
+              </div>
+              <div class="category-price">${money(fare.priceAmount, fare.currency || flight.currency)}</div>
+            </div>
+            <div class="category-features">
+              <div><span>Hand Carry</span><strong>${fare.cabinBaggage || "Check Rules"}</strong></div>
+              <div><span>Check Bag</span><strong>${fare.checkedBaggage || "Check Rules"}</strong></div>
+              <div><span>Change</span><strong>${fare.change || "As per rules"}</strong></div>
+              <div><span>Refund</span><strong>${fare.refund || "As per rules"}</strong></div>
+            </div>
+          </label>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderFareInfo(flight) {
+  const fare = getSelectedFare(flight);
+  const raw = flight.raw || {};
+  const paxBreakdowns = raw.passengerFareBreakdown || [];
+
+  const fallbackBase = fare.baseFare || raw.fareBreakdown?.base || 0;
+  const fallbackTax = fare.taxes || raw.fareBreakdown?.tax || 0;
+  const fallbackDiscount = raw.fareBreakdown?.discount || 0;
+  const fallbackSCA = raw.fareBreakdown?.fees || 0;
+  const fallbackTotal = fare.priceAmount || flight.priceAmount || 0;
+
+  const rows = paxBreakdowns.length
+    ? paxBreakdowns.map((pax, index) => {
+        const type = pax.passengerTypeCode || pax.paxType || pax.type || "ADT";
+        const count = pax.count || pax.quantity || 1;
+
+        const base =
+          pax.baseAmount?.amount ||
+          pax.baseFare?.amount ||
+          pax.baseAmount ||
+          0;
+
+        const tax =
+          pax.taxesAmount?.amount ||
+          pax.taxAmount?.amount ||
+          pax.taxes ||
+          pax.tax ||
+          0;
+
+        const discount =
+          pax.discountAmount?.amount ||
+          pax.discountAmount ||
+          0;
+
+        const sca =
+          pax.serviceChargeAmount?.amount ||
+          pax.scaAmount?.amount ||
+          pax.serviceChargeAmount ||
+          pax.sca ||
+          0;
+
+        const total =
+          pax.totalAmount?.amount ||
+          pax.totalFare?.amount ||
+          pax.totalAmount ||
+          base + tax + sca - discount;
+
+        return { type, count, base, tax, discount, sca, total };
+      })
+    : [{
+        type: "ADT",
+        count: state.searchParams.adults || 1,
+        base: fallbackBase,
+        tax: fallbackTax,
+        discount: fallbackDiscount,
+        sca: fallbackSCA,
+        total: fallbackTotal
+      }];
+
+  const grandTotal = rows.reduce((sum, r) => sum + Number(r.total || 0), 0);
+
+  return `
+    <div class="fare-box">
+      <div class="fare-box-head">Fare Breakup</div>
+
+      <div class="fare-box-body">
+        ${rows.map(row => `
+          <div class="fare-pax-title">
+            ${formatPassengerType(row.type)} x ${row.count}
+          </div>
+
+          <div class="fare-line">
+            <span>Base Fare</span>
+            <strong>${money(row.base, flight.currency)}</strong>
+          </div>
+
+          <div class="fare-line">
+            <span>Taxes & Fees</span>
+            <strong>${money(row.tax, flight.currency)}</strong>
+          </div>
+
+          <div class="fare-line">
+            <span>Discount</span>
+            <strong>- ${money(row.discount, flight.currency)}</strong>
+          </div>
+
+          <div class="fare-line">
+            <span>SCA</span>
+            <strong>${money(row.sca, flight.currency)}</strong>
+          </div>
+        `).join("")}
+
+        <div class="fare-total-line">
+          <span>Total Payable</span>
+          <strong>${money(grandTotal || fallbackTotal, flight.currency)}</strong>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function formatPassengerType(type) {
+  const t = String(type || "").toUpperCase();
+  if (t === "ADT") return "Adult";
+  if (t === "CHD") return "Child";
+  if (t === "INF") return "Infant";
+  return t;
+}
+
+function renderBaggageTab(flight) {
+  const fare = getSelectedFare(flight);
+  return `
+    <div class="panel baggage-panel-dynamic">
+      <div class="segment-header">
+        <div>
+          <h3>Baggage Information</h3>
+          <div class="flight-supplier">Currently showing allowance for <strong>${fare.name || "Standard"}</strong>.</div>
+        </div>
+        <span class="segment-badge">Live Selection</span>
+      </div>
+
+      <div class="baggage-grid dynamic-baggage-grid">
+        <div class="baggage-card">
+          <div class="baggage-label">Hand Carry / Cabin</div>
+          <div class="baggage-value">${fare.cabinBaggage || "Check Rules"}</div>
+        </div>
+        <div class="baggage-card">
+          <div class="baggage-label">Check-in Baggage</div>
+          <div class="baggage-value">${fare.checkedBaggage || "Check Rules"}</div>
+        </div>
+        <div class="baggage-card">
+          <div class="baggage-label">Cabin / Class</div>
+          <div class="baggage-value">${fare.cabin || flight.cabin || "Economy"}</div>
+        </div>
+        <div class="baggage-card note">
+          <div class="baggage-label">Important</div>
+          <div class="baggage-value">Updates when category changes</div>
+        </div>
+      </div>
     </div>
   `;
 }
@@ -869,19 +1215,22 @@ function renderFareRules(flight) {
     <div class="panel">
       <h3>Fare Rules</h3>
       ${(flight.rules || ["Check Airline Rules"]).map((rule, index) => `
-        <div class="rule-item">
-          <div class="rule-number">${index + 1}</div>
-          <div>${rule}</div>
-        </div>
+        <details class="rule-accordion" ${index === 0 ? "open" : ""}>
+          <summary>${getRuleTitle(rule, index)}</summary>
+          <div class="rule-body">${rule}</div>
+        </details>
       `).join("")}
     </div>
   `;
 }
 
+function getRuleTitle(rule, index) {
+  const titles = ["Application and Conditions", "Date Change", "Refund / Cancellation", "Ticketing", "Other Rules"];
+  return titles[index] || `Rule ${index + 1}`;
+}
+
 function renderAddons(flight) {
   const selectedIds = state.selectedBundles[flight.id] || [];
-  
-  // Categorize bundles
   const categories = {};
   AVAILABLE_BUNDLES.forEach(b => {
     if (!categories[b.category]) categories[b.category] = [];
@@ -896,21 +1245,13 @@ function renderAddons(flight) {
           <div class="flight-supplier">Customize your flight with extra services. Prices are added to your selected fare.</div>
         </div>
       </div>
-      
       <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px">
         ${Object.entries(categories).map(([cat, items]) => `
           <div class="addon-category">
             <h4 style="margin:0 0 12px; font-size:14px; color:var(--slate2); text-transform:uppercase; letter-spacing:1px">${cat}</h4>
             ${items.map(item => `
               <label class="baggage-card" style="display:flex; align-items:flex-start; gap:12px; cursor:pointer; transition:all 0.2s; ${selectedIds.includes(item.id) ? "border-color:#f59e0b; background:rgba(245,158,11,0.03)" : ""}">
-                <input 
-                  type="checkbox" 
-                  class="bundle-check" 
-                  data-flight-id="${flight.id}" 
-                  data-bundle-id="${item.id}"
-                  ${selectedIds.includes(item.id) ? "checked" : ""}
-                  style="margin-top:4px"
-                />
+                <input type="checkbox" class="bundle-check" data-flight-id="${flight.id}" data-bundle-id="${item.id}" ${selectedIds.includes(item.id) ? "checked" : ""} style="margin-top:4px" />
                 <div style="flex:1">
                   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px">
                     <span style="font-weight:800; font-size:14px">${item.name}</span>
@@ -929,68 +1270,59 @@ function renderAddons(flight) {
 
 function renderFlightDetails(flight) {
   const segments = flight.segments || [];
+
   return `
     <div class="panel-compact">
-      <div class="compact-header">
-        <div>
-          <h3 style="margin:0; font-size:16px">Flight Details</h3>
-          <div class="flight-supplier" style="margin-top:2px">Detailed itinerary for your selected flight</div>
-        </div>
-        <span class="segment-badge">${segments.length} Segment${segments.length > 1 ? "s" : ""}</span>
+      <div class="itin-top-head">
+        <strong>Depart • ${segments[0]?.departureDateTime ? formatDate(segments[0].departureDateTime) : ""}</strong>
+        <span>${flight.duration || ""}</span>
       </div>
 
-      <div class="timeline">
+      <div class="itin-new-list">
         ${segments.map((segment, index) => {
           const nextSegment = segments[index + 1];
           const layover = nextSegment ? calculateLayover(segment, nextSegment) : "";
 
           return `
-            <div class="timeline-segment">
-              <div class="timeline-marker">
-                <div class="dot"></div>
-                ${index < segments.length - 1 ? '<div class="line"></div>' : ''}
+            <div class="itin-new-segment">
+
+              <div class="itin-airline-side">
+                <img src="${flight.logo || segment.logo || ""}" class="itin-airline-logo" />
+                <div>${segment.airline || flight.airline}</div>
+                <strong>${segment.airlineCode || flight.airlineCode} ${segment.flightNo}</strong>
               </div>
-              
-              <div class="timeline-content">
-                <div class="timeline-main">
-                  <!-- Departure -->
-                  <div class="timeline-col time-col">
-                    <div class="time">${formatTime(segment.departureDateTime)}</div>
-                    <div class="date">${formatDate(segment.departureDateTime)}</div>
-                  </div>
-                  
-                  <div class="timeline-col info-col">
-                    <div class="city"><strong>${segment.fromCity}</strong> <span class="code">${segment.from}</span></div>
-                    <div class="airport">${segment.fromAirport} ${segment.fromTerminal ? `· T${segment.fromTerminal}` : ''}</div>
-                  </div>
 
-                  <!-- Flight Info -->
-                  <div class="timeline-col flight-col">
-                    <div class="airline-info">
-                       <strong>${segment.airline}</strong> · ${segment.flightNo}
-                    </div>
-                    <div class="aircraft">${segment.aircraft} · ${segment.cabin}</div>
-                    <div class="duration-small">⏱ ${segment.duration}</div>
-                  </div>
+              <div class="itin-point-left">
+                <div class="itin-main-time">${formatTime(segment.departureDateTime)}</div>
+                <div class="itin-airport-code">${segment.from}</div>
+                <div>${formatDate(segment.departureDateTime)}</div>
+                <div>Terminal: ${segment.fromTerminal || "-"}</div>
+              </div>
 
-                  <!-- Arrival -->
-                  <div class="timeline-col time-col">
-                    <div class="time">${formatTime(segment.arrivalDateTime)}</div>
-                    <div class="date">${formatDate(segment.arrivalDateTime)}</div>
-                  </div>
+              <div class="itin-middle-line">
+                <div>${segment.duration} ${segments.length === 1 ? "(Non Stop)" : ""}</div>
+                <div class="itin-blue-line"></div>
+                <div>${segment.aircraft || ""}</div>
+              </div>
 
-                  <div class="timeline-col info-col">
-                    <div class="city"><strong>${segment.toCity}</strong> <span class="code">${segment.to}</span></div>
-                    <div class="airport">${segment.toAirport} ${segment.toTerminal ? `· T${segment.toTerminal}` : ''}</div>
-                  </div>
+              <div class="itin-point-right">
+                <div class="itin-main-time">${formatTime(segment.arrivalDateTime)}</div>
+                <div class="itin-airport-code">${segment.to}</div>
+                <div>${formatDate(segment.arrivalDateTime)}</div>
+                <div>Terminal: ${segment.toTerminal || "-"}</div>
+              </div>
+
+              <div class="itin-class-side">
+                <div>Class : ${segment.cabin || flight.cabin || "Economy"}</div>
+                <div>Checkin Luggage : ${segment.baggage || "Check Rules"}</div>
+              </div>
+
+              ${layover ? `
+                <div class="itin-layover-row">
+                  ${layover.replace(" layover", "")} layover ${segment.toCity || segment.to} (${segment.to})
                 </div>
+              ` : ""}
 
-                ${layover ? `
-                  <div class="timeline-layover">
-                    <span class="layover-pill-small">Layover: ${layover} at ${segment.toCity}</span>
-                  </div>
-                ` : ""}
-              </div>
             </div>
           `;
         }).join("")}

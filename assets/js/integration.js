@@ -25,8 +25,8 @@
   };
 
   function getApiBaseUrl() {
-    return (config.apiBaseUrl || "http://localhost:3000/v1").replace(/\/$/, "");
-  }
+  return (config.apiBaseUrl || "http://localhost:3000/v1/ndc").replace(/\/$/, "");
+}
 
   function showAlert(message, tone) {
     const el = document.getElementById("auth-alert");

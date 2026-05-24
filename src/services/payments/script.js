@@ -10,14 +10,22 @@
   }
 
   async function post(path, body) {
-    const session = JSON.parse(localStorage.getItem('keenanTravelSession') || 'null');
-    const headers = { 'Content-Type': 'application/json' };
-    if (session?.token) headers['Authorization'] = 'Bearer ' + session.token;
-    const res = await fetch(apiBase() + path, { method: 'POST', headers, body: JSON.stringify(body) });
-    const data = await res.json();
-    if (!res.ok || data.success === false) throw new Error(data.error || data.message || 'Request failed');
-    return data;
-  }
+  const session = JSON.parse(localStorage.getItem('keenanTravelSession') || 'null');
+  const headers = { 'Content-Type': 'application/json' };
+  if (session?.token) headers['Authorization'] = 'Bearer ' + session.token;
+
+  const res = await fetch(apiBase() + path, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(body)
+  });
+
+  
+
+  const data = await res.json();
+  if (!res.ok || data.success === false) throw new Error(data.error || data.message || 'Request failed');
+  return data;
+}
 
   async function get(path) {
     const res = await fetch(apiBase() + path);
@@ -107,9 +115,11 @@
       const { clientSecret } = await post('/payments/intent', {
         amount:   amountData.amount,
         currency: amountData.currency,
+        
       });
 
       // 2. Confirm card payment with Stripe
+      
       const billingEmail = document.getElementById('bk-email')?.value || '';
       const cardholderName = document.getElementById('stripe-cardholder')?.value || '';
 
@@ -124,18 +134,47 @@
       if (paymentIntent.status !== 'succeeded') throw new Error('Payment did not complete');
 
       // 3. Finalise booking on backend
-      const offerId = window.__bookingOfferId || window.__confirmedOfferId || window.__selectedOfferId;
-      const booking = await post('/flights/book', {
-        offerId,
-        selectedBundles:       window.__selectedBundles || [],
-        stripePaymentIntentId: paymentIntent.id,
-        amount:   amountData.amount,
-        currency: amountData.currency,
-      });
+    const reviewData = JSON.parse(
+  localStorage.getItem("keenan_booking_review") || "{}"
+  );
+
+      const booking = await post('/payments/confirm-booking', {
+  paymentIntentId: paymentIntent.id,
+
+  bookingId: reviewData.bookingId,
+
+  offerId:
+    reviewData.offerId ||
+    reviewData.flight?.offerId,
+
+  selectedBundles:
+    reviewData.selectedBundles || [],
+
+  passengers:
+    reviewData.passengers || [],
+
+  amount:
+    reviewData.total ||
+    reviewData.flight?.totalAmount ||
+    amountData.amount,
+
+  currency:
+    reviewData.currency ||
+    reviewData.flight?.currency ||
+    amountData.currency
+});
 
       // 4. Show confirmation
-      if (typeof window.updateConfirmationPage === 'function') window.updateConfirmationPage(booking);
-      if (typeof window.go === 'function') window.go('confirmation');
+      localStorage.setItem("keenan_booking_confirmation", JSON.stringify(booking));
+
+    const ref =
+     booking.reference ||
+     booking.data?.reference ||
+     booking.bookingReference ||
+     booking.bookingId ||
+      "PENDING";
+
+window.location.href = "../flights/confirmation/index.html?ref=" + encodeURIComponent(ref);
 
     } catch (err) {
       if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
@@ -143,8 +182,8 @@
     }
   };
 
-  // ── Update confirmation page with real booking data ──────────────────────────
-  window.updateConfirmationPage = function updateConfirmationPage(booking) {
+   // ── Update confirmation page with real booking data ──────────────────────────
+   window.updateConfirmationPage = function updateConfirmationPage(booking) {
     const refEl = document.querySelector('.confirm-ref-num') || document.querySelector('[data-confirm-ref]');
     if (refEl) refEl.textContent = booking.reference || '—';
 
@@ -153,7 +192,7 @@
 
     const ticketEl = document.querySelector('[data-confirm-ticket]');
     if (ticketEl) ticketEl.textContent = booking.ticketNumber || '—';
-  };
+   };
 
   window.KeenanFrontend = window.KeenanFrontend || { modules: {} };
   window.KeenanFrontend.modules['service-payments'] = { type: 'service', mount() {} };
