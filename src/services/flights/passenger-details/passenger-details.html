@@ -1,0 +1,161 @@
+<!-- Passenger Details Step -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passenger Details</title>
+  <link rel="stylesheet" href="./passenger-details.css" />
+</head>
+
+<body>
+  <nav id="flight-nav">
+    <div class="nav-logo">Keenan<span> Travel</span></div>
+    <div class="nav-links">
+      <a href="#" class="nav-link active">Flights</a>
+    </div>
+  </nav>
+
+  <main class="booking-preview">
+    <header class="preview-header">
+      <div class="preview-kicker">Flight Booking Step</div>
+      <h1 class="preview-title">Review Flight & Passenger Details</h1>
+      <p class="preview-subtitle">
+        Confirm your selected flight, review price details, and enter passenger information.
+      </p>
+    </header>
+
+    <div class="booking-layout">
+      <div class="booking-main">
+        <section class="summary-card">
+          <div class="summary-top">
+            <div>
+              <h2 class="summary-title">Flight Itinerary</h2>
+              <p class="summary-note">
+                Review selected flight, fare category, and baggage allowance.
+              </p>
+            </div>
+
+            <div class="summary-actions">
+              <span class="status-pill" id="fareStatus">Unconfirmed</span>
+              <button class="select-confirm-btn" id="confirmSelectionBtn" type="button">
+                Confirm Fare
+              </button>
+            </div>
+          </div>
+
+          <div id="fareConfirmLoader" class="fare-confirm-loader">
+            Confirming fare availability...
+          </div>
+
+          <div class="flight-detail-card">
+            <div class="flight-detail-body">
+              <div class="segment-list" id="segmentList"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bundles-card" id="bundlesSection">
+          <div class="pd-pax-header">
+            <h2 class="pd-section-title no-border">Add Ancillaries & Bundles</h2>
+          </div>
+
+          <p class="summary-note bundle-note">
+            Select available bundle options such as baggage, meals, seats, or fare benefits.
+          </p>
+
+          <div id="bundleList" class="bundle-list"></div>
+
+          <div class="bundle-actions">
+            <button type="button" class="pd-btn primary" id="confirmBundlesBtn">
+              Continue to Passengers
+            </button>
+          </div>
+        </section>
+
+        <section class="booking-card" id="passengerSection">
+          <div class="pd-pax-header">
+            <h2 class="pd-section-title no-border">Passenger Information</h2>
+            <span class="pd-pax-tag" id="passengerCountTag">Passengers</span>
+          </div>
+
+          <form id="passengerForm" novalidate>
+            <div id="passengerForms"></div>
+
+            <div class="ancillary-action">
+              <div class="ancillary-text">
+                <div class="ancillary-title">Add Ancillaries & Extra Services</div>
+                <div class="ancillary-note">
+                  Add extra baggage, seats, meals, or other available services for this flight.
+                </div>
+              </div>
+
+              <button class="ancillary-btn" type="button" id="addAncillariesBtn">
+                Add Ancillaries
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div class="right-column">
+        <aside class="price-sidebar" aria-label="Price breakdown">
+          <h2 class="price-title">Price Details</h2>
+          <p class="price-subtitle">
+            Final live fare summary including taxes, service charges, and payment fees.
+          </p>
+
+          <div class="price-row"><span>Base Fare</span><strong id="baseFare">AED 0.00</strong></div>
+          <div class="price-row"><span>Taxes and Fees</span><strong id="taxesFees">AED 0.00</strong></div>
+          <div class="price-row"><span>Ancillary / Baggage</span><strong id="ancillaryCost">AED 0.00</strong></div>
+          <div class="price-row"><span>Service Fee</span><strong id="serviceFee">AED 0.00</strong></div>
+          <div class="price-row"><span>Payment Gateway Fee</span><strong id="paymentGatewayFee">AED 0.00</strong></div>
+          <div class="price-row"><span>Customer Discount</span><strong id="customerDiscount">- AED 0.00</strong></div>
+          <div class="price-row"><span>Passenger</span><strong id="passengerPriceLabel">1 Adult</strong></div>
+
+          <div class="price-total">
+            <span>Total Payable</span>
+            <strong id="totalPayable">AED 0.00</strong>
+          </div>
+
+          <div class="price-help">
+            Included baggage is linked with the selected fare. Extra ancillaries,
+            seats, meals, or baggage will be added automatically to the final payable amount.
+          </div>
+        </aside>
+
+        <section class="payment-terms-card">
+          <h2 class="payment-section-title">Payment Terms & Acceptance</h2>
+
+          <label class="payment-checkbox-row">
+            <input type="checkbox" id="acceptTermsCheckbox" />
+            <span>
+              I confirm that all passenger details are correct and I accept the airline fare rules,
+              baggage policy, cancellation policy, refund policy, and payment processing conditions.
+            </span>
+          </label>
+
+          <div class="payment-terms-note">
+            By continuing, you authorize Keenan Travel to process this booking and charge the selected
+            payment method after successful confirmation.
+          </div>
+
+          <div class="payment-actions">
+            <button class="pd-btn secondary" type="button" id="holdBtn">
+              Hold Booking
+            </button>
+            <button class="pd-btn primary" type="button" id="bookAndPayBtn">
+              Book & Pay
+            </button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="../../../config.js"></script>
+  <script src="./passenger-details.js"></script>
+</body>
+
+</html>

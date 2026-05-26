@@ -1482,8 +1482,8 @@
   function bootstrap() {
     state.session = getStoredSession();
     updateSessionUi();
-    syncApiConfigFields();
-    loadPublicSlides();
+    syncApiConfigFields(); 
+    //loadPublicSlides();
     attachStrengthMeter();
     if (isAdminSession()) {
       syncAdminData();

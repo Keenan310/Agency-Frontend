@@ -1100,7 +1100,7 @@ function renderFlights() {
           JSON.stringify(bookingData),
         );
         window.location.href =
-          "/src/services/flights/passenger-details/index.html";
+          "/src/services/flights/passenger-details/passenger-details.html";
       });
     });
 }
@@ -1877,7 +1877,8 @@ function continueWithSelectedBundle(flightId, confirmedOfferId) {
 
   localStorage.setItem("selectedFlightBundle", JSON.stringify(payload));
 
-  window.location.href = "/src/services/flights/passenger-details/index.html";
+  window.location.href =
+  "/src/services/flights/passenger-details/passenger-details.html";
 }
 
 function renderFareRules(flight) {

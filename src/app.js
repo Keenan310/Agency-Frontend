@@ -20,7 +20,6 @@
       <div data-module-slot="site-nav"></div>
       <main class="app-shell__pages" id="app-pages">
         <div data-module-slot="page-home"></div>
-        <div data-module-slot="page-results"></div>
         <div data-module-slot="page-booking"></div>
         <div data-module-slot="page-confirmation"></div>
         <div data-module-slot="page-track"></div>
@@ -34,7 +33,7 @@
       <div data-module-slot="customer-portal"></div>
       <div data-module-slot="page-admin-login"></div>
       <!-- service modules: logic-only, not visible -->
-      <div data-module-slot="service-flights"  style="display:none"></div>
+      <div data-module-slot="service-flights"></div>
       <div data-module-slot="service-umrah"    style="display:none"></div>
       <div data-module-slot="service-holidays" style="display:none"></div>
       <div data-module-slot="service-payments" style="display:none"></div>
@@ -63,13 +62,7 @@
       css: "./src/pages/home/home.css",
       js: "./src/pages/home/home.js",
     },
-    {
-      name: "page-results",
-      slot: '[data-module-slot="page-results"]',
-      html: "./src/pages/results/results.html",
-      css: "./src/pages/results/results.css",
-      js: "./src/pages/results/results.js",
-    },
+    
     {
       name: "page-booking",
       slot: '[data-module-slot="page-booking"]',
@@ -197,9 +190,9 @@
     {
       name: "service-payments",
       slot: '[data-module-slot="service-payments"]',
-      html: "./src/services/payments/index.html",
-      css: "./src/services/payments/style.css",
-      js: "./src/services/payments/script.js",
+      html: "./src/services/payments/payments.html",
+      css: "./src/services/payments/payments.css",
+      js: "./src/services/payments/payments.js",
     },
   ];
 
