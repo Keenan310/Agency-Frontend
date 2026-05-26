@@ -384,7 +384,7 @@
       }
 
         if (paymentMethod === "card") {
-         window.location.href = "../../payments/index.html";
+         window.location.href = "../../payments/payments.html";
         return;
        }   
 

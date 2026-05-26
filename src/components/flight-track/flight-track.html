@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Booking</title>
+
+  <link rel="stylesheet" href="./flight-track.css" />
+</head>
+
+<body>
+
+<div id="view-track" class="view">
+
+  <div class="track-wrap">
+
+    <div class="track-label">Booking Management</div>
+
+    <div class="track-title">
+      Track Your Booking
+    </div>
+
+    <div class="track-card">
+
+      <div class="track-field">
+        <label>Booking Reference Number</label>
+
+        <input
+          type="text"
+          id="track-ref"
+          placeholder="e.g. KT-2026-84712"
+        />
+      </div>
+
+      <div class="track-field">
+        <label>Email Address</label>
+
+        <input
+          type="email"
+          id="track-email"
+          placeholder="your@email.com"
+        />
+      </div>
+
+      <button class="track-btn" onclick="showTrackResult()">
+        Track Booking
+      </button>
+
+    </div>
+
+    <div id="track-result" style="display:none;margin-top:22px"></div>
+
+  </div>
+
+</div>
+
+<script src="./flight-track.js"></script>
+
+</body>
+</html>

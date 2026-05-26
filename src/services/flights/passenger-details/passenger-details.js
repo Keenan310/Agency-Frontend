@@ -1093,7 +1093,7 @@
       // Important:
       // Do NOT call BookAndPay here.
       // BookAndPay must be called only after successful payment.
-      window.location.href = "../booking-review/index.html";
+      window.location.href = "../booking-review/booking-review.html";
     } catch (err) {
       console.error(err);
       alert("Error saving passenger details: " + err.message);

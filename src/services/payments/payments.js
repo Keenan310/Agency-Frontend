@@ -1,199 +1,236 @@
+// Fixed payments.js file
+// Replace your current payments.js with this file.
+
 (function () {
-  'use strict';
+  "use strict";
 
   let _stripe = null;
   let _elements = null;
   let _cardElement = null;
 
   function apiBase() {
-    return ((window.KEENAN_CONFIG || {}).apiBaseUrl || 'http://localhost:3000/v1').replace(/\/$/, '');
+    return (
+      (window.KEENAN_CONFIG || {}).apiBaseUrl || "http://localhost:3000/v1"
+    ).replace(/\/$/, "");
   }
 
   async function post(path, body) {
-  const session = JSON.parse(localStorage.getItem('keenanTravelSession') || 'null');
-  const headers = { 'Content-Type': 'application/json' };
-  if (session?.token) headers['Authorization'] = 'Bearer ' + session.token;
+    const session = JSON.parse(
+      localStorage.getItem("keenanTravelSession") || "null",
+    );
 
-  const res = await fetch(apiBase() + path, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body)
-  });
+    const headers = { "Content-Type": "application/json" };
 
-  
+    if (session?.token) {
+      headers["Authorization"] = "Bearer " + session.token;
+    }
 
-  const data = await res.json();
-  if (!res.ok || data.success === false) throw new Error(data.error || data.message || 'Request failed');
-  return data;
-}
+    const res = await fetch(apiBase() + path, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
 
-  async function get(path) {
-    const res = await fetch(apiBase() + path);
     const data = await res.json();
+
+    if (!res.ok || data.success === false) {
+      throw new Error(data.error || data.message || "Request failed");
+    }
+
     return data;
   }
 
-  // ── Inject Stripe.js SDK if not already loaded ───────────────────────────────
+  async function get(path) {
+    const res = await fetch(apiBase() + path);
+    return res.json();
+  }
+
   function loadStripeJs() {
     return new Promise((resolve, reject) => {
-      if (window.Stripe) { resolve(); return; }
-      const s = document.createElement('script');
-      s.src = 'https://js.stripe.com/v3/';
+      if (window.Stripe) {
+        resolve();
+        return;
+      }
+
+      const s = document.createElement("script");
+
+      s.src = "https://js.stripe.com/v3/";
+
       s.onload = resolve;
-      s.onerror = () => reject(new Error('Failed to load Stripe.js'));
+
+      s.onerror = () => reject(new Error("Failed to load Stripe.js"));
+
       document.head.appendChild(s);
     });
   }
 
-  // ── Render Stripe Card Element into #stripe-card-element mount point ─────────
   window.renderPaymentStep = async function renderPaymentStep(totalAmountObj) {
-    // Update displayed amount
-    const amountEl = document.getElementById('stripe-confirmed-amount');
+    const amountEl = document.getElementById("stripe-confirmed-amount");
+
     const amountData = totalAmountObj || window.__confirmedAmount;
+
     if (amountEl && amountData) {
-      const fmt = typeof window.KT?.format === 'function'
-        ? window.KT.format(amountData.amount)
-        : `${amountData.currency || 'AED'} ${Number(amountData.amount || 0).toLocaleString()}`;
+      const fmt =
+        typeof window.KT?.format === "function"
+          ? window.KT.format(amountData.amount)
+          : `${amountData.currency || "AED"} ${Number(amountData.amount || 0).toLocaleString()}`;
+
       amountEl.textContent = fmt;
     }
 
-    // Store amount on pay button for later use
     if (amountData) {
-      const payBtn = document.querySelector('[data-stripe-pay]') || document.querySelector('.btn-gold.w100');
-      if (payBtn) payBtn.dataset.stripeAmount = JSON.stringify(amountData);
+      const payBtn =
+        document.querySelector("[data-stripe-pay]") ||
+        document.querySelector(".btn-gold.w100");
+
+      if (payBtn) {
+        payBtn.dataset.stripeAmount = JSON.stringify(amountData);
+      }
     }
 
-    const mountEl = document.getElementById('stripe-card-element');
+    const mountEl = document.getElementById("stripe-card-element");
+
     if (!mountEl) return;
 
-    // Fetch publishable key from backend (set by admin)
-    const { publishableKey } = await get('/payments/publishable-key');
+    const { publishableKey } = await get("/payments/publishable-key");
+
     if (!publishableKey) {
-      mountEl.innerHTML = '<div style="color:var(--red,#dc2626);padding:12px">⚠ Stripe not configured — contact admin.</div>';
+      mountEl.innerHTML =
+        '<div style="color:var(--red,#dc2626);padding:12px">⚠ Stripe not configured — contact admin.</div>';
+
       return;
     }
 
     await loadStripeJs();
 
-    _stripe   = window.Stripe(publishableKey);
+    _stripe = window.Stripe(publishableKey);
+
     _elements = _stripe.elements();
-    _cardElement = _elements.create('card', {
+
+    _cardElement = _elements.create("card", {
       style: {
         base: {
           fontFamily: '"Plus Jakarta Sans", Arial, sans-serif',
-          fontSize: '14px',
-          color: '#0B1120',
-          '::placeholder': { color: '#94A3B8' },
+          fontSize: "14px",
+          color: "#0B1120",
+          "::placeholder": {
+            color: "#94A3B8",
+          },
         },
       },
     });
-    _cardElement.mount('#stripe-card-element');
 
-    _cardElement.on('focus', () => { mountEl.classList.add('focused'); });
-    _cardElement.on('blur',  () => { mountEl.classList.remove('focused'); });
-    _cardElement.on('change', (e) => {
-      const errEl = document.getElementById('stripe-card-errors');
-      if (!errEl) return;
-      errEl.textContent = e.error ? e.error.message : '';
-      errEl.style.display = e.error ? 'block' : 'none';
-    });
+    _cardElement.mount("#stripe-card-element");
   };
 
-  // ── Submit Stripe payment then finalize booking via backend ──────────────────
   window.submitStripePayment = async function submitStripePayment() {
-    const payBtn = document.querySelector('[data-stripe-pay]') || document.querySelector('.btn-gold.w100');
-    if (payBtn) { payBtn.textContent = 'Processing…'; payBtn.disabled = true; }
+    const payBtn =
+      document.querySelector("[data-stripe-pay]") ||
+      document.querySelector(".btn-gold.w100");
 
-    const errEl = document.getElementById('stripe-card-errors');
+    if (payBtn) {
+      payBtn.textContent = "Processing…";
+      payBtn.disabled = true;
+    }
+
+    const errEl = document.getElementById("stripe-card-errors");
 
     try {
-      // Amount resolved from button data or confirmed state
       const rawAmount = payBtn?.dataset.stripeAmount;
-      const amountData = rawAmount ? JSON.parse(rawAmount) : { amount: 0, currency: 'AED' };
 
-      // 1. Create PaymentIntent on backend
-      const { clientSecret } = await post('/payments/intent', {
-        amount:   amountData.amount,
+      const amountData = rawAmount
+        ? JSON.parse(rawAmount)
+        : { amount: 0, currency: "AED" };
+
+      // 1. Create PaymentIntent
+      const { clientSecret } = await post("/payments/intent", {
+        amount: amountData.amount,
         currency: amountData.currency,
-        
       });
 
-      // 2. Confirm card payment with Stripe
-      
-      const billingEmail = document.getElementById('bk-email')?.value || '';
-      const cardholderName = document.getElementById('stripe-cardholder')?.value || '';
+      // 2. Confirm Stripe card payment
+      const billingEmail = document.getElementById("bk-email")?.value || "";
 
-      const { error: stripeError, paymentIntent } = await _stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: _cardElement,
-          billing_details: { name: cardholderName, email: billingEmail },
-        },
+      const cardholderName =
+        document.getElementById("stripe-cardholder")?.value || "";
+
+      const { error: stripeError, paymentIntent } =
+        await _stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: _cardElement,
+            billing_details: {
+              name: cardholderName,
+              email: billingEmail,
+            },
+          },
+        });
+
+      if (stripeError) {
+        throw new Error(stripeError.message);
+      }
+
+      if (paymentIntent.status !== "succeeded") {
+        throw new Error("Payment did not complete");
+      }
+
+      // 3. Verify Stripe payment on backend
+      const reviewData = JSON.parse(
+        localStorage.getItem("keenan_booking_review") || "{}",
+      );
+
+      await post("/payments/verify", {
+        paymentIntentId: paymentIntent.id,
+        bookingId: reviewData.bookingId,
       });
 
-      if (stripeError) throw new Error(stripeError.message);
-      if (paymentIntent.status !== 'succeeded') throw new Error('Payment did not complete');
+      // 4. Finalise booking on backend
+      const booking = await post("/payments/confirm-booking", {
+        paymentIntentId: paymentIntent.id,
 
-      // 3. Finalise booking on backend
-    const reviewData = JSON.parse(
-  localStorage.getItem("keenan_booking_review") || "{}"
-  );
+        bookingId: reviewData.bookingId,
 
-      const booking = await post('/payments/confirm-booking', {
-  paymentIntentId: paymentIntent.id,
+        offerId: reviewData.offerId || reviewData.flight?.offerId,
 
-  bookingId: reviewData.bookingId,
+        selectedBundles: reviewData.selectedBundles || [],
 
-  offerId:
-    reviewData.offerId ||
-    reviewData.flight?.offerId,
+        passengers: reviewData.passengers || [],
 
-  selectedBundles:
-    reviewData.selectedBundles || [],
+        amount:
+          reviewData.total ||
+          reviewData.flight?.totalAmount ||
+          amountData.amount,
 
-  passengers:
-    reviewData.passengers || [],
+        currency:
+          reviewData.currency ||
+          reviewData.flight?.currency ||
+          amountData.currency,
+      });
 
-  amount:
-    reviewData.total ||
-    reviewData.flight?.totalAmount ||
-    amountData.amount,
+      localStorage.setItem(
+        "keenan_booking_confirmation",
+        JSON.stringify(booking),
+      );
 
-  currency:
-    reviewData.currency ||
-    reviewData.flight?.currency ||
-    amountData.currency
-});
+      const ref =
+        booking.reference ||
+        booking.data?.reference ||
+        booking.bookingReference ||
+        booking.bookingId ||
+        "PENDING";
 
-      // 4. Show confirmation
-      localStorage.setItem("keenan_booking_confirmation", JSON.stringify(booking));
-
-    const ref =
-     booking.reference ||
-     booking.data?.reference ||
-     booking.bookingReference ||
-     booking.bookingId ||
-      "PENDING";
-
-window.location.href = "../flights/confirmation/index.html?ref=" + encodeURIComponent(ref);
-
+      window.location.href =
+        "../../components/flight-payment-confirmation/payment-confirmation.html?ref=" +
+        encodeURIComponent(ref);
     } catch (err) {
-      if (errEl) { errEl.textContent = err.message; errEl.style.display = 'block'; }
-      if (payBtn) { payBtn.textContent = 'Try Again'; payBtn.disabled = false; }
+      if (errEl) {
+        errEl.textContent = err.message;
+        errEl.style.display = "block";
+      }
+
+      if (payBtn) {
+        payBtn.textContent = "Try Again";
+        payBtn.disabled = false;
+      }
     }
   };
-
-   // ── Update confirmation page with real booking data ──────────────────────────
-   window.updateConfirmationPage = function updateConfirmationPage(booking) {
-    const refEl = document.querySelector('.confirm-ref-num') || document.querySelector('[data-confirm-ref]');
-    if (refEl) refEl.textContent = booking.reference || '—';
-
-    const pnrEl = document.querySelector('[data-confirm-pnr]');
-    if (pnrEl) pnrEl.textContent = booking.airlinePnr || '—';
-
-    const ticketEl = document.querySelector('[data-confirm-ticket]');
-    if (ticketEl) ticketEl.textContent = booking.ticketNumber || '—';
-   };
-
-  window.KeenanFrontend = window.KeenanFrontend || { modules: {} };
-  window.KeenanFrontend.modules['service-payments'] = { type: 'service', mount() {} };
 })();

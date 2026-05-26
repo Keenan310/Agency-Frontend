@@ -1,0 +1,114 @@
+:root {
+  --gold: #c8a96e;
+  --gold-dark: #b8924e;
+  --ink: #07132f;
+  --slate: #64748b;
+  --surface: #f8fafc;
+  --surface2: #ffffff;
+  --surface3: #e2e8f0;
+  --green-bg: #ecfdf3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--surface);
+  font-family: Inter, Arial, sans-serif;
+}
+
+#view-track {
+  background: var(--surface);
+  min-height: 100vh;
+}
+
+.track-wrap {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 90px 20px;
+}
+
+.track-card {
+  background: var(--surface2);
+  border: 1px solid var(--surface3);
+  border-radius: 24px;
+  padding: 30px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
+}
+
+.track-label {
+  text-align: center;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.track-title {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
+.track-field {
+  margin-bottom: 18px;
+}
+
+.track-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.track-field input {
+  width: 100%;
+  border: 1px solid var(--surface3);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 15px;
+  background: white;
+}
+
+.track-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  background: var(--gold);
+  color: white;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.track-btn:hover {
+  background: var(--gold-dark);
+}
+
+.card {
+  background: white;
+  border: 1px solid var(--surface3);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.06);
+}
+
+.badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.b-green {
+  background: #dcfce7;
+  color: #166534;
+}

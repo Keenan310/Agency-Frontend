@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Confirmation</title>
+  <link rel="stylesheet" href="./payment-confirmation.css" />
+</head>
+<body>
+  <main class="confirmation-page">
+    <section class="confirmation-card">
+      <div class="success-icon">✓</div>
+      <p class="step-label">Payment Completed</p>
+      <h1>Booking Payment Received</h1>
+      <p class="message">
+        Your payment has been received successfully. Airline ticketing is now pending confirmation.
+      </p>
+
+      <div class="summary-box">
+        <div><span>Booking Reference</span><strong id="confirmReference">—</strong></div>
+        <div><span>Booking ID</span><strong id="confirmBookingId">—</strong></div>
+        <div><span>Status</span><strong id="confirmStatus">Payment Paid / Ticketing Pending</strong></div>
+      </div>
+
+      <div class="notice-box">
+        Your ticket number and PNR will appear after airline ticketing is completed.
+      </div>
+
+      <div class="actions">
+        <a href="/src/components/flight-track/flight-track.html" class="secondary-btn">Track Booking</a>
+        <a href="/" class="primary-btn">Back to Home</a>
+      </div>
+    </section>
+  </main>
+  <script src="./payment-confirmation.js"></script>
+</body>
+</html>
