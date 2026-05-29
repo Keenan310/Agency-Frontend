@@ -470,7 +470,7 @@ function renderBundleTable(flight, rawBundleData, confirmedOfferId) {
         .join("")}
     </div>
 
-    <div class="bundle-footer">
+        <div class="bundle-footer">
       <button
         class="bundle-continue-btn"
         onclick="continueWithSelectedBundle('${flight.id}', '${confirmedOfferId}')"
@@ -478,8 +478,7 @@ function renderBundleTable(flight, rawBundleData, confirmedOfferId) {
         Continue
       </button>
     </div>
-
-  </div>
+      </div>
 `;
 }
 
@@ -525,6 +524,7 @@ function renderBrandFareTable(flight) {
               type="radio"
               name="brand-${flight.id}"
               class="fare-radio"
+               onclick="event.stopPropagation()"
               data-flight-id="${flight.id}"
               data-index="${index}"
               ${
@@ -591,14 +591,20 @@ function renderBrandFareTable(flight) {
       </div>
 
       <div class="bundle-footer">
-        <button class="bundle-continue-btn">
-          Continue
-        </button>
+        <button
+  class="bundle-continue-btn brand-continue-btn"
+  type="button"
+  data-flight-id="${flight.id}"
+  onclick="window.continueWithBrandFare(this.dataset.flightId)"
+>
+  Continue
+</button>
       </div>
 
     </div>
   `;
 }
+
 
 window.renderFlightCard = renderFlightCard;
 window.renderFareInfo = renderFareInfo;

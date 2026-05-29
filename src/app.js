@@ -62,7 +62,7 @@
       css: "./src/pages/home/home.css",
       js: "./src/pages/home/home.js",
     },
-    
+
     {
       name: "page-booking",
       slot: '[data-module-slot="page-booking"]',
@@ -81,9 +81,9 @@
     {
       name: "page-track",
       slot: '[data-module-slot="page-track"]',
-      html: "./src/services/flights/track/track.html",
-      css: "./src/services/flights/track/track.css",
-      js: "./src/services/flights/track/track.js",
+      html: "./src/components/flight-track/flight-track.html",
+      css: "./src/components/flight-track/flight-track.css",
+      js: "./src/components/flight-track/flight-track.js",
     },
 
     {

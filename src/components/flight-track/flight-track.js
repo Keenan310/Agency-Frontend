@@ -27,7 +27,7 @@ window.showTrackResult = async () => {
     }
 
     const response = await fetch(
-      `${window.KEENAN_CONFIG.apiBaseUrl}/ticketing/track/${encodeURIComponent(reference)}`,
+      `${((window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) || "http://localhost:3000/v1")}/ndc/ticketing/track/${encodeURIComponent(reference)}`,
       {
         method: "GET",
         headers: {},

@@ -1041,94 +1041,189 @@ function renderFlights() {
     resultsEl.innerHTML = filtered.map(window.renderFlightCard).join("");
   }
 
-  // Attach event listeners to newly rendered cards
-  resultsEl.querySelectorAll(".toggle-btn-mini").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const flightId = btn.dataset.flightId;
-      state.openFlightId = state.openFlightId === flightId ? null : flightId;
-      state.activeTabs[flightId] =
-        state.activeTabs[flightId] || "Fare Categories";
-      renderAll();
-    });
-  });
+  // ONE delegated click listener - survives renderAll()
+  if (!resultsEl.dataset.mainClickListenerAttached) {
+    resultsEl.dataset.mainClickListenerAttached = "true";
 
-  resultsEl.querySelectorAll(".tab-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      state.activeTabs[btn.dataset.flightId] = btn.dataset.tab;
-      renderAll();
-    });
-  });
+    resultsEl.addEventListener("click", async (e) => {
+      const toggleBtn = e.target.closest(".toggle-btn-mini");
+      if (toggleBtn) {
+        const flightId = toggleBtn.dataset.flightId;
+        state.openFlightId = state.openFlightId === flightId ? null : flightId;
+        state.activeTabs[flightId] =
+          state.activeTabs[flightId] || "Fare Categories";
+        renderAll();
+        return;
+      }
 
-  resultsEl.querySelectorAll(".fare-radio").forEach((radio) => {
-    radio.addEventListener("change", () => {
-      state.selectedFareIndices[radio.dataset.flightId] = parseInt(
-        radio.dataset.index,
+      const tabBtn = e.target.closest(".tab-btn");
+      if (tabBtn) {
+        state.activeTabs[tabBtn.dataset.flightId] = tabBtn.dataset.tab;
+        renderAll();
+        return;
+      }
+
+      const continueBtn = e.target.closest(".select-btn-mini, .category-continue-btn");
+      if (!continueBtn) return;
+
+      const flightId = continueBtn.dataset.flightId || continueBtn.dataset.offerId;
+      const flight = flights.find(
+        (f) => f.id === flightId || f.cardKey === flightId,
       );
 
-      renderAll();
-    });
-  });
-
-  resultsEl.querySelectorAll(".bundle-selector").forEach((radio) => {
-    radio.addEventListener("change", () => {
-      state.selectedBundleCodes[radio.dataset.flightId] =
-        radio.dataset.bundleCode;
-
-      renderAll();
-    });
-  });
-
-  resultsEl.querySelectorAll(".bundle-check").forEach((check) => {
-    check.addEventListener("change", () => {
-      const flightId = check.dataset.flightId;
-      const bundleId = check.dataset.bundleId;
-      const current = state.selectedBundles[flightId] || [];
-      if (check.checked) {
-        state.selectedBundles[flightId] = [...current, bundleId];
-      } else {
-        state.selectedBundles[flightId] = current.filter(
-          (id) => id !== bundleId,
-        );
+      if (!flight) {
+        alert("Flight not found");
+        return;
       }
-      renderAll();
-    });
-  });
 
-  resultsEl
-    .querySelectorAll(".select-btn-mini, .category-continue-btn")
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const flightId = btn.dataset.flightId || btn.dataset.offerId;
-        const flight = flights.find(
-          (f) => f.id === flightId || f.cardKey === flightId,
+      const fare = getSelectedFare(flight);
+      let confirmedOfferId = fare.offerId || flight.id;
+
+      try {
+        continueBtn.disabled = true;
+        continueBtn.textContent = "Confirming...";
+
+        const apiBase =
+          (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) ||
+          "http://localhost:3000/v1/ndc";
+
+        const session = JSON.parse(
+          localStorage.getItem("keenanTravelSession") || "null",
         );
-        if (!flight) return;
 
-        const fare = getSelectedFare(flight);
+        const headers = {
+          "Content-Type": "application/json",
+        };
+
+        if (session && session.token) {
+          headers.Authorization = `Bearer ${session.token}`;
+        }
+
+        // haveBundles=false: confirm fare here before passenger page
+        if (
+          continueBtn.classList.contains("category-continue-btn") &&
+          !flight.haveBundles
+        ) {
+          const confirmResponse = await fetch(`${apiBase}/flights/fare-confirm`, {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+              offerId: confirmedOfferId,
+              selectedBundles: [],
+            }),
+          });
+
+          const confirmResult = await confirmResponse.json();
+
+          console.log("[Category Continue] FareConfirm:", confirmResult);
+
+          if (!confirmResponse.ok || confirmResult.success === false) {
+            throw new Error(
+              confirmResult.message ||
+                confirmResult.error ||
+                "Fare confirmation failed",
+            );
+          }
+
+          confirmedOfferId =
+            confirmResult.offerId ||
+            confirmResult.data?.offerId ||
+            confirmResult.data?.OfferId ||
+            confirmResult.data?.confirmedOfferId ||
+            confirmResult.confirmed?.offerId ||
+            confirmedOfferId;
+        }
+
+        const confirmedFare = {
+          ...fare,
+          offerId: confirmedOfferId,
+        };
+
         const bookingData = {
           flight: {
             ...flight,
-            selectedOfferId: fare.offerId,
+            selectedOfferId: confirmedOfferId,
             selectedTotal: calculateTotalPrice(flight),
           },
-          fare,
+          fare: confirmedFare,
           params: {
             adults: state.searchParams.adults,
             children: state.searchParams.children,
             infants: state.searchParams.infants,
             cabinClass: state.searchParams.cabinClass,
           },
+          selectedBundle: null,
+          pricing: {
+            total: calculateTotalPrice(flight),
+            bundleAmount: 0,
+            paymentGatewayFee: 0,
+          },
+          baggage: {
+            cabin: confirmedFare.cabinBaggage,
+            checked: confirmedFare.checkedBaggage,
+          },
+          confirmedOfferId,
+          haveBundles: !!flight.haveBundles,
         };
 
         console.log("[Booking] Saving data to localStorage:", bookingData);
+
         localStorage.setItem(
           "keenan_selected_flight",
           JSON.stringify(bookingData),
         );
+
         window.location.href =
           "/src/services/flights/passenger-details/passenger-details.html";
-      });
+      } catch (error) {
+        console.error("[Category Continue] Error:", error);
+        alert(error.message || "Fare confirmation failed");
+        continueBtn.disabled = false;
+        continueBtn.textContent = "Continue";
+      }
     });
+  }
+
+  // Delegated change listener - survives renderAll()
+  if (!resultsEl.dataset.mainChangeListenerAttached) {
+    resultsEl.dataset.mainChangeListenerAttached = "true";
+
+    resultsEl.addEventListener("change", (e) => {
+      const fareRadio = e.target.closest(".fare-radio");
+      if (fareRadio) {
+        state.selectedFareIndices[fareRadio.dataset.flightId] = parseInt(
+          fareRadio.dataset.index,
+        );
+        renderAll();
+        return;
+      }
+
+      const bundleSelector = e.target.closest(".bundle-selector");
+      if (bundleSelector) {
+        state.selectedBundleCodes[bundleSelector.dataset.flightId] =
+          bundleSelector.dataset.bundleCode;
+        renderAll();
+        return;
+      }
+
+      const bundleCheck = e.target.closest(".bundle-check");
+      if (bundleCheck) {
+        const flightId = bundleCheck.dataset.flightId;
+        const bundleId = bundleCheck.dataset.bundleId;
+        const current = state.selectedBundles[flightId] || [];
+
+        if (bundleCheck.checked) {
+          state.selectedBundles[flightId] = [...current, bundleId];
+        } else {
+          state.selectedBundles[flightId] = current.filter(
+            (id) => id !== bundleId,
+          );
+        }
+
+        renderAll();
+      }
+    });
+  }
 }
 
 function getSelectedFare(flight) {
@@ -1389,6 +1484,147 @@ function continueWithSelectedBundle(flightId, confirmedOfferId) {
 }
 
 
+async function continueWithBrandFare(flightId) {
+
+  console.log("[Brand Continue] clicked flightId:", flightId);
+
+  const flight = flights.find(
+    (f) => f.id === flightId || f.cardKey === flightId,
+  );
+
+  console.log("[Brand Continue] found flight:", flight);
+
+  if (!flight) {
+    alert("Flight not found");
+    return;
+  }
+
+  const fare = getSelectedFare(flight);
+
+  console.log("[Brand Continue] selected fare:", fare);
+
+  let confirmedOfferId = fare.offerId || flight.id;
+
+  try {
+
+    const apiBase =
+      (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) ||
+      "http://localhost:3000/v1/ndc";
+
+    const session = JSON.parse(
+      localStorage.getItem("keenanTravelSession") || "null",
+    );
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    if (session && session.token) {
+      headers.Authorization = `Bearer ${session.token}`;
+    }
+
+    console.log(
+      "[Brand Continue] calling FareConfirm:",
+      confirmedOfferId,
+    );
+
+    const confirmResponse = await fetch(
+      `${apiBase}/flights/fare-confirm`,
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          offerId: confirmedOfferId,
+          selectedBundles: [],
+        }),
+      },
+    );
+
+    const confirmResult = await confirmResponse.json();
+
+    console.log(
+      "[Brand Continue] FareConfirm response:",
+      confirmResult,
+    );
+
+    if (!confirmResponse.ok || confirmResult.success === false) {
+      throw new Error(
+        confirmResult.message ||
+          confirmResult.error ||
+          "Fare confirmation failed",
+      );
+    }
+
+    confirmedOfferId =
+      confirmResult.offerId ||
+      confirmResult.data?.offerId ||
+      confirmResult.data?.OfferId ||
+      confirmResult.data?.confirmedOfferId ||
+      confirmResult.confirmed?.offerId ||
+      confirmedOfferId;
+
+    const confirmedFare = {
+      ...fare,
+      offerId: confirmedOfferId,
+    };
+
+    const bookingData = {
+      flight: {
+        ...flight,
+        selectedOfferId: confirmedOfferId,
+        selectedTotal: calculateTotalPrice(flight),
+      },
+
+      fare: confirmedFare,
+
+      params: {
+        adults: state.searchParams.adults,
+        children: state.searchParams.children,
+        infants: state.searchParams.infants,
+        cabinClass: state.searchParams.cabinClass,
+      },
+
+      selectedBundle: null,
+
+      pricing: {
+        total: calculateTotalPrice(flight),
+        bundleAmount: 0,
+        paymentGatewayFee: 0,
+      },
+
+      baggage: {
+        cabin: confirmedFare.cabinBaggage,
+        checked: confirmedFare.checkedBaggage,
+      },
+
+      confirmedOfferId,
+
+      haveBundles: false,
+    };
+
+    console.log(
+      "[Brand Continue] saving bookingData:",
+      bookingData,
+    );
+
+    localStorage.setItem(
+      "keenan_selected_flight",
+      JSON.stringify(bookingData),
+    );
+
+    window.location.href =
+      "/src/services/flights/passenger-details/passenger-details.html";
+
+  } catch (error) {
+
+    console.error("[Brand Continue] error:", error);
+
+    alert(error.message || "Fare confirmation failed");
+  }
+}
+
+window.continueWithBrandFare = continueWithBrandFare;
+
 function getRuleTitle(rule, index) {
   const titles = [
     "Application and Conditions",
@@ -1484,6 +1720,7 @@ window.buildResults = async function (type) {
   }
 
 };
+
 
 // Initial render & fetch
 document.addEventListener("DOMContentLoaded", async () => {

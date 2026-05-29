@@ -165,14 +165,14 @@
       // Adjust baseFare to match total
       selectedOffer.price.baseFare =
         total -
-        (selectedOffer.price.taxesFees + selectedOffer.price.serviceFee + selectedOffer.price.paymentGatewayFee);
+        (selectedOffer.price.taxesFees +
+          selectedOffer.price.serviceFee +
+          selectedOffer.price.paymentGatewayFee);
 
       // Initialize state
-      window.bookingState = {
-        offerId: selectedOffer.offerId,
-        confirmedOfferId: null,
-        haveBundles: !!selectedBundle,
-        selectedBundles: selectedBundle
+      const savedSelectedBundles = Array.isArray(data.selectedBundles)
+        ? data.selectedBundles
+        : selectedBundle
           ? [
               {
                 JourneyKey: selectedBundle.journeyKey || "journey-1",
@@ -180,12 +180,28 @@
                 price: pricing?.bundleAmount || 0,
               },
             ]
-          : [],
-        cabin_held: false,
+          : [];
+
+      window.bookingState = {
+        offerId:
+          data.confirmedOfferId ||
+          flight.selectedOfferId ||
+          fare.offerId ||
+          selectedOffer.offerId,
+        confirmedOfferId:
+          data.confirmedOfferId ||
+          flight.selectedOfferId ||
+          fare.offerId ||
+          selectedOffer.offerId,
+        haveBundles: data.haveBundles === true || !!selectedBundle,
+        selectedBundles: savedSelectedBundles,
+        cabin_held:
+          data.canBeHeld === true ||
+          data.cabin_held === true ||
+          data.canBeHeld === "true",
         amount: total,
         currency: selectedOffer.price.currency,
       };
-
     } catch (e) {
       console.error("[Booking] Error loading data:", e);
     }
@@ -338,7 +354,10 @@
           ${segments
             .map(function (segment, index) {
               const nextSegment = segments[index + 1];
-              const flightLabel = [segment.airlineCode, segment.flightNo || segment.id]
+              const flightLabel = [
+                segment.airlineCode,
+                segment.flightNo || segment.id,
+              ]
                 .filter(Boolean)
                 .join(" ");
 
@@ -390,12 +409,13 @@
   }
 
   function renderSelectedOfferDetails() {
-    
     // byId("selectedFareCategory").textContent = selectedOffer.fareCategory;
 
     byId("segmentList").innerHTML = renderPassengerItineraryBox();
 
-    const paymentGatewayFee = Number(selectedOffer.price.paymentGatewayFee || 0);
+    const paymentGatewayFee = Number(
+      selectedOffer.price.paymentGatewayFee || 0,
+    );
 
     const total =
       selectedOffer.price.baseFare +
@@ -809,24 +829,50 @@
     const apiBase =
       (window.KEENAN_CONFIG && window.KEENAN_CONFIG.apiBaseUrl) ||
       "http://localhost:3000/v1";
-    const headers = { "Content-Type": "application/json" };
-    const session = JSON.parse(
-      localStorage.getItem("keenanTravelSession") || "null",
-    );
-    if (session && session.token)
-      headers.Authorization = `Bearer ${session.token}`;
+
+    const headers = {
+      "Content-Type": "application/json",
+    };
+
+    const customerToken = localStorage.getItem("customerToken");
+
+    console.log("[apiPost] path:", path);
+    console.log("[apiPost] customerToken:", customerToken);
+
+    if (customerToken) {
+      headers.Authorization = `Bearer ${customerToken}`;
+    }
+
+    console.log("[apiPost] headers:", headers);
+    console.log("[apiPost] body:", body);
+
     const res = await fetch(apiBase + path, {
       method: "POST",
       headers,
       body: JSON.stringify(body),
     });
-    const data = await res.json();
-    if (!res.ok)
-      throw new Error(data.message || data.error || "Request failed");
+
+    let data = {};
+
+    try {
+      data = await res.json();
+    } catch (e) {
+      console.error("[apiPost] Invalid JSON response");
+    }
+
+    console.log("[apiPost] response status:", res.status);
+    console.log("[apiPost] response data:", data);
+
+    if (!res.ok) {
+      throw new Error(
+        data.message || data.error || `Request failed (${res.status})`,
+      );
+    }
+
     return data;
   }
 
-  byId("confirmSelectionBtn").addEventListener("click", async function () {
+  /* byId("confirmSelectionBtn").addEventListener("click", async function () {
     const btn = this;
     const loader = byId("fareConfirmLoader");
     btn.disabled = true;
@@ -874,7 +920,8 @@
       btn.disabled = false;
       loader.style.display = "none";
     }
-  });
+  }); 
+  */
 
   function renderBundles(bundles) {
     const list = byId("bundleList");
@@ -958,36 +1005,52 @@
     const serviceFee = Number(price.serviceFee || 0);
     const paymentGatewayFee = Number(price.paymentGatewayFee || 0);
     const discount = Number(price.customerDiscount || price.discount || 0);
-    const totalAmount = baseFare + taxes + ancillary + serviceFee + paymentGatewayFee - discount;
+    const totalAmount =
+      baseFare + taxes + ancillary + serviceFee + paymentGatewayFee - discount;
 
     return {
-      offerId: selectedOffer.offerId,
-      airline: firstSegment.airline || "Selected Flight",
-      fareClass: selectedOffer.fareCategory,
-      cabin: selectedOffer.fareCategory,
-      currency: price.currency || window.bookingState.currency || "AED",
-      origin: firstSegment.origin || "",
-      destination: lastSegment.destination || "",
-      departureTime: firstSegment.departureTime || "",
-      arrivalTime: lastSegment.arrivalTime || "",
-      duration: selectedOffer.duration || "",
-      stops: Math.max(0, segments.length - 1),
-      segments: segments,
-      baggage: selectedOffer.baggage,
-      carryOn: selectedOffer.baggage?.cabin?.allowance || "",
-      handCarry: selectedOffer.baggage?.cabin?.allowance || "",
-      checkIn: selectedOffer.baggage?.checkIn?.allowance || "",
-      checkInBaggage: selectedOffer.baggage?.checkIn?.allowance || "",
-      baseFare: baseFare,
-      baseAmount: baseFare,
-      taxes: taxes,
-      taxAmount: taxes,
-      ancillary: ancillary,
-      serviceFee: serviceFee,
-      paymentGatewayFee: paymentGatewayFee,
-      discount: discount,
-      totalAmount: totalAmount,
-    };
+  offerId: selectedOffer.offerId,
+  airline: firstSegment.airline || "Selected Flight",
+  airlineCode: firstSegment.airlineCode || "",
+  flightNumber: firstSegment.flightNumber || "",
+
+  fareClass: selectedOffer.fareCategory,
+  cabin: selectedOffer.fareCategory,
+  cabinClass: selectedOffer.fareCategory || "",
+
+  currency: price.currency || window.bookingState.currency || "AED",
+
+  origin: firstSegment.origin || "",
+  destination: lastSegment.destination || "",
+
+  departureTime: firstSegment.departureTime || "",
+  arrivalTime: lastSegment.arrivalTime || "",
+  departureDateTime: firstSegment.departureTime || "",
+  arrivalDateTime: lastSegment.arrivalTime || "",
+
+  duration: selectedOffer.duration || "",
+  stops: Math.max(0, segments.length - 1),
+
+  segments: segments,
+  journeys: [],
+
+  baggage: selectedOffer.baggage,
+  carryOn: selectedOffer.baggage?.cabin?.allowance || "",
+  handCarry: selectedOffer.baggage?.cabin?.allowance || "",
+  checkIn: selectedOffer.baggage?.checkIn?.allowance || "",
+  checkInBaggage: selectedOffer.baggage?.checkIn?.allowance || "",
+
+  baseFare: baseFare,
+  baseAmount: baseFare,
+  taxes: taxes,
+  taxAmount: taxes,
+  ancillary: ancillary,
+  serviceFee: serviceFee,
+  paymentGatewayFee: paymentGatewayFee,
+  discount: discount,
+  totalAmount: totalAmount,
+};
+
   }
 
   function buildBookingReviewData(paxData) {
@@ -1030,53 +1093,128 @@
 
     const accepted = byId("acceptTermsCheckbox")?.checked;
     if (!accepted) {
-      alert("Please accept the payment terms and conditions before continuing.");
+      alert(
+        "Please accept the payment terms and conditions before continuing.",
+      );
       return;
     }
 
-    if (!window.bookingState.confirmedOfferId) {
-      alert("Please confirm fare first before continuing to booking review.");
+    const finalOfferId =
+      window.bookingState?.confirmedOfferId ||
+      window.bookingState?.offerId ||
+      selectedOffer.offerId;
+
+    if (!finalOfferId) {
+      alert("Confirmed offer ID is missing. Please select the flight again.");
       return;
     }
+
+    window.bookingState.confirmedOfferId = finalOfferId;
+    window.bookingState.offerId = finalOfferId;
 
     const paxData = getPassengerData();
+    const reviewFlight = buildReviewFlightData();
 
     const payload = {
-      OfferId: window.bookingState.confirmedOfferId,
+      OfferId: finalOfferId,
+      offerId: finalOfferId,
+      flight: reviewFlight,
+      price: {
+        currency: reviewFlight.currency,
+        totalAmount: reviewFlight.totalAmount,
+        baseFare: reviewFlight.baseFare,
+        taxes: reviewFlight.taxes,
+        serviceFee: reviewFlight.serviceFee,
+      },
+      selectedBundles: window.bookingState.selectedBundles || [],
+      SelectedBundles: window.bookingState.selectedBundles || [],
       Passengers: {},
     };
 
     paxData.forEach((p, i) => {
+      const countryCode = "PK";
+
       payload.Passengers[`Pax${i + 1}`] = {
         passengerTypeCode: p.passengerTypeCode,
         title: p.title,
         gender: p.gender,
+
         name: {
           first: p.firstName,
+          middle: "",
           last: p.lastName,
         },
+
         birthDate: p.birthDate,
-        nationality: p.nationality,
+
+        nationalityCountryCode: countryCode,
+        birthCountryCode: countryCode,
+        residenceCountryCode: countryCode,
+
         contact: {
           email: p.email,
           phone: {
-            countryDialingCode: "971",
+            type: "Mobile",
+            countryDialingCode: "+971",
             phoneNumber: p.phone,
           },
+          address: {
+            line1: "Dubai",
+            line2: "Dubai",
+            cityCode: "DXB",
+            countryCode: "AE",
+          },
         },
+
         travelDocument: {
+          documentType: "Passport",
           documentNumber: p.passportNumber,
           expirationDate: p.passportExpiry,
-          issueDate: p.passportIssue,
+          issuanceDate: p.passportIssue,
+          issuanceCountryCode: countryCode,
+          birthCountryCode: countryCode,
+          nationalityCountryCode: countryCode,
+          gender: p.gender,
+          birthDate: p.birthDate,
+          name: {
+            first: p.firstName,
+            middle: "",
+            last: p.lastName,
+          },
         },
       };
     });
 
     try {
       console.log("Adding passengers...", payload);
+      console.log("FINAL OFFER ID:", finalOfferId);
 
       const addPassengerRes = await apiPost("/flights/add-passengers", payload);
       console.log("ADD PASSENGER RESPONSE:", addPassengerRes);
+
+      if (
+        addPassengerRes.statusCode >= 400 ||
+        addPassengerRes.data?.statusCode >= 400 ||
+        addPassengerRes.data?.validationErrors
+      ) {
+        throw new Error(
+          addPassengerRes.message ||
+            addPassengerRes.data?.message ||
+            "Add passenger validation failed",
+        );
+      }
+
+      window.bookingState.confirmedOfferId =
+        addPassengerRes.offerId ||
+        addPassengerRes.data?.offerId ||
+        addPassengerRes.data?.OfferId ||
+        window.bookingState.confirmedOfferId;
+
+      window.bookingState.passengerId =
+        addPassengerRes.passengerId ||
+        addPassengerRes.data?.passengerId ||
+        addPassengerRes.data?.PassengerId ||
+        "Pax1";
 
       window.bookingState.bookingId =
         addPassengerRes.bookingId ||
@@ -1084,16 +1222,58 @@
         addPassengerRes.booking?.id ||
         addPassengerRes.id;
 
+      console.log(
+        "UPDATED OFFER ID AFTER ADD PASSENGER:",
+        window.bookingState.confirmedOfferId,
+      );
+      console.log(
+        "PASSENGER ID AFTER ADD PASSENGER:",
+        window.bookingState.passengerId,
+      );
+
       const reviewData = buildBookingReviewData(paxData);
-
       console.log("BOOKING REVIEW DATA:", reviewData);
-
       localStorage.setItem("keenan_booking_review", JSON.stringify(reviewData));
 
-      // Important:
-      // Do NOT call BookAndPay here.
-      // BookAndPay must be called only after successful payment.
-      window.location.href = "../booking-review/booking-review.html";
+      let finalResponse;
+
+      if (action === "hold") {
+        console.log("CALLING HOLD API");
+
+        finalResponse = await apiPost("/ticketing/hold", {
+          offerId: window.bookingState.confirmedOfferId,
+          OfferId: window.bookingState.confirmedOfferId,
+          passengerId: window.bookingState.passengerId,
+          PassengerId: window.bookingState.passengerId,
+          selectedBundles: window.bookingState.selectedBundles || [],
+          SelectedBundles: window.bookingState.selectedBundles || [],
+          bookingId: window.bookingState.bookingId,
+        });
+      } else if (action === "book") {
+        console.log("CALLING BOOK AND PAY API");
+
+        finalResponse = await apiPost("/ticketing/book", {
+          offerId: window.bookingState.confirmedOfferId,
+          OfferId: window.bookingState.confirmedOfferId,
+          passengerId: window.bookingState.passengerId,
+          PassengerId: window.bookingState.passengerId,
+          selectedBundles: window.bookingState.selectedBundles || [],
+          SelectedBundles: window.bookingState.selectedBundles || [],
+          bookingId: window.bookingState.bookingId,
+        });
+      } else {
+        throw new Error("Unknown booking action");
+      }
+
+      console.log("FINAL BOOKING RESPONSE:", finalResponse);
+
+      localStorage.setItem(
+        "keenan_booking_confirmation",
+        JSON.stringify(finalResponse),
+      );
+
+      window.location.href =
+        "/src/components/flight-payment-confirmation/payment-confirmation.html";
     } catch (err) {
       console.error(err);
       alert("Error saving passenger details: " + err.message);
@@ -1101,10 +1281,11 @@
   }
 
   byId("holdBtn")?.addEventListener("click", () =>
-    submitPassengersAndProceed("review"),
+    submitPassengersAndProceed("hold"),
   );
+
   byId("bookAndPayBtn")?.addEventListener("click", () =>
-    submitPassengersAndProceed("review"),
+    submitPassengersAndProceed("book"),
   );
 
   // passengerForm submit is disabled in favor of hold/book buttons
